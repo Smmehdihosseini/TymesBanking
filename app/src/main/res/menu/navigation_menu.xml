@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single"></group>
+
+    <item
+        android:id="@+id/home"
+        android:title="Home"
+        android:icon="@drawable/ic_baseline_home_24">
+    </item>
+
+    <item android:title="Profile">
+        <menu>
+            <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/my_profile_icon"
+                android:title="My Profile"
+                android:icon="@drawable/ic_baseline_person_24"/>
+
+            <item
+                android:id="@+id/my_clan_icon"
+                android:title="My Clan"
+                android:icon="@drawable/ic_baseline_tymesclan"/>
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="Advertisement">
+        <menu>
+            <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/all_tslots_list_icon"
+                android:title="Ads Pool"
+                android:icon="@drawable/ic_baseline_ads_list"/>
+
+            <item
+                android:id="@+id/my_tslots_icon"
+                android:title="My Ads"
+                android:icon="@drawable/ic_baseline_my_ads"/>
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="Tymes">
+        <menu>
+            <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/tymes_settings_icon"
+                android:title="Settings"
+                android:icon="@drawable/ic_baseline_settings_24"/>
+
+            <item
+                android:id="@+id/about_tymes_icon"
+                android:title="About Tymes"
+                android:icon="@drawable/ic_baseline_info_24"/>
+            </group>
+        </menu>
+    </item>
+
+</menu>
