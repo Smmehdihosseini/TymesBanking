@@ -1,59 +1,75 @@
 package it.polito.mad.g28.tymes
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.activityViewModels
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ShowProfileActivity.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ShowProfileActivity : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
+    private val viewModel : ProfileVM by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_show_profile_activity, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ShowProfileActivity.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ShowProfileActivity().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val tvFullName = activity?.findViewById<TextView>(R.id.user_fullname)
+        val tvNickname = activity?.findViewById<TextView>(R.id.user_nickname)
+        val tvUsername = activity?.findViewById<TextView>(R.id.user_username)
+        val tvBiography = activity?.findViewById<TextView>(R.id.user_bio)
+        val tvSkills = activity?.findViewById<TextView>(R.id.user_skills)
+        val tvLocation = activity?.findViewById<TextView>(R.id.user_location)
+        val tvEmail = activity?.findViewById<TextView>(R.id.user_email)
+        val tvWebpage = activity?.findViewById<TextView>(R.id.user_webpage)
+
+        viewModel.profileInfo.observe(viewLifecycleOwner){
+            tvFullName?.text = it["Full Name"]
+            tvNickname?.text = it["Nickname"]
+            tvUsername?.text = it["Username"]
+            tvBiography?.text =it["Biography"]
+            tvSkills?.text = it["Skills"]
+            tvLocation?.text = it["Location"]
+            tvEmail?.text = it["Email"]
+            tvWebpage?.text = it["Webpage"]
+
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menubar, menu)
+        return super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        val tvFullName = activity?.findViewById<TextView>(R.id.user_fullname)?.text.toString()
+        val tvNickname = activity?.findViewById<TextView>(R.id.user_nickname)?.text.toString()
+        val tvUsername = activity?.findViewById<TextView>(R.id.user_username)?.text.toString()
+        val tvBiography = activity?.findViewById<TextView>(R.id.user_bio)?.text.toString()
+        val tvSkills = activity?.findViewById<TextView>(R.id.user_skills)?.text.toString()
+        val tvLocation = activity?.findViewById<TextView>(R.id.user_location)?.text.toString()
+        val tvEmail = activity?.findViewById<TextView>(R.id.user_email)?.text.toString()
+        val tvWebpage = activity?.findViewById<TextView>(R.id.user_webpage)?.text.toString()
+
+        return if (item.itemId==R.id.edit_pencil_button) {
+            val fragmentTransaction = parentFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragmentContainerView, EditProfileActivity()).commit()
+            viewModel.updateProfile(tvFullName,tvNickname,tvUsername,tvBiography,tvSkills,tvLocation,tvEmail,tvWebpage)
+            true
+        } else {
+            super.onOptionsItemSelected(item)
+        }
     }
 }

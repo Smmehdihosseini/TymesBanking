@@ -7,6 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+
+import androidx.navigation.fragment.findNavController
+
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -52,7 +56,8 @@ class MainActivity : AppCompatActivity() {
     private fun changeFrag(fragment: Fragment, title: String){
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.home_fragment, fragment)
+        fragmentTransaction.replace(R.id.fragmentContainerView, fragment).commit()
+//        findNavController(R.id.homeFragment).navigate(R.id.action_homeFragment_to_showProfileActivity)
         drawerLayout.closeDrawers()
         setTitle(title)
     }

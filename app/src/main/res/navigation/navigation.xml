@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation.xml"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/showProfileActivity"
+        android:name="it.polito.mad.g28.tymes.ShowProfileActivity"
+        android:label="fragment_show_profile_activity"
+        tools:layout="@layout/fragment_show_profile_activity">
+        <action
+            android:id="@+id/action_showProfileActivity_to_editProfileActivity"
+            app:destination="@id/editProfileActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileActivity"
+        android:name="it.polito.mad.g28.tymes.EditProfileActivity"
+        android:label="fragment_edit_profile_activity"
+        tools:layout="@layout/fragment_edit_profile_activity">
+        <action
+            android:id="@+id/action_editProfileActivity_to_showProfileActivity"
+            app:destination="@id/showProfileActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="it.polito.mad.g28.tymes.Home"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_showProfileActivity"
+            app:destination="@id/showProfileActivity" />
+        <action
+            android:id="@+id/action_homeFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_timeSlotDetailsFragment"
+            app:destination="@id/timeSlotDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_timeSlotEditFragment"
+            app:destination="@id/timeSlotEditFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_timeSlotListFragment"
+            app:destination="@id/timeSlotListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_clanFragement"
+            app:destination="@id/clanFragement" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="it.polito.mad.g28.tymes.aboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/clanFragement"
+        android:name="it.polito.mad.g28.tymes.clanFragement"
+        android:label="fragment_clan_fragement"
+        tools:layout="@layout/fragment_clan_fragement" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="it.polito.mad.g28.tymes.settingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/timeSlotDetailsFragment"
+        android:name="it.polito.mad.g28.tymes.TimeSlotDetailsFragment"
+        android:label="fragment_time_slot_details"
+        tools:layout="@layout/fragment_time_slot_details" />
+    <fragment
+        android:id="@+id/timeSlotEditFragment"
+        android:name="it.polito.mad.g28.tymes.TimeSlotEditFragment"
+        android:label="fragment_time_slot_edit"
+        tools:layout="@layout/fragment_time_slot_edit" />
+    <fragment
+        android:id="@+id/timeSlotListFragment"
+        android:name="it.polito.mad.g28.tymes.TimeSlotListFragment"
+        android:label="fragment_time_slot_list"
+        tools:layout="@layout/fragment_time_slot_list" />
+</navigation>
