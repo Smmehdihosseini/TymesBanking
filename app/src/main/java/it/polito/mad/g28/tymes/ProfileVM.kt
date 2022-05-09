@@ -1,6 +1,5 @@
 package it.polito.mad.g28.tymes
 
-import android.provider.ContactsContract
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 

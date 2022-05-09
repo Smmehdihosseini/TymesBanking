@@ -4,28 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TimeSlotDetailsFragment"
-    android:theme="@style/Theme.Tymes">
-
-    <!-- TODO: Update blank fragment layout -->
+    tools:context=".TimeSlotEditFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="51dp">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/ad_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:gravity="center"
-            android:letterSpacing="0.2"
+            android:layout_marginTop="72dp"
             android:text="OFFER"
-            android:textColor="@color/grey"
             android:textSize="48dp"
+            android:gravity="center"
             android:textStyle="bold"
+            android:textColor="@color/grey"
+            android:letterSpacing="0.2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -37,22 +32,22 @@
             android:layout_marginTop="64dp"
             android:gravity="center"
             android:text="Title:"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="17sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/edit_ad_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ad_type" />
 
-        <TextView
-            android:id="@+id/ad_title"
+        <EditText
+            android:id="@+id/edit_ad_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:gravity="center"
             android:justificationMode="inter_word"
             android:text="Kotlin Programming"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,22 +60,21 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="By:"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_title" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_ad_title" />
 
-        <TextView
-            android:id="@+id/ad_full_name"
+        <EditText
+            android:id="@+id/edit_ad_full_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:gravity="center"
             android:justificationMode="inter_word"
             android:text="Davide Tymes"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -93,23 +87,22 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="Where:"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_full_name" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_ad_full_name" />
 
 
-        <TextView
-            android:id="@+id/ad_location"
+        <EditText
+            android:id="@+id/edit_ad_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:gravity="center"
             android:justificationMode="inter_word"
             android:text="Turin, Italy"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -123,22 +116,34 @@
             android:gravity="center"
             android:justificationMode="inter_word"
             android:text="When:"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_location" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_ad_location" />
 
-        <TextView
-            android:id="@+id/ad_when"
+        <Button
+            android:id="@+id/btn_datetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:text="@string/pick_time"
+            android:onClick="showTimePickerDialog"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/ad_when_const"
+            app:layout_constraintTop_toTopOf="@+id/ad_when_const"
+            app:layout_constraintBottom_toBottomOf="@+id/ad_when_const"/>
+
+
+
+        <EditText
+            android:id="@+id/edit_ad_when"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:justificationMode="inter_word"
             android:text=""
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -151,21 +156,20 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="Description:"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_when" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_ad_when" />
 
-        <TextView
-            android:id="@+id/ad_description"
+        <EditText
+            android:id="@+id/edit_ad_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="Description"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -177,24 +181,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Price Bid:"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_description" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_ad_description" />
 
-        <TextView
-            android:id="@+id/ad_price_bid"
+        <EditText
+            android:id="@+id/edit_ad_price_bid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:text="10.00 TYC"
             android:textColor="@color/dark_red"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ad_bid_const" />
 
@@ -204,21 +205,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Service Bid:"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_price_bid" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_ad_price_bid" />
 
-        <TextView
-            android:id="@+id/ad_service_bid"
+        <EditText
+            android:id="@+id/edit_ad_service_bid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="List of Services"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -228,29 +227,27 @@
             android:id="@+id/ad_issuetime_const"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="12dp"
             android:text="Last Created/Edited Date:"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="17sp"
             android:textStyle="bold"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_service_bid" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_ad_service_bid" />
 
         <TextView
-            android:id="@+id/ad_issuetime"
+            android:id="@+id/edit_ad_issuetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="7:46 AM - April 27, 2022"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="17sp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ad_issuetime_const" />
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

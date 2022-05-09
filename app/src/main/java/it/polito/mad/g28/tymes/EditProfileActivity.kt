@@ -3,6 +3,7 @@ package it.polito.mad.g28.tymes
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 
@@ -10,9 +11,6 @@ import androidx.fragment.app.activityViewModels
 class EditProfileActivity : Fragment() {
 
     private val viewModel : ProfileVM by activityViewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,5 +70,21 @@ class EditProfileActivity : Fragment() {
         } else {
             super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        val fullName = activity?.findViewById<EditText>(R.id.edit_user_fullname)?.text.toString()
+        val nickname = activity?.findViewById<EditText>(R.id.edit_user_nickname)?.text.toString()
+        val username = activity?.findViewById<EditText>(R.id.edit_user_username)?.text.toString()
+        val biography = activity?.findViewById<EditText>(R.id.edit_user_bio)?.text.toString()
+        val skills = activity?.findViewById<EditText>(R.id.edit_user_skills)?.text.toString()
+        val location = activity?.findViewById<EditText>(R.id.edit_user_location)?.text.toString()
+        val email = activity?.findViewById<EditText>(R.id.edit_user_email)?.text.toString()
+        val webpage = activity?.findViewById<TextView>(R.id.edit_user_webpage)?.text.toString()
+
+        viewModel.updateProfile(fullName,nickname,username,biography,skills,location,email,webpage)
+
     }
 }
