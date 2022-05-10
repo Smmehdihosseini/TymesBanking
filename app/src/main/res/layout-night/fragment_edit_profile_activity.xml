@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditProfileActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.33" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/edit_picture_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginBottom="4dp"
+            android:layout_weight="0.1"
+            android:contentDescription="@string/user_profile_image_button"
+            app:tint="#FFEB3B"
+            app:srcCompat="@android:drawable/ic_menu_camera"
+            tools:ignore="ImageContrastCheck" />
+
+        <ImageView
+            android:id="@+id/user_picture"
+            android:layout_width="match_parent"
+            android:layout_height="156dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_weight="0.2"
+            android:contentDescription="@string/user_picture"
+            tools:ignore="TextContrastCheck"
+            tools:srcCompat="@drawable/ic_launcher_foreground">
+
+        </ImageView>
+
+        <EditText
+            android:id="@+id/edit_user_fullname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:gravity="center_vertical"
+            android:hint="@string/edit_user_fullname"
+            android:autofillHints="personName"
+            android:inputType="textPersonName"
+            android:textColor="#FFFFFF"
+            tools:ignore="TextContrastCheck"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/edit_user_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:gravity="center_vertical"
+            android:hint="@string/edit_user_nickname"
+            android:autofillHints="personName"
+            android:inputType="textPersonName"
+            android:textColor="#FFFFFF"
+            tools:ignore="TextContrastCheck"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/edit_user_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:gravity="center_vertical"
+            android:hint="@string/edit_user_username"
+            android:autofillHints="username"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890._"
+            android:inputType="textFilter"
+            android:textColor="#FFFFFF"
+            tools:ignore="TextContrastCheck"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/edit_user_bio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:gravity="center_vertical"
+            android:hint="@string/edit_user_bio"
+            android:autofillHints="notApplicable"
+            android:inputType="textMultiLine"
+            android:textColor="#FFFFFF"
+            tools:ignore="TextContrastCheck"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/edit_user_skills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:gravity="center_vertical"
+            android:hint="@string/edit_user_skills"
+            android:autofillHints="notApplicable"
+            android:inputType="text"
+            android:textColor="#FFFFFF"
+            tools:ignore="TextContrastCheck"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/edit_user_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:gravity="center_vertical"
+            android:hint="@string/edit_user_location"
+            android:autofillHints="addressLocality"
+            android:inputType="text"
+            android:textColor="#FFFFFF"
+            tools:ignore="TextContrastCheck"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/edit_user_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:gravity="center_vertical"
+            android:hint="@string/edit_user_email"
+            android:autofillHints="notApplicable"
+            android:inputType="textEmailAddress"
+            android:textColor="#FFFFFF"
+            tools:ignore="TextContrastCheck"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/edit_user_webpage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:gravity="center_vertical"
+            android:hint="@string/edit_user_webpage"
+            android:autofillHints="notApplicable"
+            android:inputType="textWebEmailAddress"
+            android:textColor="#FFFFFF"
+            tools:ignore="TextContrastCheck"
+            tools:layout_editor_absoluteX="16dp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

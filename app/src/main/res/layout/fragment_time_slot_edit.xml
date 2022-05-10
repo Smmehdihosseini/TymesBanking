@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TimeSlotEditFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/ad_edit_const"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="EDIT AD"
+            android:textSize="48dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/grey"
+            android:letterSpacing="0.2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/ad_type_const"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:text="Service Type:"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_edit_const" />
+
+        <EditText
+            android:id="@+id/ad_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/edit_text_corner_box"
+            android:gravity="center_vertical"
+            android:hint="E.g. Offer, Request"
+            android:textColorHint="@color/green"
+            android:minHeight="48dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingRight="240dp"
+            android:paddingBottom="8dp"
+            android:text="Offer"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_type_const" />
+
+        <TextView
+            android:id="@+id/ad_title_const"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Title:"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_type" />
+
+        <EditText
+            android:id="@+id/ad_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/edit_text_corner_box"
+            android:gravity="center_vertical"
+            android:hint="E.g. Kotlin Programming"
+            android:textColorHint="@color/green"
+            android:text="Kotlin Programming"
+            android:minHeight="48dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingRight="198dp"
+            android:paddingBottom="8dp"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_title_const" />
+
+
+        <TextView
+            android:id="@+id/ad_where_const"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Location:"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_title" />
+
+
+        <EditText
+            android:id="@+id/ad_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/edit_text_corner_box"
+            android:gravity="center_vertical"
+            android:hint="E.g. Turin, Italy"
+            android:textColorHint="@color/green"
+            android:text="Turin, Italy"
+            android:minHeight="48dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="268dp"
+            android:paddingBottom="8dp"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_where_const" />
+
+        <TextView
+            android:id="@+id/ad_desc_const"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Description:"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_location" />
+
+        <EditText
+            android:id="@+id/ad_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/edit_text_corner_box"
+            android:gravity="center_vertical"
+            android:hint="E.g. Social Application Designing"
+            android:minHeight="48dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="138dp"
+            android:paddingBottom="4dp"
+            android:text="Social Application Designing"
+            android:textColor="@color/black"
+            android:textColorHint="@color/green"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_desc_const" />
+
+        <TextView
+            android:id="@+id/ad_bid_const"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38dp"
+            android:layout_marginStart="32dp"
+            android:text="Price Bid:"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_description" />
+
+        <EditText
+            android:id="@+id/ad_price_bid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/edit_text_corner_box"
+            android:gravity="center_vertical"
+            android:hint="E.g. 10.00 TYC"
+            android:minHeight="48dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="152dp"
+            android:paddingBottom="4dp"
+            android:text="10.00 TYC"
+            android:textColor="@color/black"
+            android:textColorHint="@color/green"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ad_bid_const"
+            app:layout_constraintTop_toBottomOf="@+id/ad_description" />
+
+        <TextView
+            android:id="@+id/ad_service_bid_const"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:layout_marginStart="32dp"
+            android:text="Service Bid:"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_bid_const" />
+
+        <EditText
+            android:id="@+id/ad_service_bid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_corner_box"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:hint="E.g. Python Programming"
+            android:minHeight="48dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="48dp"
+            android:paddingBottom="4dp"
+            android:text="List of Services"
+            android:textColor="@color/black"
+            android:textColorHint="@color/green"
+            android:textSize="17sp"
+            app:layout_constraintStart_toEndOf="@+id/ad_service_bid_const"
+            app:layout_constraintTop_toBottomOf="@+id/ad_price_bid" />
+
+        <TextView
+            android:id="@+id/ad_issuetime_const"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:layout_marginStart="32dp"
+            android:text="Date:"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_service_bid_const" />
+
+        <EditText
+            android:id="@+id/ad_issuetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/edit_text_corner_box"
+            android:gravity="center_vertical"
+            android:hint="E.g. 17/04/2022"
+            android:minHeight="48dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="110dp"
+            android:paddingBottom="4dp"
+            android:text="17/04/2022"
+            android:textColor="@color/black"
+            android:textColorHint="@color/green"
+            android:textSize="17sp"
+            app:layout_constraintStart_toEndOf="@+id/ad_issuetime_const"
+            app:layout_constraintTop_toBottomOf="@+id/ad_service_bid" />
+
+        <Button
+            android:id="@+id/datepicker_button"
+            android:layout_width="49dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/datepicker_button"
+            app:icon="@drawable/ic_baseline_date_range_24"
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ad_issuetime"
+            app:layout_constraintTop_toBottomOf="@+id/ad_service_bid" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
