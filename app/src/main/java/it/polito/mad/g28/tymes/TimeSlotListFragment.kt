@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -29,7 +28,6 @@ class TimeSlotListFragment : Fragment() {
         val rv = activity?.findViewById<RecyclerView>(R.id.rv)
         rv?.layoutManager = LinearLayoutManager(context)
         vm.adverts.observe(this.viewLifecycleOwner) {
-            //Retrieve the list of ads and put it in the adapter
             rv?.adapter = MyAdRecyclerViewAdapter(it) { view -> onAdClick(view)}
         }
 

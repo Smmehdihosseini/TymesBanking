@@ -4,10 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
 
 class MyAdRecyclerViewAdapter(
         private val values: List<Advert>, private val onAdClick: (view: View) -> Unit
@@ -16,7 +13,7 @@ class MyAdRecyclerViewAdapter(
     inner class ViewHolder(v:View, private val onAdClick: (view: View) -> Unit) : RecyclerView.ViewHolder(v) {
 
         init {
-            itemView.setOnClickListener { _ -> onAdClick(itemView) }
+            itemView.setOnClickListener {onAdClick(itemView) }
         }
 
         val title: TextView = v.findViewById(R.id.rvitem_title)

@@ -34,14 +34,14 @@ class ShowProfileActivity : Fragment() {
         val tvEmail = activity?.findViewById<TextView>(R.id.user_email)
         val tvWebpage = activity?.findViewById<TextView>(R.id.user_webpage)
 
-        tvFullName?.text = sharedPrefProfile?.getString("Full Name","")
-        tvNickname?.text = sharedPrefProfile?.getString("Nickname","")
-        tvUsername?.text = sharedPrefProfile?.getString("Username","")
-        tvBiography?.text = sharedPrefProfile?.getString("Biography","")
-        tvSkills?.text = sharedPrefProfile?.getString("Skills","")
-        tvLocation?.text = sharedPrefProfile?.getString("Location","")
-        tvEmail?.text = sharedPrefProfile?.getString("Email","")
-        tvWebpage?.text = sharedPrefProfile?.getString("Webpage","")
+        tvFullName?.text = sharedPrefProfile?.getString("Full Name","Full Name")
+        tvNickname?.text = sharedPrefProfile?.getString("Nickname","Nickname")
+        tvUsername?.text = sharedPrefProfile?.getString("Username","Username")
+        tvBiography?.text = sharedPrefProfile?.getString("Biography","Biography")
+        tvSkills?.text = sharedPrefProfile?.getString("Skills","Skills")
+        tvLocation?.text = sharedPrefProfile?.getString("Location","Location")
+        tvEmail?.text = sharedPrefProfile?.getString("Email","Email")
+        tvWebpage?.text = sharedPrefProfile?.getString("Webpage","Webpage")
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

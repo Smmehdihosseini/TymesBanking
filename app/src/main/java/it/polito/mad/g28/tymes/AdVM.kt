@@ -4,13 +4,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import kotlin.collections.HashMap
 import kotlin.concurrent.thread
 
 class AdVM(application: Application): AndroidViewModel(application) {
 
-    val repository = AdvertRepository(application)
+    private val repository = AdvertRepository(application)
     val adverts: LiveData<List<Advert>> = repository.adverts()
     val adInfo = MutableLiveData<HashMap<String,String>>()
 

@@ -11,8 +11,8 @@ import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var toggle : ActionBarDrawerToggle
-    lateinit var drawerLayout: DrawerLayout
+    private lateinit var toggle : ActionBarDrawerToggle
+    private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
