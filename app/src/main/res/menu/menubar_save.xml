@@ -2,9 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/ic_save"
+        android:icon="@drawable/ic_save_dark"
+        android:title="@string/save"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/edit_pencil_button"
         android:icon="@drawable/ic_edit_white"
         android:title="@string/edit_pencil_button"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 </menu>

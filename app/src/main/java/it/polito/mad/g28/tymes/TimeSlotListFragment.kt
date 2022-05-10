@@ -1,10 +1,14 @@
 package it.polito.mad.g28.tymes
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import androidx.cardview.widget.CardView
 
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -13,12 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class TimeSlotListFragment : Fragment() {
 
-    val vm : AdVM by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private val vm : AdVM by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,15 +32,24 @@ class TimeSlotListFragment : Fragment() {
 
         val rv = activity?.findViewById<RecyclerView>(R.id.rv)
         rv?.layoutManager = LinearLayoutManager(context)
-        val adverts = vm.adInfo.observe(this.viewLifecycleOwner) {
+        vm.adverts.observe(this.viewLifecycleOwner) {
             //Retrieve the list of ads and put it in the adapter
-            //rv?.adapter = MyAdRecyclerViewAdapter()
+            rv?.adapter = MyAdRecyclerViewAdapter(it) { view -> onAdClick(view)}
         }
 
         val fab: View? = activity?.findViewById(R.id.fab)
         fab?.setOnClickListener {
             //navigate
+            val fragmentTransaction = parentFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotEditFragment()).commit()
         }
+
+    }
+
+    private fun onAdClick(view: View) {
+        Log.d("click", activity?.findViewById<TextView>(view.id).toString())
+        val fragmentTransaction = parentFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotDetailsFragment()).commit()
 
     }
 

@@ -1,6 +1,8 @@
 package it.polito.mad.g28.tymes
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.TextView
@@ -22,6 +24,8 @@ class ShowProfileActivity : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val sharedPrefProfile = activity?.getSharedPreferences("Profile", Context.MODE_PRIVATE)
+
         val tvFullName = activity?.findViewById<TextView>(R.id.user_fullname)
         val tvNickname = activity?.findViewById<TextView>(R.id.user_nickname)
         val tvUsername = activity?.findViewById<TextView>(R.id.user_username)
@@ -31,17 +35,15 @@ class ShowProfileActivity : Fragment() {
         val tvEmail = activity?.findViewById<TextView>(R.id.user_email)
         val tvWebpage = activity?.findViewById<TextView>(R.id.user_webpage)
 
-        viewModel.profileInfo.observe(viewLifecycleOwner){
-            tvFullName?.text = it["Full Name"]
-            tvNickname?.text = it["Nickname"]
-            tvUsername?.text = it["Username"]
-            tvBiography?.text =it["Biography"]
-            tvSkills?.text = it["Skills"]
-            tvLocation?.text = it["Location"]
-            tvEmail?.text = it["Email"]
-            tvWebpage?.text = it["Webpage"]
+        tvFullName?.text = sharedPrefProfile?.getString("Full Name","")
+        tvNickname?.text = sharedPrefProfile?.getString("Nickname","")
+        tvUsername?.text = sharedPrefProfile?.getString("Username","")
+        tvBiography?.text = sharedPrefProfile?.getString("Biography","")
+        tvSkills?.text = sharedPrefProfile?.getString("Skills","")
+        tvLocation?.text = sharedPrefProfile?.getString("Location","")
+        tvEmail?.text = sharedPrefProfile?.getString("Email","")
+        tvWebpage?.text = sharedPrefProfile?.getString("Webpage","")
 
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

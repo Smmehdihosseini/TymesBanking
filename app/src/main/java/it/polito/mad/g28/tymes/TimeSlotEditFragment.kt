@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import java.util.*
+import kotlin.concurrent.thread
 
 
 class TimeSlotEditFragment : Fragment() {
@@ -85,7 +86,7 @@ class TimeSlotEditFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menubar, menu)
+        inflater.inflate(R.menu.menubar_save, menu)
         return super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -104,6 +105,14 @@ class TimeSlotEditFragment : Fragment() {
             val fragmentTransaction = parentFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotDetailsFragment()).commit()
             viewModel.updateAd(etTitle,etAuthor,etLocation,etDatetime,etDescription,etPrice,etService,tvTime)
+            true
+        } else if(item.itemId==R.id.ic_save){
+            val fragmentTransaction = parentFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotListFragment()).commit()
+            thread {
+                viewModel.sub(etTitle)
+                viewModel.add(etTitle,etAuthor,etLocation,etDatetime,etDescription,etPrice,etService,tvTime)
+            }
             true
         } else {
             super.onOptionsItemSelected(item)
