@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 class AdvertRepository(application: Application) {
     private val advertDao = AdvertDatabase.getDatabase(application).advertDao()
 
+
     fun add(title:String="", description:String, datetime:String, location:String, duration:String, regularity:String){
         val i = Advert(0,"", "", "", "", "","").also {
             it.title = title
