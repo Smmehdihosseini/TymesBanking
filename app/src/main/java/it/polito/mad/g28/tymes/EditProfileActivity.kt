@@ -1,5 +1,6 @@
 package it.polito.mad.g28.tymes
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
@@ -46,6 +47,32 @@ class EditProfileActivity : Fragment() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        val etFullName = activity?.findViewById<EditText>(R.id.edit_user_fullname)
+        val etNickname = activity?.findViewById<EditText>(R.id.edit_user_nickname)
+        val etUsername = activity?.findViewById<EditText>(R.id.edit_user_username)
+        val etBiography = activity?.findViewById<EditText>(R.id.edit_user_bio)
+        val etSkills = activity?.findViewById<EditText>(R.id.edit_user_skills)
+        val etLocation = activity?.findViewById<EditText>(R.id.edit_user_location)
+        val etEmail = activity?.findViewById<EditText>(R.id.edit_user_email)
+        val etWebpage = activity?.findViewById<EditText>(R.id.edit_user_webpage)
+
+        val sharedPrefProfile = activity?.getSharedPreferences("Profile", Context.MODE_PRIVATE) ?: return
+        with (sharedPrefProfile.edit()) {
+            putString("Full Name", etFullName?.text.toString())
+            putString("Nickname", etNickname?.text.toString())
+            putString("Username", etUsername?.text.toString())
+            putString("Biography", etBiography?.text.toString())
+            putString("Skills", etSkills?.text.toString())
+            putString("Location", etLocation?.text.toString())
+            putString("Email", etEmail?.text.toString())
+            putString("Webpage", etWebpage?.text.toString())
+            apply()
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menubar, menu)
         return super.onCreateOptionsMenu(menu, inflater)
@@ -70,21 +97,5 @@ class EditProfileActivity : Fragment() {
         } else {
             super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        val fullName = activity?.findViewById<EditText>(R.id.edit_user_fullname)?.text.toString()
-        val nickname = activity?.findViewById<EditText>(R.id.edit_user_nickname)?.text.toString()
-        val username = activity?.findViewById<EditText>(R.id.edit_user_username)?.text.toString()
-        val biography = activity?.findViewById<EditText>(R.id.edit_user_bio)?.text.toString()
-        val skills = activity?.findViewById<EditText>(R.id.edit_user_skills)?.text.toString()
-        val location = activity?.findViewById<EditText>(R.id.edit_user_location)?.text.toString()
-        val email = activity?.findViewById<EditText>(R.id.edit_user_email)?.text.toString()
-        val webpage = activity?.findViewById<TextView>(R.id.edit_user_webpage)?.text.toString()
-
-        viewModel.updateProfile(fullName,nickname,username,biography,skills,location,email,webpage)
-
     }
 }

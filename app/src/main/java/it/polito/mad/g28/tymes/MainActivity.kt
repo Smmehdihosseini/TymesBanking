@@ -53,7 +53,6 @@ class MainActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragmentContainerView, fragment).commit()
-//        findNavController(R.id.homeFragment).navigate(R.id.action_homeFragment_to_showProfileActivity)
         drawerLayout.closeDrawers()
         setTitle(title)
     }

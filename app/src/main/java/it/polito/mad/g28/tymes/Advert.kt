@@ -8,9 +8,11 @@ import androidx.room.PrimaryKey
 data class Advert (
     @PrimaryKey(autoGenerate = true) var id: Int,
     @ColumnInfo(name = "title") var title: String?,
-    @ColumnInfo(name = "description") var description: String?,
-    @ColumnInfo(name = "datetime") var datetime: String?,
-    @ColumnInfo(name = "duration") var duration: String?,
+    @ColumnInfo(name = "author") var author: String?,
     @ColumnInfo(name = "location") var location: String?,
-    @ColumnInfo(name = "regularity") var regularity: String?,
+    @ColumnInfo(name = "datetime") var datetime: String?,
+    @ColumnInfo(name = "description") var description: String?,
+    @ColumnInfo(name = "price") var price: String?,
+    @ColumnInfo(name = "service") var service: String?,
+    @ColumnInfo(name = "time") var time: String?,
 )

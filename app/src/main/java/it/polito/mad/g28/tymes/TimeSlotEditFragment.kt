@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import java.util.*
+import kotlin.concurrent.thread
 
 
 class TimeSlotEditFragment : Fragment() {
@@ -27,17 +28,15 @@ class TimeSlotEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("onviewcreated", "onviewcreated")
-
         val etTitle = activity?.findViewById<EditText>(R.id.edit_ad_title)
         val etAuthor = activity?.findViewById<EditText>(R.id.edit_ad_full_name)
         val etLocation = activity?.findViewById<EditText>(R.id.edit_ad_location)
-        val etDatetime = activity?.findViewById<EditText>(R.id.edit_ad_when)
+        val etDatetime = activity?.findViewById<EditText>(R.id.edit_ad_issuetime)
         val etDescription = activity?.findViewById<EditText>(R.id.edit_ad_description)
         val etPrice = activity?.findViewById<EditText>(R.id.edit_ad_price_bid)
         val etService = activity?.findViewById<EditText>(R.id.edit_ad_service_bid)
         val etTime = activity?.findViewById<TextView>(R.id.edit_ad_issuetime)
-        val btnDatetime = activity?.findViewById<Button>(R.id.btn_datetime)
+        val btnDatetime = activity?.findViewById<Button>(R.id.datepicker_button)
 
         viewModel.adInfo.observe(viewLifecycleOwner){
             etTitle?.setText(it["Title"])
@@ -85,7 +84,7 @@ class TimeSlotEditFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menubar, menu)
+        inflater.inflate(R.menu.menubar_save, menu)
         return super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -94,7 +93,7 @@ class TimeSlotEditFragment : Fragment() {
         val etTitle = activity?.findViewById<EditText>(R.id.edit_ad_title)?.text.toString()
         val etAuthor = activity?.findViewById<EditText>(R.id.edit_ad_full_name)?.text.toString()
         val etLocation = activity?.findViewById<EditText>(R.id.edit_ad_location)?.text.toString()
-        val etDatetime = activity?.findViewById<EditText>(R.id.edit_ad_when)?.text.toString()
+        val etDatetime = activity?.findViewById<EditText>(R.id.edit_ad_issuetime)?.text.toString()
         val etDescription = activity?.findViewById<EditText>(R.id.edit_ad_description)?.text.toString()
         val etPrice = activity?.findViewById<EditText>(R.id.edit_ad_price_bid)?.text.toString()
         val etService = activity?.findViewById<EditText>(R.id.edit_ad_service_bid)?.text.toString()
@@ -105,7 +104,25 @@ class TimeSlotEditFragment : Fragment() {
             fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotDetailsFragment()).commit()
             viewModel.updateAd(etTitle,etAuthor,etLocation,etDatetime,etDescription,etPrice,etService,tvTime)
             true
-        } else {
+
+        } else if(item.itemId==R.id.ic_save) {
+            val fragmentTransaction = parentFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotListFragment()).commit()
+
+            viewModel.sub(etTitle)
+            viewModel.add(
+                etTitle,
+                etAuthor,
+                etLocation,
+                etDatetime,
+                etDescription,
+                etPrice,
+                etService,
+                tvTime
+            )
+
+            true
+        }else {
             super.onOptionsItemSelected(item)
         }
     }
