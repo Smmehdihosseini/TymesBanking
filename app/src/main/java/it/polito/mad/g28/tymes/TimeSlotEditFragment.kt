@@ -28,6 +28,8 @@ class TimeSlotEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d("onviewcreated", "")
+
         val etTitle = activity?.findViewById<EditText>(R.id.edit_ad_title)
         val etAuthor = activity?.findViewById<EditText>(R.id.edit_ad_full_name)
         val etLocation = activity?.findViewById<EditText>(R.id.edit_ad_location)
@@ -105,11 +107,9 @@ class TimeSlotEditFragment : Fragment() {
             viewModel.updateAd(etTitle,etAuthor,etLocation,etDatetime,etDescription,etPrice,etService,tvTime)
             true
 
-        } else if(item.itemId==R.id.ic_save) {
+        } else if(item.itemId==R.id.ic_add) {
             val fragmentTransaction = parentFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotListFragment()).commit()
-
-            viewModel.sub(etTitle)
             viewModel.add(
                 etTitle,
                 etAuthor,
@@ -120,9 +120,18 @@ class TimeSlotEditFragment : Fragment() {
                 etService,
                 tvTime
             )
-
             true
-        }else {
+
+        }else if (item.itemId==R.id.ic_update){
+            Log.d("title", etTitle)
+            val fragmentTransaction = parentFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotListFragment()).commit()
+            viewModel.sub(etTitle)
+            viewModel.add(etTitle,etAuthor,etLocation,etDatetime,etDescription,etPrice,etService,tvTime)
+//            viewModel.updateAd(etTitle,etAuthor,etLocation,etDatetime,etDescription,etPrice,etService,tvTime)
+            true
+
+        } else{
             super.onOptionsItemSelected(item)
         }
     }

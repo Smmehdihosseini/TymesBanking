@@ -1,6 +1,7 @@
 package it.polito.mad.g28.tymes
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -36,7 +37,7 @@ class TimeSlotDetailsFragment : Fragment() {
             tvAuthor?.text = it["Author"]
             tvLocation?.text = it["Location"]
             tvDatetime?.text = it["Datetime"]
-            tvDescription?.text =it["Description"]
+            tvDescription?.text = it["Description"]
             tvPrice?.text = it["Price"]
             tvService?.text = it["Service"]
             tvTime?.text = it["Time"]

@@ -43,9 +43,27 @@ class AdVM(application: Application): AndroidViewModel(application) {
         adInfo.value?.put("Time", Time)
     }
 
+    fun updateAdDB(Id: Int=0,
+                   Title: String = "Title",
+                   Author: String = "Author",
+                   Location: String = "Location",
+                   Datetime: String = "Datetime",
+                   Description: String = "Description",
+                   Price: String = "0.0TYC",
+                   Service: String = "Service",
+                   Time: String = "") {
+        repository.update(Id,Title,Author, Location, Datetime, Description, Price, Service, Time)
+    }
+
     fun add(title:String, author:String, location:String, datetime:String,description:String, price:String, service:String, time:String) {
         thread {
             repository.add(title, author, location, datetime, description, price, service, time)
+        }
+    }
+
+    fun find(title: String){
+        thread {
+            repository.find(title)
         }
     }
 

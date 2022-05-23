@@ -1,6 +1,7 @@
 package it.polito.mad.g28.tymes
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +29,7 @@ class TimeSlotListFragment : Fragment() {
         val rv = activity?.findViewById<RecyclerView>(R.id.rv)
         rv?.layoutManager = LinearLayoutManager(context)
         vm.adverts.observe(this.viewLifecycleOwner) {
-            rv?.adapter = MyAdRecyclerViewAdapter(it) { view -> onAdClick(view)}
+            rv?.adapter = MyAdRecyclerViewAdapter(it) { advert, edit-> onAdClick(advert, edit)}
         }
 
         val fab: View? = activity?.findViewById(R.id.fab)
@@ -39,11 +40,17 @@ class TimeSlotListFragment : Fragment() {
 
     }
 
-    private fun onAdClick(view: View) {
-//        Log.d("click", activity?.findViewById<TextView>(view.id).toString())
-        val fragmentTransaction = parentFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotDetailsFragment()).commit()
+    private fun onAdClick(advert: Advert, edit: Boolean) {
+        vm.updateAd(advert.title, advert.author, advert.location, advert.datetime, advert.description, advert.price, advert.service, advert.time)
+//        vm.updateAdDB(advert.id, advert.title, advert.author, advert.location, advert.datetime, advert.description, advert.price, advert.service, advert.time)
 
+        val fragmentTransaction = parentFragmentManager.beginTransaction()
+        if (edit){
+            fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotEditFragment()).commit()
+        } else{
+            Log.d("itemid", advert.id.toString())
+            fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotDetailsFragment()).commit()
+        }
     }
 
 }
