@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "912277110592",
+    "project_id": "mad-grp28",
+    "storage_bucket": "mad-grp28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912277110592:android:afc5bac60573a4f36204a5",
+        "android_client_info": {
+          "package_name": "com.example.showprofileactivity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "912277110592-3oo1mgepmkfjmr8qde7cjhe1coo8fvrf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARVxrs9nC_QNrGUF888wBlGf0C9aJuMEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "912277110592-3oo1mgepmkfjmr8qde7cjhe1coo8fvrf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912277110592:android:120bb3fb809d6e946204a5",
+        "android_client_info": {
+          "package_name": "it.polito.mad.g28.tymes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "912277110592-3oo1mgepmkfjmr8qde7cjhe1coo8fvrf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARVxrs9nC_QNrGUF888wBlGf0C9aJuMEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "912277110592-3oo1mgepmkfjmr8qde7cjhe1coo8fvrf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
