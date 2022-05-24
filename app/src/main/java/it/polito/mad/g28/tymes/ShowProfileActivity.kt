@@ -2,14 +2,22 @@ package it.polito.mad.g28.tymes
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class ShowProfileActivity : Fragment() {
 
     private val viewModel : ProfileVM by activityViewModels()
+    private lateinit var database: DatabaseReference
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,7 +31,6 @@ class ShowProfileActivity : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPrefProfile = activity?.getSharedPreferences("Profile", Context.MODE_PRIVATE)
 
         val tvFullName = activity?.findViewById<TextView>(R.id.user_fullname)
         val tvNickname = activity?.findViewById<TextView>(R.id.user_nickname)
@@ -34,14 +41,65 @@ class ShowProfileActivity : Fragment() {
         val tvEmail = activity?.findViewById<TextView>(R.id.user_email)
         val tvWebpage = activity?.findViewById<TextView>(R.id.user_webpage)
 
-        tvFullName?.text = sharedPrefProfile?.getString("Full Name","Full Name")
-        tvNickname?.text = sharedPrefProfile?.getString("Nickname","Nickname")
-        tvUsername?.text = sharedPrefProfile?.getString("Username","Username")
-        tvBiography?.text = sharedPrefProfile?.getString("Biography","Biography")
-        tvSkills?.text = sharedPrefProfile?.getString("Skills","Skills")
-        tvLocation?.text = sharedPrefProfile?.getString("Location","Location")
-        tvEmail?.text = sharedPrefProfile?.getString("Email","Email")
-        tvWebpage?.text = sharedPrefProfile?.getString("Webpage","Webpage")
+        val database = Firebase.firestore
+        val user = Firebase.auth.currentUser
+        if (user != null){
+
+            val bundle = arguments
+            val edited = bundle?.getBoolean("edited")
+            Log.d("edit", "$edited")
+            if (edited == true){
+                viewModel.profileInfo.observe(viewLifecycleOwner){
+                    tvFullName?.text = it["Full Name"]
+                    tvNickname?.text = it["Nickname"]
+                    tvUsername?.text = it["Username"]
+                    tvBiography?.text = it["Biography"]
+                    tvSkills?.text = it["Skills"]
+                    tvLocation?.text = it["Location"]
+                    tvEmail?.text = it["Email"]
+                    tvWebpage?.text = it["Webpage"]
+                }
+            } else {
+                val userData = database.collection("users").document(user.uid)
+                userData.get()
+                    .addOnSuccessListener { document ->
+                        if (document != null) {
+                            val map = document.data
+                            tvFullName?.text = map?.get("fullname").toString()
+                            tvNickname?.text = map?.get("nickname").toString()
+                            tvUsername?.text = map?.get("username").toString()
+                            tvBiography?.text = map?.get("biography").toString()
+                            tvSkills?.text = map?.get("skills").toString()
+                            tvLocation?.text = map?.get("location").toString()
+                            tvEmail?.text = map?.get("email").toString()
+                            tvWebpage?.text = map?.get("webpage").toString()
+                            Log.d("lifecycle", "User is authenticated and TVs are updated")
+                        } else {
+                            Log.d("lifecycle", "No such document")
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.d("lifecycle", "get failed with ", exception)
+                    }
+            }
+        }
+
+
+
+//        val sharedPrefProfile = activity?.getSharedPreferences("Profile", Context.MODE_PRIVATE)
+
+
+
+//        tvFullName?.text = sharedPrefProfile?.getString("Full Name","Full Name")
+//        tvNickname?.text = sharedPrefProfile?.getString("Nickname","Nickname")
+//        tvUsername?.text = sharedPrefProfile?.getString("Username","Username")
+//        tvBiography?.text = sharedPrefProfile?.getString("Biography","Biography")
+//        tvSkills?.text = sharedPrefProfile?.getString("Skills","Skills")
+//        tvLocation?.text = sharedPrefProfile?.getString("Location","Location")
+//        tvEmail?.text = sharedPrefProfile?.getString("Email","Email")
+//        tvWebpage?.text = sharedPrefProfile?.getString("Webpage","Webpage")
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -69,4 +127,5 @@ class ShowProfileActivity : Fragment() {
             super.onOptionsItemSelected(item)
         }
     }
+
 }
