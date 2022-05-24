@@ -1,6 +1,5 @@
 package it.polito.mad.g28.tymes
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.IntentSender
 import android.os.Bundle
@@ -14,11 +13,15 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 
@@ -29,9 +32,8 @@ class MainActivity : AppCompatActivity() {
     private var oneTapClient: SignInClient? = null
     private var signInRequest: BeginSignInRequest? = null
     private val REQ_ONE_TAP: Int = 1337
-    private var showOneTapUI = true
     private lateinit var auth: FirebaseAuth
-
+    private lateinit var database: DatabaseReference
 
 
 
@@ -43,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("lifecycle", "oncreate")
         auth = Firebase.auth
 
-        oneTapClient = Identity.getSignInClient(this);
+        oneTapClient = Identity.getSignInClient(this)
         signInRequest = BeginSignInRequest.builder()
             .setPasswordRequestOptions(
                 BeginSignInRequest.PasswordRequestOptions.builder()
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                 .build())
             // Automatically sign in when exactly one credential is retrieved.
             .setAutoSelectEnabled(true)
-            .build();
+            .build()
 
         oneTapClient!!.beginSignIn(signInRequest!!)
             .addOnSuccessListener(this) { result ->
@@ -121,7 +123,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUI(currentUser: FirebaseUser?) {
-        //
+        if (currentUser != null){
+            Log.d("lifecycle", "update UI")
+            val database = Firebase.firestore
+            val name = currentUser.displayName
+            val email = currentUser.email
+            val uid = currentUser.uid
+
+            val user = User(uid,name, null, null, null, null, null, email, null)
+            database.collection("users").document(uid).set(user)
+                .addOnSuccessListener { documentReference ->
+                Log.d("lifecycle", "successfully added user with uid: ${uid}")
+            }
+
+        }
     }
 
     private fun changeFrag(fragment: Fragment, title: String){
@@ -142,9 +157,6 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        val googleCredential = oneTapClient!!.getSignInCredentialFromIntent(data)
-        val idToken = googleCredential.googleIdToken
-
         when (requestCode) {
             REQ_ONE_TAP -> {
                 try {
@@ -162,6 +174,7 @@ class MainActivity : AppCompatActivity() {
                                         Log.d("lifecycle", "signInWithCredential:success")
                                         val user = auth.currentUser
                                         updateUI(user)
+                                        Log.d("lifecycle", "updated UI")
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.d("lifecycle", "signInWithCredential:failure", task.exception)
@@ -182,7 +195,22 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 } catch (e: ApiException) {
-                    // ...
+                    when (e.statusCode) {
+                        CommonStatusCodes.CANCELED -> {
+                            Log.d("lifecycle", "One-tap dialog was closed.")
+                            // Don't re-prompt the user.
+                            var showOneTapUI = false
+                        }
+                        CommonStatusCodes.NETWORK_ERROR -> {
+                            Log.d("lifecycle", "One-tap encountered a network error.")
+                            // Try again or just ignore.
+                        }
+                        else -> {
+                            Log.d("lifecycle", "Couldn't get credential from result." +
+                                    " (${e.localizedMessage})")
+                        }
+                    }
+
                 }
             }
         }
