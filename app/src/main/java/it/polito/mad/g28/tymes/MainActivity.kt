@@ -41,8 +41,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        Log.d("lifecycle", "oncreate")
+        // Set Google Auth
         auth = Firebase.auth
 
         oneTapClient = Identity.getSignInClient(this)
@@ -63,6 +62,7 @@ class MainActivity : AppCompatActivity() {
             .setAutoSelectEnabled(true)
             .build()
 
+
         oneTapClient!!.beginSignIn(signInRequest!!)
             .addOnSuccessListener(this) { result ->
                 try {
@@ -79,8 +79,6 @@ class MainActivity : AppCompatActivity() {
                 // do nothing and continue presenting the signed-out UI.
                 Log.d("Sign In", e.localizedMessage)
             }
-
-
 
         drawerLayout = findViewById(R.id.drawerlayout)
         val navView: NavigationView = findViewById(R.id.navigationView)
@@ -105,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.my_clan_icon -> changeFrag(clanFragement(), it.title.toString())
                 R.id.all_tslots_list_icon -> changeFrag(TimeSlotListFragment(), it.title.toString())
                 R.id.my_tslots_icon -> changeFrag(TimeSlotDetailsFragment(), it.title.toString())
-                R.id.tymes_settings_icon -> changeFrag(settingsFragment(), it.title.toString())
+                R.id.tymes_settings_icon -> changeFrag(SettingsFragment(), it.title.toString())
                 R.id.about_tymes_icon -> changeFrag(aboutFragment(), it.title.toString())
 
             }
@@ -119,10 +117,11 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
-        updateUI(currentUser)
+        updateDB(currentUser)
     }
 
-    private fun updateUI(currentUser: FirebaseUser?) {
+    private fun updateDB(currentUser: FirebaseUser?) {
+        // Add user to the Firebase DB
         if (currentUser != null){
             Log.d("lifecycle", "update UI")
             val database = Firebase.firestore
@@ -132,10 +131,7 @@ class MainActivity : AppCompatActivity() {
 
             val user = User(uid,name, null, null, null, null, null, email, null)
             database.collection("users").document(uid).set(user)
-                .addOnSuccessListener { documentReference ->
-                Log.d("lifecycle", "successfully added user with uid: ${uid}")
-            }
-
+                .addOnSuccessListener {Log.d("lifecycle", "successfully added user with uid: ${uid}")}
         }
     }
 
@@ -171,42 +167,42 @@ class MainActivity : AppCompatActivity() {
                                 .addOnCompleteListener(this) { task ->
                                     if (task.isSuccessful) {
                                         // Sign in success, update UI with the signed-in user's information
-                                        Log.d("lifecycle", "signInWithCredential:success")
+                                        Log.d("GoogleAuth", "signInWithCredential:success")
                                         val user = auth.currentUser
-                                        updateUI(user)
-                                        Log.d("lifecycle", "updated UI")
+                                        updateDB(user)
+                                        Log.d("GoogleAuth", "updated UI")
                                     } else {
                                         // If sign in fails, display a message to the user.
-                                        Log.d("lifecycle", "signInWithCredential:failure", task.exception)
-                                        updateUI(null)
+                                        Log.d("GoogleAuth", "signInWithCredential:failure", task.exception)
+                                        updateDB(null)
                                     }
                                 }
 
-                            Log.d("Google ID", "Got ID token.")
+                            Log.d("GoogleAuth", "Got ID token.")
                         }
                         password != null -> {
                             // Got a saved username and password. Use them to authenticate
                             // with your backend.
-                            Log.d("Google ID", "Got password.")
+                            Log.d("Auth", "Got password.")
                         }
                         else -> {
                             // Shouldn't happen.
-                            Log.d("Google ID", "No ID token or password!")
+                            Log.d("Auth", "No ID token or password!")
                         }
                     }
                 } catch (e: ApiException) {
                     when (e.statusCode) {
                         CommonStatusCodes.CANCELED -> {
-                            Log.d("lifecycle", "One-tap dialog was closed.")
+                            Log.d("GoogleAuth", "One-tap dialog was closed.")
                             // Don't re-prompt the user.
                             var showOneTapUI = false
                         }
                         CommonStatusCodes.NETWORK_ERROR -> {
-                            Log.d("lifecycle", "One-tap encountered a network error.")
+                            Log.d("GoogleAuth", "One-tap encountered a network error.")
                             // Try again or just ignore.
                         }
                         else -> {
-                            Log.d("lifecycle", "Couldn't get credential from result." +
+                            Log.d("GoogleAuth", "Couldn't get credential from result." +
                                     " (${e.localizedMessage})")
                         }
                     }
