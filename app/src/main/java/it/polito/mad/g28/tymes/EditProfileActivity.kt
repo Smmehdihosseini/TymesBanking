@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.EditText
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 class EditProfileActivity : Fragment() {
@@ -48,37 +50,8 @@ class EditProfileActivity : Fragment() {
     }
 
     override fun onPause() {
+        // When back button is pressed or we leave fragment through menu, fragment is on pause
         super.onPause()
-
-//        val etFullName = activity?.findViewById<EditText>(R.id.edit_user_fullname)
-//        val etNickname = activity?.findViewById<EditText>(R.id.edit_user_nickname)
-//        val etUsername = activity?.findViewById<EditText>(R.id.edit_user_username)
-//        val etBiography = activity?.findViewById<EditText>(R.id.edit_user_bio)
-//        val etSkills = activity?.findViewById<EditText>(R.id.edit_user_skills)
-//        val etLocation = activity?.findViewById<EditText>(R.id.edit_user_location)
-//        val etEmail = activity?.findViewById<EditText>(R.id.edit_user_email)
-//        val etWebpage = activity?.findViewById<EditText>(R.id.edit_user_webpage)
-//
-//        val sharedPrefProfile = activity?.getSharedPreferences("Profile", Context.MODE_PRIVATE) ?: return
-//        with (sharedPrefProfile.edit()) {
-//            putString("Full Name", etFullName?.text.toString())
-//            putString("Nickname", etNickname?.text.toString())
-//            putString("Username", etUsername?.text.toString())
-//            putString("Biography", etBiography?.text.toString())
-//            putString("Skills", etSkills?.text.toString())
-//            putString("Location", etLocation?.text.toString())
-//            putString("Email", etEmail?.text.toString())
-//            putString("Webpage", etWebpage?.text.toString())
-//            apply()
-//        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menubar, menu)
-        return super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         val etFullName = activity?.findViewById<EditText>(R.id.edit_user_fullname)?.text.toString()
         val etNickname = activity?.findViewById<EditText>(R.id.edit_user_nickname)?.text.toString()
@@ -89,17 +62,35 @@ class EditProfileActivity : Fragment() {
         val etEmail = activity?.findViewById<EditText>(R.id.edit_user_email)?.text.toString()
         val etWebpage = activity?.findViewById<EditText>(R.id.edit_user_webpage)?.text.toString()
 
+        // Update viewModel when leaving the edit profile fragment
+        Log.d("lifecycle", "vm update")
+        viewModel.updateProfile(etFullName,etNickname,etUsername,etBiography,etSkills,etLocation,etEmail,etWebpage)
+
+        val currentUser = Firebase.auth.currentUser
+        if (currentUser != null){
+            // Persist user data to database when onBackPressed
+            val database = Firebase.firestore
+            val uid = currentUser.uid
+            val user = User(uid,etFullName, etNickname, etUsername, etBiography, etSkills, etLocation, etEmail, etWebpage)
+            database.collection("users").document(uid).set(user)
+                .addOnSuccessListener {Log.d("lifecycle", "Successfully edited profile of $etFullName")}
+                .addOnFailureListener {Log.d("lifecycle", "Did not edit profile of $etFullName properly")}
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menubar, menu)
+        return super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
         return if (item.itemId==R.id.edit_pencil_button) {
             val fragmentTransaction = parentFragmentManager.beginTransaction()
-            val targetFragment = ShowProfileActivity()
-            val bundle = bundleOf("edited" to true)
-            targetFragment.arguments = bundle
             fragmentTransaction
-                .replace(R.id.fragmentContainerView, targetFragment)
+                .replace(R.id.fragmentContainerView, ShowProfileActivity())
                 .addToBackStack(null)
                 .commit()
-            viewModel.updateProfile(etFullName,etNickname,etUsername,etBiography,etSkills,etLocation,etEmail,etWebpage)
-            Log.d("edit ,click", "${targetFragment.arguments}")
             true
         } else {
             super.onOptionsItemSelected(item)

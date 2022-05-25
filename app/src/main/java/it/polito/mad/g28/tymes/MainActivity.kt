@@ -5,6 +5,7 @@ import android.content.IntentSender
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -31,8 +32,7 @@ class MainActivity : AppCompatActivity() {
     private var signInRequest: BeginSignInRequest? = null
     private val REQ_ONE_TAP: Int = 1337
     private lateinit var auth: FirebaseAuth
-
-
+    private val viewModel : ProfileVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +41,9 @@ class MainActivity : AppCompatActivity() {
         // Set Google Auth if user is not already connected
         auth = Firebase.auth
         if (auth.currentUser == null ) {
+            Log.d("lifecycle", "auth")
             auth()
         }
-
 
         drawerLayout = findViewById(R.id.drawerlayout)
         val navView: NavigationView = findViewById(R.id.navigationView)
@@ -54,8 +54,6 @@ class MainActivity : AppCompatActivity() {
         toggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-
 
         navView.setNavigationItemSelectedListener {
 
@@ -118,23 +116,48 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        updateDB(currentUser)
-    }
 
-    private fun updateDB(currentUser: FirebaseUser?) {
-        // Add user to the Firebase DB
-        if (currentUser != null){
-            Log.d("lifecycle", "update UI")
+        Log.d("lifecycle", "onstart")
+
+        // Restore user data from DB and update viewModel
+        val currentUser = Firebase.auth.currentUser
+        if (currentUser != null) {
             val database = Firebase.firestore
+            val uid = currentUser.uid
             val name = currentUser.displayName
             val email = currentUser.email
-            val uid = currentUser.uid
 
+            val docRef = database.collection("users").document(uid)
+            docRef.get()
+                .addOnSuccessListener {  document ->
+                    val map = document.data
+                    val nickname = map?.get("nickname").toString()
+                    val username = map?.get("username").toString()
+                    val biography = map?.get("biography").toString()
+                    val skills = map?.get("skills").toString()
+                    val location = map?.get("location").toString()
+                    val webpage = map?.get("webpage").toString()
+
+                    Log.d("lifecycle", "Putting ${name.toString()}")
+                    viewModel.updateProfile(name.toString(), nickname, username, biography, skills, location, email.toString(), webpage)
+                }
+        }
+    }
+
+    private fun createUser(currentUser: FirebaseUser?){
+        // When user authenticates via Google
+        if (currentUser != null){
+            Log.d("lifecycle", "Creating user in DB")
+            val database = Firebase.firestore
+            val uid = currentUser.uid
+            val name = currentUser.displayName
+            val email = currentUser.email
             val user = User(uid,name, null, null, null, null, null, email, null)
+
+            // When the user authenticates, update DB
+            viewModel.updateProfile(name.toString(), "", "", "", "", "", email.toString(), "")
             database.collection("users").document(uid).set(user)
-                .addOnSuccessListener {Log.d("lifecycle", "successfully added user with uid: $uid")}
+                .addOnSuccessListener {Log.d("lifecycle", "successfully created user with uid: $uid")}
         }
     }
 
@@ -155,6 +178,7 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
             //additional code
         } else {
+            // Go to previous fragment
             supportFragmentManager.popBackStack()
         }
     }
@@ -185,12 +209,11 @@ class MainActivity : AppCompatActivity() {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d("lifecycle", "signInWithCredential:success")
                                         val user = auth.currentUser
-                                        updateDB(user)
-                                        Log.d("lifecycle", "updated UI")
+                                        createUser(user)
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.d("lifecycle", "signInWithCredential:failure", task.exception)
-                                        updateDB(null)
+//                                        createUser(null)
                                     }
                                 }
 
