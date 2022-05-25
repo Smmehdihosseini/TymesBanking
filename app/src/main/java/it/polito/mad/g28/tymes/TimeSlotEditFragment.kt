@@ -103,13 +103,19 @@ class TimeSlotEditFragment : Fragment() {
 
         return if (item.itemId==R.id.edit_pencil_button) {
             val fragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotDetailsFragment()).commit()
+            fragmentTransaction
+                .replace(R.id.fragmentContainerView, TimeSlotDetailsFragment())
+                .addToBackStack(null)
+                .commit()
             viewModel.updateAd(etTitle,etAuthor,etLocation,etDatetime,etDescription,etPrice,etService,tvTime)
             true
 
         } else if(item.itemId==R.id.ic_add) {
             val fragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotListFragment()).commit()
+            fragmentTransaction
+                .replace(R.id.fragmentContainerView, TimeSlotListFragment())
+                .addToBackStack(null)
+                .commit()
             viewModel.add(
                 etTitle,
                 etAuthor,
@@ -125,7 +131,10 @@ class TimeSlotEditFragment : Fragment() {
         }else if (item.itemId==R.id.ic_update){
             Log.d("title", etTitle)
             val fragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotListFragment()).commit()
+            fragmentTransaction
+                .replace(R.id.fragmentContainerView, TimeSlotListFragment())
+                .addToBackStack(null)
+                .commit()
             viewModel.sub(etTitle)
             viewModel.add(etTitle,etAuthor,etLocation,etDatetime,etDescription,etPrice,etService,tvTime)
 //            viewModel.updateAd(etTitle,etAuthor,etLocation,etDatetime,etDescription,etPrice,etService,tvTime)

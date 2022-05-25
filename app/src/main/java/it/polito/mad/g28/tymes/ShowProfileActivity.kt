@@ -1,6 +1,5 @@
 package it.polito.mad.g28.tymes
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -8,16 +7,12 @@ import androidx.fragment.app.Fragment
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class ShowProfileActivity : Fragment() {
 
     private val viewModel : ProfileVM by activityViewModels()
-    private lateinit var database: DatabaseReference
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,13 +38,16 @@ class ShowProfileActivity : Fragment() {
 
         val database = Firebase.firestore
         val user = Firebase.auth.currentUser
-        if (user != null){
 
+        if (user != null){
+            // User is authenticated
             val bundle = arguments
             val edited = bundle?.getBoolean("edited")
             Log.d("edit", "$edited")
             if (edited == true){
+                Log.d("temp", "in edited")
                 viewModel.profileInfo.observe(viewLifecycleOwner){
+                    Log.d("temp", "full name ${it["Full Name"]}")
                     tvFullName?.text = it["Full Name"]
                     tvNickname?.text = it["Nickname"]
                     tvUsername?.text = it["Username"]
@@ -82,23 +80,21 @@ class ShowProfileActivity : Fragment() {
                         Log.d("lifecycle", "get failed with ", exception)
                     }
             }
+        } else{
+            // User is not authenticated
+            Log.d("temp", "in edited")
+            viewModel.profileInfo.observe(viewLifecycleOwner){
+                Log.d("temp", "full name ${it["Full Name"]}")
+                tvFullName?.text = it["Full Name"]
+                tvNickname?.text = it["Nickname"]
+                tvUsername?.text = it["Username"]
+                tvBiography?.text = it["Biography"]
+                tvSkills?.text = it["Skills"]
+                tvLocation?.text = it["Location"]
+                tvEmail?.text = it["Email"]
+                tvWebpage?.text = it["Webpage"]
+            }
         }
-
-
-
-//        val sharedPrefProfile = activity?.getSharedPreferences("Profile", Context.MODE_PRIVATE)
-
-
-
-//        tvFullName?.text = sharedPrefProfile?.getString("Full Name","Full Name")
-//        tvNickname?.text = sharedPrefProfile?.getString("Nickname","Nickname")
-//        tvUsername?.text = sharedPrefProfile?.getString("Username","Username")
-//        tvBiography?.text = sharedPrefProfile?.getString("Biography","Biography")
-//        tvSkills?.text = sharedPrefProfile?.getString("Skills","Skills")
-//        tvLocation?.text = sharedPrefProfile?.getString("Location","Location")
-//        tvEmail?.text = sharedPrefProfile?.getString("Email","Email")
-//        tvWebpage?.text = sharedPrefProfile?.getString("Webpage","Webpage")
-
 
     }
 
@@ -120,7 +116,10 @@ class ShowProfileActivity : Fragment() {
 
         return if (item.itemId==R.id.edit_pencil_button) {
             val fragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentContainerView, EditProfileActivity()).commit()
+            fragmentTransaction
+                .replace(R.id.fragmentContainerView, EditProfileActivity())
+                .addToBackStack(null)
+                .commit()
             viewModel.updateProfile(tvFullName,tvNickname,tvUsername,tvBiography,tvSkills,tvLocation,tvEmail,tvWebpage)
             true
         } else {

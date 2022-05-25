@@ -1,6 +1,5 @@
 package it.polito.mad.g28.tymes
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -95,7 +94,10 @@ class EditProfileActivity : Fragment() {
             val targetFragment = ShowProfileActivity()
             val bundle = bundleOf("edited" to true)
             targetFragment.arguments = bundle
-            fragmentTransaction.replace(R.id.fragmentContainerView, targetFragment).commit()
+            fragmentTransaction
+                .replace(R.id.fragmentContainerView, targetFragment)
+                .addToBackStack(null)
+                .commit()
             viewModel.updateProfile(etFullName,etNickname,etUsername,etBiography,etSkills,etLocation,etEmail,etWebpage)
             Log.d("edit ,click", "${targetFragment.arguments}")
             true

@@ -35,7 +35,10 @@ class TimeSlotListFragment : Fragment() {
         val fab: View? = activity?.findViewById(R.id.fab)
         fab?.setOnClickListener {
             val fragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotEditFragment()).commit()
+            fragmentTransaction
+                .replace(R.id.fragmentContainerView, TimeSlotEditFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
     }
@@ -46,10 +49,16 @@ class TimeSlotListFragment : Fragment() {
 
         val fragmentTransaction = parentFragmentManager.beginTransaction()
         if (edit){
-            fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotEditFragment()).commit()
+            fragmentTransaction
+                .replace(R.id.fragmentContainerView, TimeSlotEditFragment())
+                .addToBackStack(null)
+                .commit()
         } else{
             Log.d("itemid", advert.id.toString())
-            fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotDetailsFragment()).commit()
+            fragmentTransaction
+                .replace(R.id.fragmentContainerView, TimeSlotDetailsFragment())
+                .addToBackStack(null)
+                .commit()
         }
     }
 

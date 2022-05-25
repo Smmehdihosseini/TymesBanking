@@ -1,7 +1,6 @@
 package it.polito.mad.g28.tymes
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -63,7 +62,10 @@ class TimeSlotDetailsFragment : Fragment() {
 
         return if (item.itemId==R.id.edit_pencil_button) {
             val fragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentContainerView, TimeSlotEditFragment()).commit()
+            fragmentTransaction
+                .replace(R.id.fragmentContainerView, TimeSlotEditFragment())
+                .addToBackStack(null)
+                .commit()
             viewModel.updateAd(tvTitle,tvAuthor,tvLocation,tvDatetime,tvDescription,tvPrice,tvService,tvTime)
             true
         } else {

@@ -19,8 +19,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -33,7 +31,6 @@ class MainActivity : AppCompatActivity() {
     private var signInRequest: BeginSignInRequest? = null
     private val REQ_ONE_TAP: Int = 1337
     private lateinit var auth: FirebaseAuth
-    private lateinit var database: DatabaseReference
 
 
 
@@ -41,44 +38,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Set Google Auth
+        // Set Google Auth if user is not already connected
         auth = Firebase.auth
+        if (auth.currentUser == null ) {
+            auth()
+        }
 
-        oneTapClient = Identity.getSignInClient(this)
-        signInRequest = BeginSignInRequest.builder()
-            .setPasswordRequestOptions(
-                BeginSignInRequest.PasswordRequestOptions.builder()
-                .setSupported(true)
-                .build())
-            .setGoogleIdTokenRequestOptions(
-                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                .setSupported(true)
-                // Your server's client ID, not your Android client ID.
-                .setServerClientId("912277110592-3oo1mgepmkfjmr8qde7cjhe1coo8fvrf.apps.googleusercontent.com")
-                // Only show accounts previously used to sign in.
-                .setFilterByAuthorizedAccounts(false)
-                .build())
-            // Automatically sign in when exactly one credential is retrieved.
-            .setAutoSelectEnabled(true)
-            .build()
-
-
-        oneTapClient!!.beginSignIn(signInRequest!!)
-            .addOnSuccessListener(this) { result ->
-                try {
-                    Log.d("lifecycle", "success listener")
-                    startIntentSenderForResult(
-                        result.pendingIntent.intentSender, REQ_ONE_TAP,
-                        null, 0, 0, 0, null)
-                } catch (e: IntentSender.SendIntentException) {
-                    Log.e("Sign In", "Couldn't start One Tap UI: ${e.localizedMessage}")
-                }
-            }
-            .addOnFailureListener(this) { e ->
-                // No saved credentials found. Launch the One Tap sign-up flow, or
-                // do nothing and continue presenting the signed-out UI.
-                Log.d("Sign In", e.localizedMessage)
-            }
 
         drawerLayout = findViewById(R.id.drawerlayout)
         val navView: NavigationView = findViewById(R.id.navigationView)
@@ -113,6 +78,44 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun auth() {
+            oneTapClient = Identity.getSignInClient(this)
+            signInRequest = BeginSignInRequest.builder()
+                .setPasswordRequestOptions(
+                    BeginSignInRequest.PasswordRequestOptions.builder()
+                        .setSupported(true)
+                        .build())
+                .setGoogleIdTokenRequestOptions(
+                    BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                        .setSupported(true)
+                        // Your server's client ID, not your Android client ID.
+                        .setServerClientId("912277110592-3oo1mgepmkfjmr8qde7cjhe1coo8fvrf.apps.googleusercontent.com")
+                        // Only show accounts previously used to sign in.
+                        .setFilterByAuthorizedAccounts(false)
+                        .build())
+                // Automatically sign in when exactly one credential is retrieved.
+                .setAutoSelectEnabled(true)
+                .build()
+
+
+            oneTapClient!!.beginSignIn(signInRequest!!)
+                .addOnSuccessListener(this) { result ->
+                    try {
+                        Log.d("lifecycle", "success listener")
+                        startIntentSenderForResult(
+                            result.pendingIntent.intentSender, REQ_ONE_TAP,
+                            null, 0, 0, 0, null)
+                    } catch (e: IntentSender.SendIntentException) {
+                        Log.e("lifecycle", "Couldn't start One Tap UI: ${e.localizedMessage}")
+                    }
+                }
+                .addOnFailureListener(this) { e ->
+                    // No saved credentials found. Launch the One Tap sign-up flow, or
+                    // do nothing and continue presenting the signed-out UI.
+                    Log.d("Sign In", e.localizedMessage)
+                }
+    }
+
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -131,16 +134,29 @@ class MainActivity : AppCompatActivity() {
 
             val user = User(uid,name, null, null, null, null, null, email, null)
             database.collection("users").document(uid).set(user)
-                .addOnSuccessListener {Log.d("lifecycle", "successfully added user with uid: ${uid}")}
+                .addOnSuccessListener {Log.d("lifecycle", "successfully added user with uid: $uid")}
         }
     }
 
     private fun changeFrag(fragment: Fragment, title: String){
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fragmentContainerView, fragment).commit()
+        fragmentTransaction
+            .replace(R.id.fragmentContainerView, fragment)
+            .addToBackStack(null)
+            .commit()
         drawerLayout.closeDrawers()
         setTitle(title)
+    }
+
+    override fun onBackPressed() {
+        val count = supportFragmentManager.backStackEntryCount
+        if (count == 0) {
+            super.onBackPressed()
+            //additional code
+        } else {
+            supportFragmentManager.popBackStack()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -167,18 +183,18 @@ class MainActivity : AppCompatActivity() {
                                 .addOnCompleteListener(this) { task ->
                                     if (task.isSuccessful) {
                                         // Sign in success, update UI with the signed-in user's information
-                                        Log.d("GoogleAuth", "signInWithCredential:success")
+                                        Log.d("lifecycle", "signInWithCredential:success")
                                         val user = auth.currentUser
                                         updateDB(user)
-                                        Log.d("GoogleAuth", "updated UI")
+                                        Log.d("lifecycle", "updated UI")
                                     } else {
                                         // If sign in fails, display a message to the user.
-                                        Log.d("GoogleAuth", "signInWithCredential:failure", task.exception)
+                                        Log.d("lifecycle", "signInWithCredential:failure", task.exception)
                                         updateDB(null)
                                     }
                                 }
 
-                            Log.d("GoogleAuth", "Got ID token.")
+                            Log.d("lifecycle", "Got ID token.")
                         }
                         password != null -> {
                             // Got a saved username and password. Use them to authenticate
@@ -193,16 +209,16 @@ class MainActivity : AppCompatActivity() {
                 } catch (e: ApiException) {
                     when (e.statusCode) {
                         CommonStatusCodes.CANCELED -> {
-                            Log.d("GoogleAuth", "One-tap dialog was closed.")
+                            Log.d("lifecycle", "One-tap dialog was closed.")
                             // Don't re-prompt the user.
                             var showOneTapUI = false
                         }
                         CommonStatusCodes.NETWORK_ERROR -> {
-                            Log.d("GoogleAuth", "One-tap encountered a network error.")
+                            Log.d("lifecycle", "One-tap encountered a network error.")
                             // Try again or just ignore.
                         }
                         else -> {
-                            Log.d("GoogleAuth", "Couldn't get credential from result." +
+                            Log.d("lifecycle", "Couldn't get credential from result." +
                                     " (${e.localizedMessage})")
                         }
                     }
