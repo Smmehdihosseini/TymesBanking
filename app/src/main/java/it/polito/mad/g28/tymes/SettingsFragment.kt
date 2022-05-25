@@ -1,11 +1,13 @@
 package it.polito.mad.g28.tymes
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -31,10 +33,13 @@ class SettingsFragment : Fragment() {
             // If user is authenticated, the button should enable him to disconnect
             btn?.setOnClickListener {
                     Firebase.auth.signOut()
-                    Toast.makeText(context, "Disconnected from your Google Account", Toast.LENGTH_SHORT).show()
+                    if(Firebase.auth.currentUser == null) {
+                        Toast.makeText(context, "Successfully disconnected from your Google Account", Toast.LENGTH_SHORT).show()
+                    }
                 }
+        } else{
+            // Do not show the disconnect button if user is not connected
+            btn!!.visibility = View.GONE
         }
-
     }
-
 }
