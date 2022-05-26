@@ -83,11 +83,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
-            android:gravity="center_vertical"
-            android:hint="@string/edit_user_username"
             android:autofillHints="username"
             android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890._"
-            android:inputType="textFilter"
+            android:gravity="center_vertical"
+            android:hint="@string/edit_user_username"
+            android:inputType="text"
             android:textColor="#272424"
             tools:ignore="TextContrastCheck"
             tools:layout_editor_absoluteX="16dp" />
@@ -97,26 +97,79 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
+            android:autofillHints="notApplicable"
             android:gravity="center_vertical"
             android:hint="@string/edit_user_bio"
-            android:autofillHints="notApplicable"
             android:inputType="textMultiLine"
             android:textColor="#272424"
             tools:ignore="TextContrastCheck"
             tools:layout_editor_absoluteX="16dp" />
 
-        <EditText
-            android:id="@+id/edit_user_skills"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="center_vertical"
-            android:hint="@string/edit_user_skills"
-            android:autofillHints="notApplicable"
-            android:inputType="text"
-            android:textColor="#272424"
-            tools:ignore="TextContrastCheck"
-            tools:layout_editor_absoluteX="16dp" />
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/edit_user_skills"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:importantForAutofill="no"
+                android:gravity="center_vertical"
+                android:hint="@string/edit_user_skills"
+                android:inputType="text"
+                android:textColor="#272424"
+                app:layout_constraintEnd_toStartOf="@id/btn_add_skill"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TextContrastCheck" />
+
+            <Button
+                android:id="@+id/btn_add_skill"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/edit_user_skills"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                app:singleLine="true"
+                app:layout_constraintTop_toBottomOf="@id/edit_user_skills">
+
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip1"
+                    style="@style/Widget.MaterialComponents.Chip.Entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="skill1"
+                    android:visibility="gone" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip2"
+                    style="@style/Widget.MaterialComponents.Chip.Entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip3"
+                    style="@style/Widget.MaterialComponents.Chip.Entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />/>
+
+
+            </com.google.android.material.chip.ChipGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <EditText
             android:id="@+id/edit_user_location"

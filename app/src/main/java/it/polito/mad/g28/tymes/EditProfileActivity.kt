@@ -1,11 +1,17 @@
 package it.polito.mad.g28.tymes
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -27,6 +33,7 @@ class EditProfileActivity : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d("list", "onviewcreated")
         val etFullName = activity?.findViewById<EditText>(R.id.edit_user_fullname)
         val etNickname = activity?.findViewById<EditText>(R.id.edit_user_nickname)
         val etUsername = activity?.findViewById<EditText>(R.id.edit_user_username)
@@ -47,6 +54,68 @@ class EditProfileActivity : Fragment() {
             etWebpage?.setText(it["Webpage"])
 
         }
+
+        val btn_add = activity?.findViewById<Button>(R.id.btn_add_skill)
+        val chip1 = activity?.findViewById<Chip>(R.id.chip1)
+        val chip2 = activity?.findViewById<Chip>(R.id.chip2)
+        val chip3 = activity?.findViewById<Chip>(R.id.chip3)
+        var availableList = mutableListOf<Int>(1,2,3)
+
+        Log.d("list", "$availableList")
+        btn_add?.setOnClickListener {
+            val skill = activity?.findViewById<EditText>(R.id.edit_user_skills)
+            val skillText = skill?.text.toString()
+            if (skillText == null || skillText.isEmpty()){
+                Toast.makeText(context, "Please enter a skill!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            when(availableList.elementAt(0)){
+                1 -> {
+                    chip1?.text = skillText
+                    chip1?.visibility = View.VISIBLE
+                    availableList.remove(1)
+                }
+                2 -> {
+                    chip2?.text = skillText
+                    chip2?.visibility = View.VISIBLE
+                    availableList.remove(2)
+                }
+                3 -> {
+                    chip3?.text = skillText
+                    chip3?.visibility = View.VISIBLE
+                    availableList.remove(3)
+
+                }
+            }
+            if (availableList.isEmpty()){
+                btn_add.setEnabled(false)
+            } else{
+                btn_add.setEnabled(true)
+            }
+            skill?.setText("")
+            it.hideKeyboard()
+        }
+
+        chip1?.setOnCloseIconClickListener{
+            chip1.visibility = View.GONE
+            chip1.text = ""
+            availableList.add(1)
+            btn_add?.setEnabled(true)
+        }
+        chip2?.setOnCloseIconClickListener{
+            chip2.visibility = View.GONE
+            chip2.text = ""
+            availableList.add(2)
+            btn_add?.setEnabled(true)
+        }
+        chip3?.setOnCloseIconClickListener{
+            chip3.visibility = View.GONE
+            chip3.text = ""
+            availableList.add(3)
+            btn_add?.setEnabled(true)
+        }
+
     }
 
     override fun onPause() {
@@ -57,10 +126,14 @@ class EditProfileActivity : Fragment() {
         val etNickname = activity?.findViewById<EditText>(R.id.edit_user_nickname)?.text.toString()
         val etUsername = activity?.findViewById<EditText>(R.id.edit_user_username)?.text.toString()
         val etBiography = activity?.findViewById<EditText>(R.id.edit_user_bio)?.text.toString()
-        val etSkills = activity?.findViewById<EditText>(R.id.edit_user_skills)?.text.toString()
+//        val etSkills = activity?.findViewById<EditText>(R.id.edit_user_skills)?.text.toString()
         val etLocation = activity?.findViewById<EditText>(R.id.edit_user_location)?.text.toString()
         val etEmail = activity?.findViewById<EditText>(R.id.edit_user_email)?.text.toString()
         val etWebpage = activity?.findViewById<EditText>(R.id.edit_user_webpage)?.text.toString()
+        val chip1 = activity?.findViewById<Chip>(R.id.chip1)?.text.toString()
+        val chip2 = activity?.findViewById<Chip>(R.id.chip2)?.text.toString()
+        val chip3 = activity?.findViewById<Chip>(R.id.chip3)?.text.toString()
+        val etSkills = "$chip1 $chip2 $chip3"
 
         // Update viewModel when leaving the edit profile fragment
         Log.d("lifecycle", "vm update")
@@ -76,6 +149,11 @@ class EditProfileActivity : Fragment() {
                 .addOnSuccessListener {Log.d("lifecycle", "Successfully edited profile of $etFullName")}
                 .addOnFailureListener {Log.d("lifecycle", "Did not edit profile of $etFullName properly")}
         }
+    }
+
+    fun View.hideKeyboard() {
+        val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(windowToken, 0)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -96,4 +174,5 @@ class EditProfileActivity : Fragment() {
             super.onOptionsItemSelected(item)
         }
     }
+
 }

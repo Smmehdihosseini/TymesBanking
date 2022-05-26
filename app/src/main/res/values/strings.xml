@@ -16,7 +16,7 @@
     <string name="edit_user_nickname">Your Nickname, e.g. Dave</string>
     <string name="edit_user_username">Your Username, e.g. dave_tymes</string>
     <string name="edit_user_bio">A Brief Biography About You!</string>
-    <string name="edit_user_skills">Your Skills, e.g. Kotlin Programming, …</string>
+    <string name="edit_user_skills">Your Skills, e.g. Kotlin Programming</string>
     <string name="edit_user_location">Your Location, e.g. Torino, Italy</string>
     <string name="edit_user_email">Your E-Mail, e.g. davetymes@polito.it</string>
     <string name="edit_user_webpage">Your Webpage, e.g. Github, LinkedIn, …</string>

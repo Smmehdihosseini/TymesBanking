@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".ShowProfileActivity">
 
+    <ImageView
+        android:id="@+id/user_picture"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:contentDescription="@string/user_picture"
+        app:layout_constraintBottom_toBottomOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        tools:ignore="ImageContrastCheck"
+        tools:srcCompat="@drawable/ic_launcher_foreground" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
@@ -23,97 +37,180 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@id/guideline">
 
-        <ImageView
-            android:id="@+id/user_picture"
+        <TextView
+            android:id="@+id/user_fullname_const"
             android:layout_width="match_parent"
-            android:layout_height="97dp"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="0dp"
-            android:layout_weight="0.42"
-            android:contentDescription="@string/user_picture"
-            tools:ignore="ImageContrastCheck"
-            tools:srcCompat="@drawable/ic_launcher_foreground">
-
-        </ImageView>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_weight="0.05"
+            android:gravity="center_vertical"
+            android:text="Full Name"
+            android:textColor="#272424"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/user_fullname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
-            android:gravity="center_vertical"
+            android:gravity="top"
             android:text="@string/full_name"
             android:textColor="#272424"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/user_nickname_const"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:layout_marginStart="20dp"
+            android:text="Nickname"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:textColor="#272424"
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/user_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
-            android:gravity="center_vertical"
+            android:gravity="top"
             android:text="@string/nickname"
             android:textColor="#272424"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/user_username_const"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:layout_marginStart="20dp"
+            android:text="Username"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:textColor="#272424"
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/user_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
-            android:gravity="center_vertical"
+            android:gravity="top"
             android:text="@string/username"
             android:textColor="#272424"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/user_bio_const"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:layout_marginStart="20dp"
+            android:text="Biography"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:textColor="#272424"
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/user_bio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
-            android:gravity="center_vertical"
+            android:gravity="top"
             android:text="@string/bio"
             android:textColor="#272424"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/user_skills_const"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:layout_marginStart="20dp"
+            android:text="Skills"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:textColor="#272424"
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/user_skills"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
-            android:gravity="center_vertical"
+            android:gravity="top"
             android:text="@string/skills"
             android:textColor="#272424"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/user_location_const"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:layout_marginStart="20dp"
+            android:text="Location"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:textColor="#272424"
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/user_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
-            android:gravity="center_vertical"
+            android:gravity="top"
             android:text="@string/location"
             android:textColor="#272424"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/user_email_const"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:layout_marginStart="20dp"
+            android:text="Email@address"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:textColor="#272424"
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/user_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
-            android:gravity="center_vertical"
+            android:gravity="top"
             android:text="@string/email_address"
             android:textColor="#272424"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/user_webpage_const"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:layout_marginStart="20dp"
+            android:text="Webpage"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:textColor="#272424"
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/user_webpage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
-            android:gravity="center_vertical"
+            android:gravity="top"
             android:text="@string/webpage"
             android:textColor="#272424"
             android:textSize="20sp" />
