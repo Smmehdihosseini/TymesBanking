@@ -2,12 +2,16 @@ package it.polito.mad.g28.tymes
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -30,25 +34,24 @@ class TimeSlotEditFragment : Fragment() {
 
         Log.d("onviewcreated", "")
 
-        val etTitle = activity?.findViewById<EditText>(R.id.edit_ad_title)
-        val etAuthor = activity?.findViewById<EditText>(R.id.edit_ad_full_name)
-        val etLocation = activity?.findViewById<EditText>(R.id.edit_ad_location)
-        val etDatetime = activity?.findViewById<EditText>(R.id.edit_ad_issuetime)
+        val etAuthor = activity?.findViewById<EditText>(R.id.edit_ad_author)
+        val etSkill = activity?.findViewById<EditText>(R.id.edit_ad_skill)
+        val etAvailability = activity?.findViewById<TextView>(R.id.edit_ad_availability)
         val etDescription = activity?.findViewById<EditText>(R.id.edit_ad_description)
-        val etPrice = activity?.findViewById<EditText>(R.id.edit_ad_price_bid)
-        val etService = activity?.findViewById<EditText>(R.id.edit_ad_service_bid)
-        val etTime = activity?.findViewById<TextView>(R.id.edit_ad_issuetime)
+        val etLocation = activity?.findViewById<EditText>(R.id.edit_ad_location)
+        val etPrice = activity?.findViewById<EditText>(R.id.edit_ad_price)
+        val etDate = activity?.findViewById<EditText>(R.id.edit_ad_date)
         val btnDatetime = activity?.findViewById<Button>(R.id.datepicker_button)
 
+
         viewModel.adInfo.observe(viewLifecycleOwner){
-            etTitle?.setText(it["Title"])
             etAuthor?.setText(it["Author"])
-            etLocation?.setText(it["Location"])
-            etDatetime?.setText(it["Datetime"])
+            etSkill?.setText(it["Skill"])
+            etAvailability?.setText(it["Availability"])
             etDescription?.setText(it["Description"])
+            etLocation?.setText(it["Location"])
             etPrice?.setText(it["Price"])
-            etService?.setText(it["Service"])
-            etTime?.text = it["Time"]
+            etDate?.setText(it["Date"])
         }
 
         btnDatetime?.setOnClickListener(View.OnClickListener {
@@ -60,10 +63,10 @@ class TimeSlotEditFragment : Fragment() {
             val minute: Int = cldr.get(Calendar.MINUTE)
             val is24HourView = true
             // date picker dialog
-            val datepicker = DatePickerDialog(
+            val datePicker = DatePickerDialog(
                 view.context,
 
-                { _, year, monthOfYear, dayOfMonth -> etDatetime?.setText(dayOfMonth.toString() + "/" + (monthOfYear + 1) + "/" + year) },
+                { _, year, monthOfYear, dayOfMonth -> etDate?.setText(dayOfMonth.toString() + "/" + (monthOfYear + 1) + "/" + year) },
                 year,
                 month,
                 day
@@ -71,16 +74,55 @@ class TimeSlotEditFragment : Fragment() {
 
             val timepicker = TimePickerDialog(
                 view.context,
-                {_, hourOfDay: Int, minute: Int -> etDatetime?.setText(etDatetime?.text.toString() + " " + hourOfDay.toString()+":"+minute.toString())},
+                {_, hourOfDay: Int, minute: Int -> etDate?.setText(etDate?.text.toString() + " " + hourOfDay.toString()+":"+minute.toString())},
                 hourOfDay,
                 minute,
                 is24HourView
             )
             //Reset datetime
-            etDatetime?.setText("")
+            etDate?.setText("")
             timepicker.show()
-            datepicker.show()
+            datePicker.show()
         })
+
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val etAuthor = activity?.findViewById<EditText>(R.id.edit_ad_author)?.text.toString()
+        val etSkill = activity?.findViewById<EditText>(R.id.edit_ad_skill)?.text.toString()
+        val etAvailability = activity?.findViewById<TextView>(R.id.edit_ad_availability)?.text.toString()
+        val etDescription = activity?.findViewById<EditText>(R.id.edit_ad_description)?.text.toString()
+        val etLocation = activity?.findViewById<EditText>(R.id.edit_ad_location)?.text.toString()
+        val etPrice = activity?.findViewById<EditText>(R.id.edit_ad_price)?.text.toString()
+        val etDate = activity?.findViewById<EditText>(R.id.edit_ad_date)?.text.toString()
+
+        viewModel.updateAd(etAuthor, etSkill, etAvailability, etDescription, etLocation, etPrice, etDate)
+
+        val database = Firebase.firestore
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+
+        var adID = sharedPref?.getString("Ad ID", null)
+
+
+        if (adID == null){
+            // Generate random ID from the ad if it is new (no shared pref)
+            Log.d("lifecycle", "Generating a new ad ID")
+            adID = UUID.randomUUID().toString()
+        }
+        with(sharedPref!!.edit()){
+            putString("Ad ID", adID)
+            apply()
+        }
+        val authorID = Firebase.auth.currentUser!!.uid
+
+        val ad = Ad(adID, authorID, etSkill, etAvailability, etDescription, etLocation, etPrice, etDate)
+
+        database.collection("ads").document(adID).set(ad)
+            .addOnSuccessListener {Log.d("lifecycle", "Successfully edited ad with id: $adID")}
+            .addOnFailureListener {Log.d("lifecycle", "Did not edit the ad: $adID properly")}
 
 
     }
@@ -92,73 +134,17 @@ class TimeSlotEditFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        val etTitle = activity?.findViewById<EditText>(R.id.edit_ad_title)?.text.toString()
-        val etAuthor = activity?.findViewById<EditText>(R.id.edit_ad_full_name)?.text.toString()
-        val etLocation = activity?.findViewById<EditText>(R.id.edit_ad_location)?.text.toString()
-        val etDatetime = activity?.findViewById<EditText>(R.id.edit_ad_issuetime)?.text.toString()
-        val etDescription = activity?.findViewById<EditText>(R.id.edit_ad_description)?.text.toString()
-        val etPrice = activity?.findViewById<EditText>(R.id.edit_ad_price_bid)?.text.toString()
-        val etService = activity?.findViewById<EditText>(R.id.edit_ad_service_bid)?.text.toString()
-        val tvTime = Calendar.getInstance().time.toString()
-
         return if (item.itemId==R.id.edit_pencil_button) {
             val fragmentTransaction = parentFragmentManager.beginTransaction()
             fragmentTransaction
                 .replace(R.id.fragmentContainerView, TimeSlotDetailsFragment())
                 .addToBackStack(null)
                 .commit()
-            viewModel.updateAd(etTitle,etAuthor,etLocation,etDatetime,etDescription,etPrice,etService,tvTime)
-            true
-
-        } else if(item.itemId==R.id.ic_add) {
-            val fragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction
-                .replace(R.id.fragmentContainerView, TimeSlotListFragment())
-                .addToBackStack(null)
-                .commit()
-            viewModel.add(
-                etTitle,
-                etAuthor,
-                etLocation,
-                etDatetime,
-                etDescription,
-                etPrice,
-                etService,
-                tvTime
-            )
-            true
-
-        }else if (item.itemId==R.id.ic_update){
-            Log.d("title", etTitle)
-            val fragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction
-                .replace(R.id.fragmentContainerView, TimeSlotListFragment())
-                .addToBackStack(null)
-                .commit()
-            viewModel.sub(etTitle)
-            viewModel.add(etTitle,etAuthor,etLocation,etDatetime,etDescription,etPrice,etService,tvTime)
-//            viewModel.updateAd(etTitle,etAuthor,etLocation,etDatetime,etDescription,etPrice,etService,tvTime)
             true
 
         } else{
             super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        val title = activity?.findViewById<EditText>(R.id.edit_ad_title)?.text.toString()
-        val author = activity?.findViewById<EditText>(R.id.edit_ad_full_name)?.text.toString()
-        val location = activity?.findViewById<EditText>(R.id.edit_ad_location)?.text.toString()
-        val datetime = activity?.findViewById<EditText>(R.id.edit_ad_when)?.text.toString()
-        val description = activity?.findViewById<EditText>(R.id.edit_ad_description)?.text.toString()
-        val price = activity?.findViewById<EditText>(R.id.edit_ad_price_bid)?.text.toString()
-        val service = activity?.findViewById<EditText>(R.id.edit_ad_service_bid)?.text.toString()
-        val time = activity?.findViewById<TextView>(R.id.edit_ad_issuetime)?.text.toString()
-
-        viewModel.updateAd(title,author,location,datetime,description,price,service,time)
-
     }
 
 }

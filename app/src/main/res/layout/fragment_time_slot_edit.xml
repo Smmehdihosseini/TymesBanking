@@ -26,13 +26,25 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/ad_type_const"
+            android:id="@+id/edit_ad_availability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Available"
+            android:textColor="@color/green"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_edit_const" />
+
+        <TextView
+            android:id="@+id/ad_skill_const"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
             android:layout_marginTop="32dp"
             android:gravity="center"
-            android:text="Service Type:"
+            android:text="Service"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -40,51 +52,51 @@
             app:layout_constraintTop_toBottomOf="@+id/ad_edit_const" />
 
         <EditText
-            android:id="@+id/ad_type"
+            android:id="@+id/edit_ad_skill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/edit_text_corner_box"
             android:gravity="center_vertical"
-            android:hint="E.g. Offer, Request"
+            android:hint="E.g. Babysitting, ..."
             android:textColorHint="@color/green"
             android:minHeight="48dp"
             android:paddingLeft="8dp"
             android:paddingTop="8dp"
             android:paddingRight="240dp"
             android:paddingBottom="8dp"
-            android:text="Offer"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_type_const" />
+            app:layout_constraintTop_toBottomOf="@+id/ad_skill_const" />
 
         <TextView
-            android:id="@+id/ad_title_const"
+            android:id="@+id/ad_author_const"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:text="Title:"
+            android:text="Author"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_type" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_ad_skill" />
 
         <EditText
-            android:id="@+id/edit_ad_title"
+            android:id="@+id/edit_ad_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/edit_text_corner_box"
             android:gravity="center_vertical"
-            android:hint="E.g. Kotlin Programming"
+            android:hint="Your Full Name"
             android:textColorHint="@color/green"
-            android:text="Kotlin Programming"
+            android:text=""
             android:minHeight="48dp"
             android:paddingLeft="8dp"
             android:paddingTop="8dp"
@@ -92,57 +104,23 @@
             android:paddingBottom="8dp"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_title_const" />
+            app:layout_constraintTop_toBottomOf="@+id/ad_author_const" />
 
 
         <TextView
-            android:id="@+id/ad_where_const"
+            android:id="@+id/ad_description_const"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:text="Location:"
+            android:text="Description"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_ad_title" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_ad_author" />
 
-
-        <EditText
-            android:id="@+id/edit_ad_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/edit_text_corner_box"
-            android:gravity="center_vertical"
-            android:hint="E.g. Turin, Italy"
-            android:textColorHint="@color/green"
-            android:text="Turin, Italy"
-            android:minHeight="48dp"
-            android:paddingLeft="8dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="268dp"
-            android:paddingBottom="8dp"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_where_const" />
-
-        <TextView
-            android:id="@+id/ad_desc_const"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="Description:"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_ad_location" />
 
         <EditText
             android:id="@+id/edit_ad_description"
@@ -152,134 +130,132 @@
             android:layout_marginTop="4dp"
             android:background="@drawable/edit_text_corner_box"
             android:gravity="center_vertical"
-            android:hint="E.g. Social Application Designing"
+            android:hint="Explain your need!"
+            android:textColorHint="@color/green"
+            android:text=""
+            android:minHeight="48dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="268dp"
+            android:paddingBottom="8dp"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_description_const" />
+
+        <TextView
+            android:id="@+id/ad_price_const"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Price"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_ad_description" />
+
+        <EditText
+            android:id="@+id/edit_ad_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/edit_text_corner_box"
+            android:gravity="center_vertical"
+            android:hint="E.g. 10 TYC"
             android:minHeight="48dp"
             android:paddingLeft="8dp"
             android:paddingTop="4dp"
             android:paddingEnd="138dp"
             android:paddingBottom="4dp"
-            android:text="Social Application Designing"
+            android:text=""
             android:textColor="@color/black"
             android:textColorHint="@color/green"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_desc_const" />
+            app:layout_constraintTop_toBottomOf="@+id/ad_price_const" />
 
         <TextView
-            android:id="@+id/ad_bid_const"
+            android:id="@+id/ad_location_const"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
             android:layout_marginStart="32dp"
-            android:text="Price Bid:"
+            android:layout_marginTop="16dp"
+            android:text="Location"
             android:textColor="@color/black"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_ad_description" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_ad_price" />
 
         <EditText
-            android:id="@+id/edit_ad_price_bid"
+            android:id="@+id/edit_ad_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
             android:background="@drawable/edit_text_corner_box"
             android:gravity="center_vertical"
-            android:hint="E.g. 10.00 TYC"
+            android:hint="E.g. Turin, Italy"
             android:minHeight="48dp"
             android:paddingLeft="8dp"
             android:paddingTop="4dp"
             android:paddingEnd="152dp"
             android:paddingBottom="4dp"
-            android:text="10.00 TYC"
+            android:text=""
             android:textColor="@color/black"
             android:textColorHint="@color/green"
             android:textSize="17sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ad_bid_const"
-            app:layout_constraintTop_toBottomOf="@+id/edit_ad_description" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_location_const" />
 
         <TextView
-            android:id="@+id/ad_service_bid_const"
+            android:id="@+id/ad_date_const"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
             android:layout_marginStart="32dp"
-            android:text="Service Bid:"
+            android:layout_marginTop="16dp"
+            android:text="Datetime"
             android:textColor="@color/black"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_bid_const" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_ad_location" />
 
         <EditText
-            android:id="@+id/edit_ad_service_bid"
+            android:id="@+id/edit_ad_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_corner_box"
-            android:layout_marginTop="24dp"
-            android:layout_marginLeft="20dp"
-            android:gravity="center_vertical"
-            android:hint="E.g. Python Programming"
-            android:minHeight="48dp"
-            android:paddingLeft="8dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="48dp"
-            android:paddingBottom="4dp"
-            android:text="List of Services"
-            android:textColor="@color/black"
-            android:textColorHint="@color/green"
-            android:textSize="17sp"
-            app:layout_constraintStart_toEndOf="@+id/ad_service_bid_const"
-            app:layout_constraintTop_toBottomOf="@+id/edit_ad_price_bid" />
-
-        <TextView
-            android:id="@+id/ad_issuetime_const"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:layout_marginStart="32dp"
-            android:text="Date:"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_service_bid_const" />
-
-        <EditText
-            android:id="@+id/edit_ad_issuetime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
             android:background="@drawable/edit_text_corner_box"
             android:gravity="center_vertical"
-            android:hint="E.g. 17/04/2022"
+            android:hint="Use the calendar!"
             android:minHeight="48dp"
             android:paddingLeft="8dp"
             android:paddingTop="4dp"
             android:paddingEnd="110dp"
             android:paddingBottom="4dp"
-            android:text="17/04/2022"
             android:textColor="@color/black"
             android:textColorHint="@color/green"
             android:textSize="17sp"
-            app:layout_constraintStart_toEndOf="@+id/ad_issuetime_const"
-            app:layout_constraintTop_toBottomOf="@+id/edit_ad_service_bid" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_date_const" />
 
         <Button
             android:id="@+id/datepicker_button"
             android:layout_width="49dp"
             android:layout_height="50dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="4dp"
             android:background="@drawable/datepicker_button"
-            app:icon="@drawable/ic_baseline_date_range_24"
             android:gravity="center_vertical"
+            app:icon="@drawable/ic_baseline_date_range_24"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/edit_ad_issuetime"
-            app:layout_constraintTop_toBottomOf="@+id/edit_ad_service_bid" />
+            app:layout_constraintHorizontal_bias="0.135"
+            app:layout_constraintStart_toEndOf="@+id/edit_ad_date"
+            app:layout_constraintTop_toBottomOf="@+id/ad_date_const" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
