@@ -24,28 +24,40 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/rvitem_title"
+                android:id="@+id/rvitem_price"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="Title"
+                android:text="Price"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                app:layout_constraintBottom_toTopOf="@+id/rvitem_datetime"
+                app:layout_constraintBottom_toTopOf="@+id/rvitem_date"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/rvitem_datetime"
+                android:id="@+id/rvitem_date"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:text="Datetime"
+                android:text="Date"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintBottom_toTopOf="@+id/rvitem_location"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rvitem_price" />
+
+            <TextView
+                android:id="@+id/rvitem_location"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="Location"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rvitem_title" />
+                app:layout_constraintTop_toBottomOf="@+id/rvitem_date" />
 
             <Button
                 android:id="@+id/edit_ad_button"

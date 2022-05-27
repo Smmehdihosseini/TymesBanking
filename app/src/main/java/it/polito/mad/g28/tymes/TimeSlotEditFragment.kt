@@ -119,8 +119,7 @@ class TimeSlotEditFragment : Fragment() {
         val authorID = Firebase.auth.currentUser!!.uid
 
         val ad = Ad(adID, authorID, etSkill, etAvailability, etDescription, etLocation, etPrice, etDate)
-
-        database.collection("ads").document(adID).set(ad)
+        database.collection(etSkill).document(adID).set(ad)
             .addOnSuccessListener {Log.d("lifecycle", "Successfully edited ad with id: $adID")}
             .addOnFailureListener {Log.d("lifecycle", "Did not edit the ad: $adID properly")}
 

@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 
 class MyAdRecyclerViewAdapter(
-        private val values: List<Advert>, private val onAdClick: (advert: Advert, edit: Boolean) -> Unit
+        private val values: ArrayList<Ad>, private val onAdClick: (advert: Ad, edit: Boolean) -> Unit
 ) : RecyclerView.Adapter<MyAdRecyclerViewAdapter.ViewHolder>() {
 
     inner class ViewHolder(v:View ): RecyclerView.ViewHolder(v) {
@@ -17,12 +17,13 @@ class MyAdRecyclerViewAdapter(
 //            itemView.setOnClickListener {onAdClick(itemView) }
 //        }
 
-        val title: TextView = v.findViewById(R.id.rvitem_title)
-        val datetime: TextView = v.findViewById(R.id.rvitem_datetime)
+        val price: TextView = v.findViewById(R.id.rvitem_price)
+        val date: TextView = v.findViewById(R.id.rvitem_date)
+        val location: TextView = v.findViewById(R.id.rvitem_location)
         val btn : Button = v.findViewById(R.id.edit_ad_button)
 
         override fun toString(): String {
-            return "$title activity is scheduled $datetime"
+            return "$price, $date, $location"
         }
     }
 
@@ -33,8 +34,9 @@ class MyAdRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.title.text = item.title
-        holder.datetime.text = item.datetime
+        holder.price.text = item.price
+        holder.location.text = item.location
+        holder.date.text = item.date
 
         holder.btn.setOnClickListener {
             onAdClick(item, true)

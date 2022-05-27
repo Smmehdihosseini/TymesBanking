@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class TimeSlotListFragment : Fragment() {
 
@@ -26,11 +28,40 @@ class TimeSlotListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val database = Firebase.firestore
+        val skill = "Babysitting"
         val rv = activity?.findViewById<RecyclerView>(R.id.rv)
         rv?.layoutManager = LinearLayoutManager(context)
-        vm.adverts.observe(this.viewLifecycleOwner) {
-            rv?.adapter = MyAdRecyclerViewAdapter(it) { advert, edit-> onAdClick(advert, edit)}
-        }
+
+        database.collection(skill)
+            .addSnapshotListener { value, e ->
+                if (e != null) {
+                    Log.w("lifecycle", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+
+                val ads = ArrayList<Ad>()
+                for (doc in value!!) {
+                    val data = doc.data
+                    val ad = Ad(
+                        data.get("adID").toString(),
+                        data.get("authorID").toString(),
+                        data.get("skill").toString(),
+                        data.get("availability").toString(),
+                        data.get("description").toString(),
+                        data.get("location").toString(),
+                        data.get("price").toString(),
+                        data.get("date").toString())
+                    ads.add(ad)
+                }
+                rv?.adapter = MyAdRecyclerViewAdapter(ads) { ad, edit-> onAdClick(ad, edit)}
+                Log.d("lifecycle", "Current cites in CA: $ads")
+            }
+
+
+//        vm.adverts.observe(this.viewLifecycleOwner) {
+//            rv?.adapter = MyAdRecyclerViewAdapter(it) { advert, edit-> onAdClick(advert, edit)}
+//        }
 
         val fab: View? = activity?.findViewById(R.id.fab)
         fab?.setOnClickListener {
@@ -43,9 +74,32 @@ class TimeSlotListFragment : Fragment() {
 
     }
 
-    private fun onAdClick(advert: Advert, edit: Boolean) {
-        vm.updateAd(advert.title, advert.author, advert.location, advert.datetime, advert.description, advert.price, advert.service, advert.time)
-//        vm.updateAdDB(advert.id, advert.title, advert.author, advert.location, advert.datetime, advert.description, advert.price, advert.service, advert.time)
+    private fun onAdClick(ad: Ad, edit: Boolean) {
+
+        val database = Firebase.firestore
+        val docRef = database.collection("skills")
+            .document(ad.adID)
+
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val map = document.data
+                    vm.updateAd(
+                        map?.get("authorID").toString(),
+                        map?.get("skill").toString(),
+                        map?.get("availability").toString(),
+                        map?.get("description").toString(),
+                        map?.get("price").toString(),
+                        map?.get("location").toString(),
+                        map?.get("date").toString())
+                    Log.d("lifecycle", "DocumentSnapshot data: ${document.data}")
+                } else {
+                    Log.d("lifecycle", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("lifecycle", "get failed with ", exception)
+            }
 
         val fragmentTransaction = parentFragmentManager.beginTransaction()
         if (edit){
@@ -54,7 +108,7 @@ class TimeSlotListFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         } else{
-            Log.d("itemid", advert.id.toString())
+            Log.d("itemid", ad.adID)
             fragmentTransaction
                 .replace(R.id.fragmentContainerView, TimeSlotDetailsFragment())
                 .addToBackStack(null)
