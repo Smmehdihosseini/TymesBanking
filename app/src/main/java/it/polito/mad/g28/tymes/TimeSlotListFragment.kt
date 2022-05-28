@@ -1,5 +1,6 @@
 package it.polito.mad.g28.tymes
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -29,11 +30,12 @@ class TimeSlotListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val database = Firebase.firestore
-        val skill = "Babysitting"
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val skill = sharedPref?.getString("skill", null)
         val rv = activity?.findViewById<RecyclerView>(R.id.rv)
         rv?.layoutManager = LinearLayoutManager(context)
 
-        database.collection(skill)
+        database.collection("skills").document(skill!!).collection(skill)
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     Log.w("lifecycle", "Listen failed.", e)

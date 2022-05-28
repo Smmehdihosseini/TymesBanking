@@ -11,25 +11,19 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 
-class SkillRecyclerViewAdapter (private val skillList: ArrayList<SkillItem>):
+class SkillRecyclerViewAdapter (private val skillList: ArrayList<SkillItem>, private val onSkillClick: (skill: SkillItem) -> Unit):
     RecyclerView.Adapter<SkillRecyclerViewAdapter.ViewHolder>(), Filterable {
 
     private val skillListFull = ArrayList<SkillItem>(skillList)
 
     inner class ViewHolder(v:View ): RecyclerView.ViewHolder(v) {
 
-//        init {
-//            itemView.setOnClickListener {onAdClick(itemView) }
-//        }
-
         val skill: TextView = v.findViewById(it.polito.mad.g28.tymes.R.id.item_skill)
-
-        override fun toString(): String {
-            return "$skill"
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -45,9 +39,9 @@ class SkillRecyclerViewAdapter (private val skillList: ArrayList<SkillItem>):
 //        holder.btn.setOnClickListener {
 //            onAdClick(item, true)
 //        }
-//        holder.itemView.setOnClickListener{
-//            onAdClick.invoke(item, false)
-//        }
+        holder.itemView.setOnClickListener{
+            onSkillClick.invoke(item)
+        }
     }
 
     override fun getItemCount(): Int = skillList.size
@@ -59,9 +53,9 @@ class SkillRecyclerViewAdapter (private val skillList: ArrayList<SkillItem>):
 
     private val exampleFilter: Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults? {
-            Log.d("lifecycle", "constraint: $constraint")
-            Log.d("lifecycle", "fulllist: $skillListFull")
-            Log.d("lifecycle", "list: $skillList")
+//            Log.d("lifecycle", "constraint: $constraint")
+//            Log.d("lifecycle", "fulllist: $skillListFull")
+//            Log.d("lifecycle", "list: $skillList")
             val filteredList: MutableList<SkillItem> = ArrayList()
             if (constraint == null || constraint.isEmpty()) {
                 filteredList.addAll(skillListFull)
@@ -73,7 +67,7 @@ class SkillRecyclerViewAdapter (private val skillList: ArrayList<SkillItem>):
                         filteredList.add(item)
                     }
                 }
-                Log.d("lifecycle", "filtered List: $filteredList")
+//                Log.d("lifecycle", "filtered List: $filteredList")
 
             }
             val results = FilterResults()
@@ -88,4 +82,6 @@ class SkillRecyclerViewAdapter (private val skillList: ArrayList<SkillItem>):
 
         }
     }
+
+
 }
