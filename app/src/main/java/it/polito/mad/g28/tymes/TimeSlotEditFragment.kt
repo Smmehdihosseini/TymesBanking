@@ -13,6 +13,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.concurrent.thread
 
 
@@ -119,7 +120,10 @@ class TimeSlotEditFragment : Fragment() {
         val authorID = Firebase.auth.currentUser!!.uid
 
         val ad = Ad(adID, authorID, etSkill, etAvailability, etDescription, etLocation, etPrice, etDate)
-        database.collection(etSkill).document(adID).set(ad)
+        database.collection("skills").document(etSkill).set(SkillItem(etSkill))
+            .addOnSuccessListener {Log.d("lifecycle", "Successfully added $etSkill")}
+            .addOnFailureListener {Log.d("lifecycle", "Did not successfully add $etSkill")}
+        database.collection("skills").document(etSkill).collection(etSkill).document(adID).set(ad)
             .addOnSuccessListener {Log.d("lifecycle", "Successfully edited ad with id: $adID")}
             .addOnFailureListener {Log.d("lifecycle", "Did not edit the ad: $adID properly")}
 

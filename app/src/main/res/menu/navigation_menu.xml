@@ -31,6 +31,10 @@
         <menu>
             <group android:checkableBehavior="single">
             <item
+                android:id="@+id/ic_skill"
+                android:title="Skills Pool"
+                android:icon="@drawable/ic_baseline_ads_list"/>
+            <item
                 android:id="@+id/all_tslots_list_icon"
                 android:title="Ads Pool"
                 android:icon="@drawable/ic_baseline_ads_list"/>
