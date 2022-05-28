@@ -19,9 +19,6 @@ class TimeSlotDetailsFragment : Fragment() {
 
     private val viewModel : AdVM by activityViewModels()
     private val profileVM: ProfileVM by activityViewModels()
-//    val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-//    var adID = sharedPref?.getString("Ad ID", null)
-//    var authorID = sharedPref?.getString("Author ID", null)
 
     val database = Firebase.firestore
 
@@ -68,8 +65,6 @@ class TimeSlotDetailsFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch(){
                 delay(500)
 //                (activity as MainActivity).changeFrag(ShowProfileActivity(), "Profile")
-                Log.d("lifecycle", "changing profile")
-                Log.d("lifecycle", " profile info ${profileVM.profileInfo.value?.get("Email")}")
                 val fragmentTransaction = parentFragmentManager.beginTransaction()
                 fragmentTransaction
                     .replace(R.id.fragmentContainerView, ShowProfileActivity())
@@ -92,13 +87,6 @@ class TimeSlotDetailsFragment : Fragment() {
                         map?.get("email").toString(),
                         map?.get("webpage").toString(), )
                 }
-
-
-//            val fragmentTransaction = parentFragmentManager.beginTransaction()
-//            fragmentTransaction
-//                .replace(R.id.fragmentContainerView, ShowProfileActivity())
-//                .addToBackStack(null)
-//                .commit()
         }
 
     }
@@ -110,18 +98,8 @@ class TimeSlotDetailsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        val tvAuthor = activity?.findViewById<TextView>(R.id.ad_author)?.text.toString()
-        val tvSkill = activity?.findViewById<TextView>(R.id.ad_skill)?.text.toString()
-        val tvAvailability = activity?.findViewById<TextView>(R.id.ad_availability)?.text.toString()
-        val tvDescription = activity?.findViewById<TextView>(R.id.ad_description)?.text.toString()
-        val tvLocation = activity?.findViewById<TextView>(R.id.ad_location)?.text.toString()
-        val tvPrice = activity?.findViewById<TextView>(R.id.ad_price)?.text.toString()
-        val tvDate = activity?.findViewById<TextView>(R.id.ad_date)?.text.toString()
-
-        val database = Firebase.firestore
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         var adID = sharedPref?.getString("Ad ID", null)
-        var authorID = sharedPref?.getString("Author ID", null)
 
         if (adID == null){
             // Generate random ID from the ad if it is new (no shared pref)

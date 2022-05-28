@@ -35,10 +35,6 @@ class SkillRecyclerViewAdapter (private val skillList: ArrayList<SkillItem>, pri
         val item = skillList[position]
         holder.skill.text = item.skill
 
-//        holder.btn.setOnClickListener {
-//        holder.btn.setOnClickListener {
-//            onAdClick(item, true)
-//        }
         holder.itemView.setOnClickListener{
             onSkillClick.invoke(item)
         }
@@ -53,9 +49,6 @@ class SkillRecyclerViewAdapter (private val skillList: ArrayList<SkillItem>, pri
 
     private val exampleFilter: Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults? {
-//            Log.d("lifecycle", "constraint: $constraint")
-//            Log.d("lifecycle", "fulllist: $skillListFull")
-//            Log.d("lifecycle", "list: $skillList")
             val filteredList: MutableList<SkillItem> = ArrayList()
             if (constraint == null || constraint.isEmpty()) {
                 filteredList.addAll(skillListFull)
@@ -67,8 +60,6 @@ class SkillRecyclerViewAdapter (private val skillList: ArrayList<SkillItem>, pri
                         filteredList.add(item)
                     }
                 }
-//                Log.d("lifecycle", "filtered List: $filteredList")
-
             }
             val results = FilterResults()
             results.values = filteredList

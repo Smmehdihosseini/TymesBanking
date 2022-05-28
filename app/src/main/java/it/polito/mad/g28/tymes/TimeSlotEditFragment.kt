@@ -100,7 +100,7 @@ class TimeSlotEditFragment : Fragment() {
         val etPrice = activity?.findViewById<EditText>(R.id.edit_ad_price)?.text.toString()
         val etDate = activity?.findViewById<EditText>(R.id.edit_ad_date)?.text.toString()
 
-        viewModel.updateAd(etAuthor, etSkill, etAvailability, etDescription, etLocation, etPrice, etDate)
+        viewModel.updateAd(etAuthor, etSkill, etAvailability, etDescription, etPrice, etLocation, etDate)
 
         val database = Firebase.firestore
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)

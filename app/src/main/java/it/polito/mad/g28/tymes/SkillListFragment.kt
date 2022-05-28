@@ -47,6 +47,7 @@ class SkillListFragment : Fragment() {
                     Log.w("error", "Listen failed in skill Adapter", e)
                     return@addSnapshotListener
                 }
+                skillList.clear()
 
                 for (skill in skills!!) {
                     skillList.add(SkillItem(skill.data.get("skill").toString()))
@@ -101,7 +102,6 @@ class SkillListFragment : Fragment() {
 
         val fragmentTransaction = parentFragmentManager.beginTransaction()
 
-        Log.d("lifecycle", skill.skill)
         fragmentTransaction
             .replace(R.id.fragmentContainerView, TimeSlotListFragment())
             .addToBackStack(null)

@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private var signInRequest: BeginSignInRequest? = null
     private val REQ_ONE_TAP: Int = 1337
     private lateinit var auth: FirebaseAuth
-    private val viewModel : ProfileVM by viewModels()
+    private val profileVM : ProfileVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.home -> changeFrag(Home(), it.title.toString())
                 R.id.my_profile_icon -> changeFrag(ShowProfileActivity(), it.title.toString())
                 R.id.my_clan_icon -> changeFrag(clanFragement(), it.title.toString())
+                R.id.ic_skill -> changeFrag(SkillListFragment(), it.title.toString())
                 R.id.all_tslots_list_icon -> changeFrag(TimeSlotListFragment(), it.title.toString())
                 R.id.my_tslots_icon -> changeFrag(TimeSlotDetailsFragment(), it.title.toString())
                 R.id.tymes_settings_icon -> changeFrag(SettingsFragment(), it.title.toString())
@@ -117,7 +118,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        Log.d("lifecycle", "onstart")
+        Log.d("lifecycle", "Starting the Application")
 
         // Restore user data from DB and update viewModel
         val currentUser = Firebase.auth.currentUser
@@ -138,8 +139,8 @@ class MainActivity : AppCompatActivity() {
                     val location = map?.get("location").toString()
                     val webpage = map?.get("webpage").toString()
 
-                    Log.d("lifecycle", "Putting ${name.toString()}")
-                    viewModel.updateProfile(name.toString(), nickname, username, biography, skills, location, email.toString(), webpage)
+                    Log.d("lifecycle", "Updating user profile")
+                    profileVM.updateProfile(name.toString(), nickname, username, biography, skills, location, email.toString(), webpage)
                 }
         }
     }
@@ -155,13 +156,13 @@ class MainActivity : AppCompatActivity() {
             val user = User(uid,name, null, null, null, null, null, email, null)
 
             // When the user authenticates, update DB
-            viewModel.updateProfile(name.toString(), "", "", "", "", "", email.toString(), "")
+            profileVM.updateProfile(name.toString(), "", "", "", "", "", email.toString(), "")
             database.collection("users").document(uid).set(user)
                 .addOnSuccessListener {Log.d("lifecycle", "successfully created user with uid: $uid")}
         }
     }
 
-    private fun changeFrag(fragment: Fragment, title: String){
+    fun changeFrag(fragment: Fragment, title: String){
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction

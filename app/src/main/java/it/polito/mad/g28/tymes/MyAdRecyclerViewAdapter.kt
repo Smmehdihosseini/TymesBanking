@@ -13,10 +13,6 @@ class MyAdRecyclerViewAdapter(
 
     inner class ViewHolder(v:View ): RecyclerView.ViewHolder(v) {
 
-//        init {
-//            itemView.setOnClickListener {onAdClick(itemView) }
-//        }
-
         val price: TextView = v.findViewById(R.id.rvitem_price)
         val date: TextView = v.findViewById(R.id.rvitem_date)
         val location: TextView = v.findViewById(R.id.rvitem_location)

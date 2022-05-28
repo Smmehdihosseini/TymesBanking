@@ -24,6 +24,7 @@ class ShowProfileActivity : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         val tvFullName = activity?.findViewById<TextView>(R.id.user_fullname)
         val tvNickname = activity?.findViewById<TextView>(R.id.user_nickname)
         val tvUsername = activity?.findViewById<TextView>(R.id.user_username)

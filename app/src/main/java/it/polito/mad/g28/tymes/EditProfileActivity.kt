@@ -126,7 +126,6 @@ class EditProfileActivity : Fragment() {
         val etNickname = activity?.findViewById<EditText>(R.id.edit_user_nickname)?.text.toString()
         val etUsername = activity?.findViewById<EditText>(R.id.edit_user_username)?.text.toString()
         val etBiography = activity?.findViewById<EditText>(R.id.edit_user_bio)?.text.toString()
-//        val etSkills = activity?.findViewById<EditText>(R.id.edit_user_skills)?.text.toString()
         val etLocation = activity?.findViewById<EditText>(R.id.edit_user_location)?.text.toString()
         val etEmail = activity?.findViewById<EditText>(R.id.edit_user_email)?.text.toString()
         val etWebpage = activity?.findViewById<EditText>(R.id.edit_user_webpage)?.text.toString()
