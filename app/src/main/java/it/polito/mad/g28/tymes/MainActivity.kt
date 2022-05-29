@@ -1,10 +1,12 @@
 package it.polito.mad.g28.tymes
 
+import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -61,14 +63,11 @@ class MainActivity : AppCompatActivity() {
 
             when(it.itemId){
 
-                R.id.home -> changeFrag(Home(), it.title.toString())
                 R.id.my_profile_icon -> changeFrag(ShowProfileActivity(), it.title.toString())
-                R.id.my_clan_icon -> changeFrag(clanFragement(), it.title.toString())
                 R.id.ic_skill -> changeFrag(SkillListFragment(), it.title.toString())
                 R.id.all_tslots_list_icon -> changeFrag(TimeSlotListFragment(), it.title.toString())
                 R.id.my_tslots_icon -> changeFrag(TimeSlotDetailsFragment(), it.title.toString())
                 R.id.tymes_settings_icon -> changeFrag(SettingsFragment(), it.title.toString())
-                R.id.about_tymes_icon -> changeFrag(aboutFragment(), it.title.toString())
 
             }
             true
@@ -132,15 +131,12 @@ class MainActivity : AppCompatActivity() {
             docRef.get()
                 .addOnSuccessListener {  document ->
                     val map = document.data
-                    val nickname = map?.get("nickname").toString()
-                    val username = map?.get("username").toString()
                     val biography = map?.get("biography").toString()
                     val skills = map?.get("skills").toString()
                     val location = map?.get("location").toString()
-                    val webpage = map?.get("webpage").toString()
 
                     Log.d("lifecycle", "Updating user profile")
-                    profileVM.updateProfile(name.toString(), nickname, username, biography, skills, location, email.toString(), webpage)
+                    profileVM.updateProfile(name.toString(), biography, skills, location, email.toString())
                 }
         }
     }
@@ -153,10 +149,10 @@ class MainActivity : AppCompatActivity() {
             val uid = currentUser.uid
             val name = currentUser.displayName
             val email = currentUser.email
-            val user = User(uid,name, null, null, null, null, null, email, null)
+            val user = User(uid,name, "", "", "", email)
 
             // When the user authenticates, update DB
-            profileVM.updateProfile(name.toString(), "", "", "", "", "", email.toString(), "")
+            profileVM.updateProfile(name.toString(), "", "", "", email.toString())
             database.collection("users").document(uid).set(user)
                 .addOnSuccessListener {Log.d("lifecycle", "successfully created user with uid: $uid")}
         }

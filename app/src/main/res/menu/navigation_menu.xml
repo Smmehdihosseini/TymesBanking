@@ -5,29 +5,17 @@
 
     <group android:checkableBehavior="single"></group>
 
-    <item
-        android:id="@+id/home"
-        android:title="Home"
-        android:icon="@drawable/ic_baseline_home_24">
-    </item>
-
     <item android:title="Profile">
         <menu>
-            <group android:checkableBehavior="single">
             <item
                 android:id="@+id/my_profile_icon"
                 android:title="My Profile"
                 android:icon="@drawable/ic_baseline_person_24"/>
 
-            <item
-                android:id="@+id/my_clan_icon"
-                android:title="My Clan"
-                android:icon="@drawable/ic_baseline_tymesclan"/>
-            </group>
         </menu>
     </item>
 
-    <item android:title="Advertisement">
+    <item android:title="Services">
         <menu>
             <group android:checkableBehavior="single">
             <item
@@ -47,19 +35,13 @@
         </menu>
     </item>
 
-    <item android:title="Tymes">
+    <item android:title="Other">
         <menu>
-            <group android:checkableBehavior="single">
             <item
                 android:id="@+id/tymes_settings_icon"
                 android:title="Settings"
                 android:icon="@drawable/ic_baseline_settings_24"/>
 
-            <item
-                android:id="@+id/about_tymes_icon"
-                android:title="About Tymes"
-                android:icon="@drawable/ic_baseline_info_24"/>
-            </group>
         </menu>
     </item>
 

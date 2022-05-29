@@ -33,8 +33,6 @@ class TimeSlotEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("onviewcreated", "")
-
         val etAuthor = activity?.findViewById<EditText>(R.id.edit_ad_author)
         val etSkill = activity?.findViewById<EditText>(R.id.edit_ad_skill)
         val etAvailability = activity?.findViewById<TextView>(R.id.edit_ad_availability)

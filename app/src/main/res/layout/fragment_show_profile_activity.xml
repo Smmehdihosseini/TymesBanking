@@ -61,49 +61,7 @@
             android:textColor="#272424"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/user_nickname_const"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.05"
-            android:layout_marginStart="20dp"
-            android:text="Nickname"
-            android:textStyle="bold"
-            android:gravity="center_vertical"
-            android:textColor="#272424"
-            android:textSize="12sp"/>
 
-        <TextView
-            android:id="@+id/user_nickname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="top"
-            android:text="@string/nickname"
-            android:textColor="#272424"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/user_username_const"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.05"
-            android:layout_marginStart="20dp"
-            android:text="Username"
-            android:textStyle="bold"
-            android:gravity="center_vertical"
-            android:textColor="#272424"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/user_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="top"
-            android:text="@string/username"
-            android:textColor="#272424"
-            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/user_bio_const"
@@ -193,28 +151,6 @@
             android:textColor="#272424"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/user_webpage_const"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.05"
-            android:layout_marginStart="20dp"
-            android:text="Webpage"
-            android:textStyle="bold"
-            android:gravity="center_vertical"
-            android:textColor="#272424"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/user_webpage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="top"
-            android:text="@string/webpage"
-            android:textColor="#272424"
-            android:textSize="20sp" />
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

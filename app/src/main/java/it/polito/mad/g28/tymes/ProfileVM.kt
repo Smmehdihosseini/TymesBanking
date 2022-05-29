@@ -8,31 +8,22 @@ class ProfileVM: ViewModel() {
 
     init {
         profileInfo.value = HashMap()
-        profileInfo.value?.put("Full Name", "Full Name")
-        profileInfo.value?.put("Nickname", "Nickname")
-        profileInfo.value?.put("Username", "Username")
-        profileInfo.value?.put("Biography", "Biography")
-        profileInfo.value?.put("Skills", "Skills")
-        profileInfo.value?.put("Location", "Location")
-        profileInfo.value?.put("Email", "Email")
-        profileInfo.value?.put("Webpage", "Webpage")
+        profileInfo.value?.put("Full Name", "")
+        profileInfo.value?.put("Biography", "")
+        profileInfo.value?.put("Skills", "")
+        profileInfo.value?.put("Location", "")
+        profileInfo.value?.put("Email", "")
     }
 
     fun updateProfile(Fullname: String = "Full Name",
-                      Nickname: String = "Nickname",
-                      Username: String = "Username",
                       Biography: String = "Biography",
                       Skills: String = "Skills",
                       Location: String = "Location",
-                      Email: String = "Email",
-                      Webpage: String = "Webpage") {
+                      Email: String = "Email") {
         profileInfo.value?.put("Full Name", Fullname)
-        profileInfo.value?.put("Nickname", Nickname)
-        profileInfo.value?.put("Username", Username)
         profileInfo.value?.put("Biography", Biography)
         profileInfo.value?.put("Skills", Skills)
         profileInfo.value?.put("Location", Location)
         profileInfo.value?.put("Email", Email)
-        profileInfo.value?.put("Webpage", Webpage)
     }
 }

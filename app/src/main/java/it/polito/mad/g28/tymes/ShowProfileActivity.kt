@@ -26,13 +26,10 @@ class ShowProfileActivity : Fragment() {
 
 
         val tvFullName = activity?.findViewById<TextView>(R.id.user_fullname)
-        val tvNickname = activity?.findViewById<TextView>(R.id.user_nickname)
-        val tvUsername = activity?.findViewById<TextView>(R.id.user_username)
         val tvBiography = activity?.findViewById<TextView>(R.id.user_bio)
         val tvSkills = activity?.findViewById<TextView>(R.id.user_skills)
         val tvLocation = activity?.findViewById<TextView>(R.id.user_location)
         val tvEmail = activity?.findViewById<TextView>(R.id.user_email)
-        val tvWebpage = activity?.findViewById<TextView>(R.id.user_webpage)
 
         val user = Firebase.auth.currentUser
 
@@ -40,13 +37,10 @@ class ShowProfileActivity : Fragment() {
             // User is authenticated
             viewModel.profileInfo.observe(viewLifecycleOwner){
                 tvFullName?.text = it["Full Name"]
-                tvNickname?.text = it["Nickname"]
-                tvUsername?.text = it["Username"]
                 tvBiography?.text = it["Biography"]
                 tvSkills?.text = it["Skills"]
                 tvLocation?.text = it["Location"]
                 tvEmail?.text = it["Email"]
-                tvWebpage?.text = it["Webpage"]
             }
         }
     }
@@ -59,13 +53,10 @@ class ShowProfileActivity : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         val tvFullName = activity?.findViewById<TextView>(R.id.user_fullname)?.text.toString()
-        val tvNickname = activity?.findViewById<TextView>(R.id.user_nickname)?.text.toString()
-        val tvUsername = activity?.findViewById<TextView>(R.id.user_username)?.text.toString()
         val tvBiography = activity?.findViewById<TextView>(R.id.user_bio)?.text.toString()
         val tvSkills = activity?.findViewById<TextView>(R.id.user_skills)?.text.toString()
         val tvLocation = activity?.findViewById<TextView>(R.id.user_location)?.text.toString()
         val tvEmail = activity?.findViewById<TextView>(R.id.user_email)?.text.toString()
-        val tvWebpage = activity?.findViewById<TextView>(R.id.user_webpage)?.text.toString()
 
         return if (item.itemId==R.id.edit_pencil_button) {
             val fragmentTransaction = parentFragmentManager.beginTransaction()
@@ -73,7 +64,7 @@ class ShowProfileActivity : Fragment() {
                 .replace(R.id.fragmentContainerView, EditProfileActivity())
                 .addToBackStack(null)
                 .commit()
-            viewModel.updateProfile(tvFullName,tvNickname,tvUsername,tvBiography,tvSkills,tvLocation,tvEmail,tvWebpage)
+            viewModel.updateProfile(tvFullName,tvBiography,tvSkills,tvLocation,tvEmail)
             true
         } else {
             super.onOptionsItemSelected(item)

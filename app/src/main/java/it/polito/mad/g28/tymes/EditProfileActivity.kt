@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -34,34 +34,80 @@ class EditProfileActivity : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         Log.d("list", "onviewcreated")
-        val etFullName = activity?.findViewById<EditText>(R.id.edit_user_fullname)
-        val etNickname = activity?.findViewById<EditText>(R.id.edit_user_nickname)
-        val etUsername = activity?.findViewById<EditText>(R.id.edit_user_username)
-        val etBiography = activity?.findViewById<EditText>(R.id.edit_user_bio)
-        val etSkills = activity?.findViewById<EditText>(R.id.edit_user_skills)
-        val etLocation = activity?.findViewById<EditText>(R.id.edit_user_location)
-        val etEmail = activity?.findViewById<EditText>(R.id.edit_user_email)
-        val etWebpage = activity?.findViewById<EditText>(R.id.edit_user_webpage)
-
-        viewModel.profileInfo.observe(viewLifecycleOwner){
-            etFullName?.setText(it["Full Name"])
-            etNickname?.setText(it["Nickname"])
-            etUsername?.setText(it["Username"])
-            etBiography?.setText(it["Biography"])
-            etSkills?.setText(it["Skills"])
-            etLocation?.setText(it["Location"])
-            etEmail?.setText(it["Email"])
-            etWebpage?.setText(it["Webpage"])
-
-        }
-
+        val etFullName = activity?.findViewById<TextInputEditText>(R.id.edit_user_fullname)
+        val etBiography = activity?.findViewById<TextInputEditText>(R.id.edit_user_bio)
+        val etSkills = activity?.findViewById<TextInputEditText>(R.id.edit_user_skills)
+        val etLocation = activity?.findViewById<TextInputEditText>(R.id.edit_user_location)
+        val etEmail = activity?.findViewById<TextInputEditText>(R.id.edit_user_email)
         val btn_add = activity?.findViewById<Button>(R.id.btn_add_skill)
         val chip1 = activity?.findViewById<Chip>(R.id.chip1)
         val chip2 = activity?.findViewById<Chip>(R.id.chip2)
         val chip3 = activity?.findViewById<Chip>(R.id.chip3)
-        var availableList = mutableListOf<Int>(1,2,3)
+        var skillList : List<String>
+        var availableList = mutableListOf<Int>()
 
-        Log.d("list", "$availableList")
+
+        etFullName?.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                etFullName.hideKeyboard()
+            }
+        }
+        etBiography?.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                etBiography.hideKeyboard()
+            }
+        }
+        etSkills?.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                etSkills.hideKeyboard()
+            }
+        }
+        etEmail?.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                etEmail.hideKeyboard()
+            }
+        }
+        etLocation?.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                etLocation.hideKeyboard()
+            }
+        }
+
+        viewModel.profileInfo.observe(viewLifecycleOwner){
+            etFullName?.setText(it["Full Name"])
+            etBiography?.setText(it["Biography"])
+            etSkills?.setText(it["Skills"])
+            etLocation?.setText(it["Location"])
+            etEmail?.setText(it["Email"])
+            skillList = etSkills?.text.toString().split(" ")
+            Log.d("lifecycle", "etSkills ${etSkills?.text.toString()}")
+            Log.d("lifecycle", "element at 0: ${skillList.elementAt(0)}")
+            chip1?.text = skillList.elementAt(0).filter { !it.isWhitespace() }
+            chip2?.text = skillList.elementAt(1).filter { !it.isWhitespace() }
+            chip3?.text = skillList.elementAt(2).filter { !it.isWhitespace() }
+            etSkills?.setText("")
+            if (! chip1?.text!!.isEmpty()){
+                chip1.visibility = View.VISIBLE
+            } else{
+                availableList.add(1)
+            }
+            if (! chip2?.text!!.isEmpty()){
+                chip2.visibility = View.VISIBLE
+            }else{
+                availableList.add(2)
+            }
+            if (! chip3?.text!!.isEmpty()){
+                chip3.visibility = View.VISIBLE
+            }else{
+                availableList.add(3)
+            }
+        }
+
+        if (availableList.isEmpty()){
+            btn_add?.setEnabled(false)
+        }
+
+        Log.d("lifecycle", "$availableList")
         btn_add?.setOnClickListener {
             val skill = activity?.findViewById<EditText>(R.id.edit_user_skills)
             val skillText = skill?.text.toString()
@@ -122,28 +168,28 @@ class EditProfileActivity : Fragment() {
         // When back button is pressed or we leave fragment through menu, fragment is on pause
         super.onPause()
 
-        val etFullName = activity?.findViewById<EditText>(R.id.edit_user_fullname)?.text.toString()
-        val etNickname = activity?.findViewById<EditText>(R.id.edit_user_nickname)?.text.toString()
-        val etUsername = activity?.findViewById<EditText>(R.id.edit_user_username)?.text.toString()
-        val etBiography = activity?.findViewById<EditText>(R.id.edit_user_bio)?.text.toString()
-        val etLocation = activity?.findViewById<EditText>(R.id.edit_user_location)?.text.toString()
-        val etEmail = activity?.findViewById<EditText>(R.id.edit_user_email)?.text.toString()
-        val etWebpage = activity?.findViewById<EditText>(R.id.edit_user_webpage)?.text.toString()
+        val etFullName = activity?.findViewById<TextInputEditText>(R.id.edit_user_fullname)?.text.toString()
+        val etBiography = activity?.findViewById<TextInputEditText>(R.id.edit_user_bio)?.text.toString()
+        val etLocation = activity?.findViewById<TextInputEditText>(R.id.edit_user_location)?.text.toString()
+        val etEmail = activity?.findViewById<TextInputEditText>(R.id.edit_user_email)?.text.toString()
         val chip1 = activity?.findViewById<Chip>(R.id.chip1)?.text.toString()
         val chip2 = activity?.findViewById<Chip>(R.id.chip2)?.text.toString()
         val chip3 = activity?.findViewById<Chip>(R.id.chip3)?.text.toString()
+        Log.d("lifecycle", "chip1: $chip1")
+        Log.d("lifecycle", "chip2: $chip2")
+        Log.d("lifecycle", "chip3: $chip3")
         val etSkills = "$chip1 $chip2 $chip3"
 
         // Update viewModel when leaving the edit profile fragment
         Log.d("lifecycle", "vm update")
-        viewModel.updateProfile(etFullName,etNickname,etUsername,etBiography,etSkills,etLocation,etEmail,etWebpage)
+        viewModel.updateProfile(etFullName,etBiography,etSkills,etLocation,etEmail)
 
         val currentUser = Firebase.auth.currentUser
         if (currentUser != null){
             // Persist user data to database when onBackPressed
             val database = Firebase.firestore
             val uid = currentUser.uid
-            val user = User(uid,etFullName, etNickname, etUsername, etBiography, etSkills, etLocation, etEmail, etWebpage)
+            val user = User(uid,etFullName, etBiography, etSkills, etLocation, etEmail)
             database.collection("users").document(uid).set(user)
                 .addOnSuccessListener {Log.d("lifecycle", "Successfully edited profile of $etFullName")}
                 .addOnFailureListener {Log.d("lifecycle", "Did not edit profile of $etFullName properly")}
@@ -173,5 +219,6 @@ class EditProfileActivity : Fragment() {
             super.onOptionsItemSelected(item)
         }
     }
+
 
 }

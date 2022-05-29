@@ -50,7 +50,6 @@ class TimeSlotDetailsFragment : Fragment() {
 
 
         viewModel.adInfo.observe(viewLifecycleOwner){
-            Log.d("lifecycle", "observing vm")
             tvAuthor?.text = it["Author"]
             tvSkill?.text = it["Skill"]
             tvAvailability?.text = it["Availability"]
@@ -79,13 +78,10 @@ class TimeSlotDetailsFragment : Fragment() {
                     val map = document?.data
                     profileVM.updateProfile(
                         map?.get("fullname").toString(),
-                        map?.get("nickname").toString(),
-                        map?.get("username").toString(),
                         map?.get("biography").toString(),
                         map?.get("skills").toString(),
                         map?.get("location").toString(),
-                        map?.get("email").toString(),
-                        map?.get("webpage").toString(), )
+                        map?.get("email").toString(),)
                 }
         }
 
