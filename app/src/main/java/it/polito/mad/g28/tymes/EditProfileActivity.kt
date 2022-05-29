@@ -1,13 +1,17 @@
 package it.polito.mad.g28.tymes
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
+import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.chip.Chip
@@ -15,11 +19,14 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
 
 
 class EditProfileActivity : Fragment() {
 
     private val viewModel : ProfileVM by activityViewModels()
+    private val PICK_IMAGE: Int = 80
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,31 +50,41 @@ class EditProfileActivity : Fragment() {
         val chip1 = activity?.findViewById<Chip>(R.id.chip1)
         val chip2 = activity?.findViewById<Chip>(R.id.chip2)
         val chip3 = activity?.findViewById<Chip>(R.id.chip3)
+        val editPictureButton = activity?.findViewById<ImageButton>(R.id.edit_picture_button)
+
         var skillList : List<String>
-        var availableList = mutableListOf<Int>()
+        val availableList = mutableListOf<Int>()
 
 
-        etFullName?.setOnFocusChangeListener { v, hasFocus ->
+        editPictureButton?.setOnClickListener {
+            Log.d("lifecycle", "adding button")
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
+        }
+
+        etFullName?.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 etFullName.hideKeyboard()
             }
         }
-        etBiography?.setOnFocusChangeListener { v, hasFocus ->
+        etBiography?.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 etBiography.hideKeyboard()
             }
         }
-        etSkills?.setOnFocusChangeListener { v, hasFocus ->
+        etSkills?.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 etSkills.hideKeyboard()
             }
         }
-        etEmail?.setOnFocusChangeListener { v, hasFocus ->
+        etEmail?.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 etEmail.hideKeyboard()
             }
         }
-        etLocation?.setOnFocusChangeListener { v, hasFocus ->
+        etLocation?.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 etLocation.hideKeyboard()
             }
@@ -82,21 +99,21 @@ class EditProfileActivity : Fragment() {
             skillList = etSkills?.text.toString().split(" ")
             Log.d("lifecycle", "etSkills ${etSkills?.text.toString()}")
             Log.d("lifecycle", "element at 0: ${skillList.elementAt(0)}")
-            chip1?.text = skillList.elementAt(0).filter { !it.isWhitespace() }
-            chip2?.text = skillList.elementAt(1).filter { !it.isWhitespace() }
-            chip3?.text = skillList.elementAt(2).filter { !it.isWhitespace() }
+            if(skillList.isNotEmpty()) chip1?.text = skillList.elementAt(0).filter { !it.isWhitespace() }
+            if(skillList.size>1)chip2?.text = skillList.elementAt(1).filter { !it.isWhitespace() }
+            if(skillList.size>2)chip3?.text = skillList.elementAt(2).filter { !it.isWhitespace() }
             etSkills?.setText("")
-            if (! chip1?.text!!.isEmpty()){
+            if (chip1?.text!!.isNotEmpty()){
                 chip1.visibility = View.VISIBLE
             } else{
                 availableList.add(1)
             }
-            if (! chip2?.text!!.isEmpty()){
+            if (chip2?.text!!.isNotEmpty()){
                 chip2.visibility = View.VISIBLE
             }else{
                 availableList.add(2)
             }
-            if (! chip3?.text!!.isEmpty()){
+            if (chip3?.text!!.isNotEmpty()){
                 chip3.visibility = View.VISIBLE
             }else{
                 availableList.add(3)
@@ -109,9 +126,8 @@ class EditProfileActivity : Fragment() {
 
         Log.d("lifecycle", "$availableList")
         btn_add?.setOnClickListener {
-            val skill = activity?.findViewById<EditText>(R.id.edit_user_skills)
-            val skillText = skill?.text.toString()
-            if (skillText == null || skillText.isEmpty()){
+            val skillText = etSkills?.text.toString()
+            if (skillText.isEmpty()){
                 Toast.makeText(context, "Please enter a skill!", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
@@ -139,7 +155,7 @@ class EditProfileActivity : Fragment() {
             } else{
                 btn_add.setEnabled(true)
             }
-            skill?.setText("")
+            etSkills?.setText("")
             it.hideKeyboard()
         }
 
@@ -164,6 +180,7 @@ class EditProfileActivity : Fragment() {
 
     }
 
+    @SuppressLint("WrongThread")
     override fun onPause() {
         // When back button is pressed or we leave fragment through menu, fragment is on pause
         super.onPause()
@@ -175,21 +192,44 @@ class EditProfileActivity : Fragment() {
         val chip1 = activity?.findViewById<Chip>(R.id.chip1)?.text.toString()
         val chip2 = activity?.findViewById<Chip>(R.id.chip2)?.text.toString()
         val chip3 = activity?.findViewById<Chip>(R.id.chip3)?.text.toString()
-        Log.d("lifecycle", "chip1: $chip1")
-        Log.d("lifecycle", "chip2: $chip2")
-        Log.d("lifecycle", "chip3: $chip3")
         val etSkills = "$chip1 $chip2 $chip3"
 
+        val userPicture = activity?.findViewById<ImageView>(R.id.user_picture)
+        val editBitmap: Bitmap = Bitmap.createBitmap(userPicture!!.drawToBitmap())
+        val editBitStream = ByteArrayOutputStream()
+        editBitmap.compress(Bitmap.CompressFormat.PNG,100, editBitStream)
+        val data = editBitStream.toByteArray()
+
+
         // Update viewModel when leaving the edit profile fragment
-        Log.d("lifecycle", "vm update")
         viewModel.updateProfile(etFullName,etBiography,etSkills,etLocation,etEmail)
 
         val currentUser = Firebase.auth.currentUser
         if (currentUser != null){
+
             // Persist user data to database when onBackPressed
             val database = Firebase.firestore
             val uid = currentUser.uid
             val user = User(uid,etFullName, etBiography, etSkills, etLocation, etEmail)
+            val storageRef = Firebase.storage.reference.child("${currentUser.uid}/profilePic.jpg")
+
+
+            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+            with(sharedPref!!.edit()){
+                putString("Author ID", currentUser.uid)
+                putString("Picture", Base64.encodeToString(data, Base64.DEFAULT))
+                Log.d("lifecycle", "saved image to preferences")
+                apply()
+            }
+
+            val uploadTask = storageRef.putBytes(data)
+            uploadTask.addOnFailureListener {
+                // Handle unsuccessful uploads
+            }.addOnSuccessListener {
+                // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+                Log.d("lifecycle", "successfully added image to Storage")
+
+            }
             database.collection("users").document(uid).set(user)
                 .addOnSuccessListener {Log.d("lifecycle", "Successfully edited profile of $etFullName")}
                 .addOnFailureListener {Log.d("lifecycle", "Did not edit profile of $etFullName properly")}
@@ -201,14 +241,26 @@ class EditProfileActivity : Fragment() {
         inputManager.hideSoftInputFromWindow(windowToken, 0)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE){
+            val userPicture = activity?.findViewById<ImageView>(R.id.user_picture)
+
+            userPicture?.setImageURI(data?.data) // handle chosen image
+
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menubar, menu)
         return super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @SuppressLint("WrongThread")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         return if (item.itemId==R.id.edit_pencil_button) {
+
             val fragmentTransaction = parentFragmentManager.beginTransaction()
             fragmentTransaction
                 .replace(R.id.fragmentContainerView, ShowProfileActivity())
@@ -219,6 +271,5 @@ class EditProfileActivity : Fragment() {
             super.onOptionsItemSelected(item)
         }
     }
-
 
 }

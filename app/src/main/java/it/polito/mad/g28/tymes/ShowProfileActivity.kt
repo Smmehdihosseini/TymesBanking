@@ -1,16 +1,23 @@
 package it.polito.mad.g28.tymes
 
+import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class ShowProfileActivity : Fragment() {
 
     private val viewModel : ProfileVM by activityViewModels()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,8 +38,25 @@ class ShowProfileActivity : Fragment() {
         val tvLocation = activity?.findViewById<TextView>(R.id.user_location)
         val tvEmail = activity?.findViewById<TextView>(R.id.user_email)
 
-        val user = Firebase.auth.currentUser
 
+
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val authorID = sharedPref?.getString("Author ID", null)
+        val storageRef = Firebase.storage.reference.child("${authorID}/profilePic.jpg")
+
+        Thread {
+            Thread.sleep(2000)
+            val ONE_MEGABYTE: Long = 1024 * 1024
+            storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
+                // Data for "images/island.jpg" is returned, use this as needed
+                val userPicture = activity?.findViewById<ImageView>(R.id.user_picture)
+                userPicture?.setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
+                Log.d("lifecycle", "done with image")
+            }.addOnFailureListener {
+                // Handle any errors
+            }
+        }.start()
+        val user = Firebase.auth.currentUser
         if (user != null){
             // User is authenticated
             viewModel.profileInfo.observe(viewLifecycleOwner){
@@ -46,7 +70,12 @@ class ShowProfileActivity : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menubar, menu)
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val user = Firebase.auth.currentUser
+        if (sharedPref?.getString("Author ID", "notanid") == user?.uid){
+            inflater.inflate(R.menu.menubar, menu)
+        }
+
         return super.onCreateOptionsMenu(menu, inflater)
     }
 

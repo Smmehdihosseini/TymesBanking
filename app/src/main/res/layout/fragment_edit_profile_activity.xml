@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".EditProfileActivity"
     android:focusableInTouchMode="true"
     android:clickable="true"
-    android:focusable="true"
-    tools:context=".EditProfileActivity">
+    android:focusable="true">
 
 
     <ImageButton
@@ -20,21 +20,24 @@
         app:layout_constraintBottom_toTopOf="@+id/user_picture"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_camera"
         app:tint="#FFEB3B"
         tools:ignore="ImageContrastCheck" />
 
     <ImageView
         android:id="@+id/user_picture"
-        android:layout_width="match_parent"
-        android:layout_height="156dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_weight="0.2"
         android:contentDescription="@string/user_picture"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_picture_button"
         tools:ignore="TextContrastCheck"
-        tools:srcCompat="@drawable/ic_launcher_foreground"
-        app:layout_constraintBottom_toBottomOf="@+id/guideline">
+        tools:srcCompat="@drawable/ic_launcher_foreground">
 
     </ImageView>
 

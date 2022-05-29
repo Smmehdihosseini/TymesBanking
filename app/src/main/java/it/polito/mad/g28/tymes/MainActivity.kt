@@ -1,12 +1,11 @@
 package it.polito.mad.g28.tymes
 
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -60,6 +59,14 @@ class MainActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener {
 
             it.isChecked = true
+            val currentUser = Firebase.auth.currentUser
+            val sharedPref = getPreferences(Context.MODE_PRIVATE)
+            with(sharedPref!!.edit()){
+                putString("Author ID", currentUser?.uid)
+                apply()
+            }
+            Log.d("lifecycle", "Applying Author ID in shared preferences: ${currentUser?.uid}")
+
 
             when(it.itemId){
 
@@ -195,7 +202,6 @@ class MainActivity : AppCompatActivity() {
                 try {
                     val credential = oneTapClient!!.getSignInCredentialFromIntent(data)
                     val idToken = credential.googleIdToken
-                    val username = credential.id
                     val password = credential.password
                     when {
                         idToken != null -> {
