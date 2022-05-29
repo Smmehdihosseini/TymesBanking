@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".TimeSlotListFragment">
 
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp"
-        tools:layout_editor_absoluteX="-35dp"
-        tools:layout_editor_absoluteY="42dp" />
+        tools:layout_editor_absoluteX="0dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
