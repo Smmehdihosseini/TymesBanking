@@ -1,33 +1,27 @@
 package it.polito.mad.g28.tymes
 
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
-import android.widget.Toast
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import java.util.*
 
 
 class SkillRecyclerViewAdapter (private val skillList: ArrayList<SkillItem>, private val onSkillClick: (skill: SkillItem) -> Unit):
     RecyclerView.Adapter<SkillRecyclerViewAdapter.ViewHolder>(), Filterable {
 
-    private val skillListFull = ArrayList<SkillItem>(skillList)
+    private val skillListFull = ArrayList(skillList)
 
     inner class ViewHolder(v:View ): RecyclerView.ViewHolder(v) {
 
-        val skill: TextView = v.findViewById(it.polito.mad.g28.tymes.R.id.item_skill)
+        val skill: TextView = v.findViewById(R.id.item_skill)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val vg = LayoutInflater.from(parent.context).inflate(it.polito.mad.g28.tymes.R.layout.skill_item, parent, false)
+        val vg = LayoutInflater.from(parent.context).inflate(R.layout.skill_item, parent, false)
         return ViewHolder(vg)
     }
 
@@ -43,12 +37,12 @@ class SkillRecyclerViewAdapter (private val skillList: ArrayList<SkillItem>, pri
     override fun getItemCount(): Int = skillList.size
 
 
-    override fun getFilter(): Filter? {
+    override fun getFilter(): Filter {
         return exampleFilter
     }
 
     private val exampleFilter: Filter = object : Filter() {
-        override fun performFiltering(constraint: CharSequence?): FilterResults? {
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
             val filteredList: MutableList<SkillItem> = ArrayList()
             if (constraint == null || constraint.isEmpty()) {
                 filteredList.addAll(skillListFull)

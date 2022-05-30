@@ -16,7 +16,7 @@ class MyAdRecyclerViewAdapter(
         val price: TextView = v.findViewById(R.id.rvitem_price)
         val date: TextView = v.findViewById(R.id.rvitem_date)
         val location: TextView = v.findViewById(R.id.rvitem_location)
-        val btn : Button = v.findViewById(R.id.edit_ad_button)
+//        val btn : Button = v.findViewById(R.id.edit_ad_button)
 
         override fun toString(): String {
             return "$price, $date, $location"
@@ -34,9 +34,9 @@ class MyAdRecyclerViewAdapter(
         holder.location.text = item.location
         holder.date.text = item.date
 
-        holder.btn.setOnClickListener {
-            onAdClick(item, true)
-        }
+//        holder.btn.setOnClickListener {
+//            onAdClick(item, true)
+//        }
         holder.itemView.setOnClickListener{
             onAdClick.invoke(item, false)
         }

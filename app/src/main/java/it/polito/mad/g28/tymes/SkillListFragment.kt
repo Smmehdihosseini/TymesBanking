@@ -1,7 +1,6 @@
 package it.polito.mad.g28.tymes
 
 import android.content.Context
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -9,11 +8,10 @@ import android.view.inputmethod.EditorInfo
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlin.concurrent.thread
 
 
 class SkillListFragment : Fragment() {
@@ -54,7 +52,7 @@ class SkillListFragment : Fragment() {
                 }
 
                 adapter = SkillRecyclerViewAdapter(ArrayList(skillList)) {skillItem ->  onSkillClick(skillItem)}
-                val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
+                val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
 
                 rv?.layoutManager = layoutManager
                 rv?.adapter = adapter
@@ -70,6 +68,9 @@ class SkillListFragment : Fragment() {
         val searchItem: MenuItem = menu.findItem(R.id.action_search)
         val searchView: SearchView = searchItem.getActionView() as SearchView
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE)
+        if (!searchView.hasFocus()){
+            searchView.clearFocus()
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
 
@@ -95,7 +96,7 @@ class SkillListFragment : Fragment() {
     private fun onSkillClick(skill: SkillItem) {
 
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)?: return
-        with(sharedPref!!.edit()){
+        with(sharedPref.edit()){
             putString("skill", skill.skill)
             apply()
         }

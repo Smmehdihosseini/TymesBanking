@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class TimeSlotListFragment : Fragment() {
@@ -24,6 +25,7 @@ class TimeSlotListFragment : Fragment() {
     private val vm : AdVM by activityViewModels()
     var ads = ArrayList<Ad>()
     var adapter = MyAdRecyclerViewAdapter(ads) { advert, edit -> onAdClick(advert, true) }
+    val itemsOrder = hashMapOf<String, Boolean>("Date" to false, "Price" to false, "Location" to false)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,7 +77,7 @@ class TimeSlotListFragment : Fragment() {
         fab?.setOnClickListener {
 
             vm.updateAd("", skill, "Available", "", "", "", "")
-            with(sharedPref!!.edit()){
+            with(sharedPref.edit()){
                 putString("Ad ID", null)
                 apply()
             }
@@ -95,15 +97,29 @@ class TimeSlotListFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
+        Log.d("lifecycle", "onoptionsitemselected")
         val items = arrayOf("Date", "Price", "Location")
 
+
         MaterialAlertDialogBuilder(requireContext())
+
             .setTitle("Order by:")
+            .setIcon(R.drawable.ic_swap_light)
             .setItems(items) { _, which ->
                 when (which){
-                    0 -> sortByDate(true)
-                    1 -> sortByPrice(true)
-                    2 -> sortByLocation(true)
+
+                    0 -> {
+                        sortByDate(itemsOrder.get("Date")!!)
+                        itemsOrder.put("Date", !(itemsOrder.get("Date")!!))
+                    }
+                    1 -> {
+                        sortByPrice(itemsOrder.get("Price")!!)
+                        itemsOrder.put("Price", !(itemsOrder.get("Price")!!))
+                    }
+                    2 -> {
+                        sortByLocation(itemsOrder.get("Location")!!)
+                        itemsOrder.put("Location", !(itemsOrder.get("Location")!!))
+                    }
                 }
             }
             .show()
@@ -111,31 +127,31 @@ class TimeSlotListFragment : Fragment() {
         return true
     }
 
-    fun sortByLocation(ascending: Boolean){
-        if (ascending) {
-            ads.sortWith(compareBy{ it.location })
+    fun sortByLocation(currentlyAscending: Boolean){
+        if (currentlyAscending) {
+            ads.sortWith(compareByDescending{ it.location })
         } else{
-            ads.sortWith(compareByDescending { it.location })
+            ads.sortWith(compareBy { it.location })
         }
         adapter.notifyDataSetChanged()
     }
 
-    fun sortByPrice(ascending: Boolean){
-        if (ascending) {
-            ads.sortWith(compareBy { it.price.toInt() })
-        } else{
+    fun sortByPrice(currentlyAscending: Boolean){
+        if (currentlyAscending) {
             ads.sortWith(compareByDescending { it.price.toInt() })
+        } else{
+            ads.sortWith(compareBy { it.price.toInt() })
         }
         adapter.notifyDataSetChanged()
     }
 
-    fun sortByDate(ascending: Boolean){
+    fun sortByDate(currentlyAscending: Boolean){
 
         val sdf = SimpleDateFormat("dd/MM/yyyy")
-        if (ascending) {
-            ads.sortWith(compareBy { sdf.parse(it.date)})
+        if (currentlyAscending) {
+            ads.sortWith(compareByDescending { sdf.parse(it.date)})
         } else{
-            ads.sortWith(compareByDescending { sdf.parse(it.date) })
+            ads.sortWith(compareBy { sdf.parse(it.date) })
         }
         adapter.notifyDataSetChanged()
     }
