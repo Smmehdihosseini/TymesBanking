@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.GlobalScope
@@ -57,6 +58,7 @@ class TimeSlotListFragment : Fragment() {
                     val data = doc.data
                     val ad = Ad(
                         data.get("adID").toString(),
+                        data.get("author").toString(),
                         data.get("authorID").toString(),
                         data.get("skill").toString(),
                         data.get("availability").toString(),
@@ -75,8 +77,10 @@ class TimeSlotListFragment : Fragment() {
 
         val fab: View? = activity?.findViewById(R.id.fab)
         fab?.setOnClickListener {
+            val currentUser = Firebase.auth.currentUser
+            val name = currentUser?.displayName ?: ""
 
-            vm.updateAd("", skill, "Available", "", "", "", "")
+            vm.updateAd(name, skill, "Available", "", "", "", "")
             with(sharedPref.edit()){
                 putString("Ad ID", null)
                 apply()
@@ -138,9 +142,9 @@ class TimeSlotListFragment : Fragment() {
 
     fun sortByPrice(currentlyAscending: Boolean){
         if (currentlyAscending) {
-            ads.sortWith(compareByDescending { it.price.toInt() })
+            ads.sortWith(compareByDescending { it.price.filter { it -> it.isDigit() }.toInt() })
         } else{
-            ads.sortWith(compareBy { it.price.toInt() })
+            ads.sortWith(compareBy { it.price.filter { it -> it.isDigit() }.toInt() })
         }
         adapter.notifyDataSetChanged()
     }
@@ -162,7 +166,6 @@ class TimeSlotListFragment : Fragment() {
         val database = Firebase.firestore
         val docRef = database.collection("skills").document(ad.skill).collection(ad.skill)
             .document(ad.adID)
-        Log.d("lifecycle", "got ref")
 
         runBlocking {
             GlobalScope.launch{
@@ -175,17 +178,15 @@ class TimeSlotListFragment : Fragment() {
                     return@addSnapshotListener
                 }
                 if (document != null) {
-                    Log.d("lifecycle", "doc is not null")
                     val map = document.data
                     vm.updateAd(
-                        map?.get("authorID").toString(),
+                        map?.get("author").toString(),
                         map?.get("skill").toString(),
                         map?.get("availability").toString(),
                         map?.get("description").toString(),
                         map?.get("price").toString(),
                         map?.get("location").toString(),
                         map?.get("date").toString())
-                    Log.d("lifecycle", "DocumentSnapshot data: ${document.data}")
 
 
                 } else {
@@ -199,7 +200,6 @@ class TimeSlotListFragment : Fragment() {
         val fragmentTransaction = parentFragmentManager.beginTransaction()
 
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-        Log.d("lifecycle", "authorid in TSlist data: ${ad.authorID}")
         with(sharedPref!!.edit()){
             putString("Ad ID", ad.adID)
             putString("Author ID", ad.authorID)

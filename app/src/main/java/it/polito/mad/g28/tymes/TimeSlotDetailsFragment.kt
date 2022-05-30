@@ -7,8 +7,8 @@ import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
@@ -35,10 +35,8 @@ class TimeSlotDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-        var adID = sharedPref?.getString("Ad ID", null)
-        var authorID = sharedPref?.getString("Author ID", null)
-
-        Log.d("lifecycle", "direct author id: ${authorID.toString()}")
+        val adID = sharedPref?.getString("Ad ID", null)
+        val authorID = sharedPref?.getString("Author ID", null)
 
         val tvAuthor = activity?.findViewById<TextView>(R.id.ad_author)
         val tvSkill = activity?.findViewById<TextView>(R.id.ad_skill)
@@ -61,7 +59,7 @@ class TimeSlotDetailsFragment : Fragment() {
 
         tvAuthor?.setOnClickListener{
 
-            viewLifecycleOwner.lifecycleScope.launch(){
+            viewLifecycleOwner.lifecycleScope.launch{
                 delay(500)
 //                (activity as MainActivity).changeFrag(ShowProfileActivity(), "Profile")
                 val fragmentTransaction = parentFragmentManager.beginTransaction()
@@ -70,12 +68,12 @@ class TimeSlotDetailsFragment : Fragment() {
                     .addToBackStack(null)
                     .commit()
             }
+            Log.d("lifecycle", "passing author id: $authorID")
             database.collection("users").document(authorID.toString()).get()
                 .addOnSuccessListener { document ->
-                    Log.d("lifecycle", "insnapshotlistenner: ${document?.data}")
-                    Log.d("lifecycle", "author id: ${authorID.toString()}")
 
                     val map = document?.data
+                    Log.d("lifecycle", "fullname is ${map?.get("fullname").toString()}")
                     profileVM.updateProfile(
                         map?.get("fullname").toString(),
                         map?.get("biography").toString(),
@@ -88,7 +86,11 @@ class TimeSlotDetailsFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menubar, menu)
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val user = Firebase.auth.currentUser
+        if (sharedPref?.getString("Author ID", "notanid") == user?.uid){
+            inflater.inflate(R.menu.menubar, menu)
+        }
         return super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -118,6 +120,29 @@ class TimeSlotDetailsFragment : Fragment() {
         } else {
             super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val tvAuthor = activity?.findViewById<TextView>(R.id.ad_author)
+        val tvSkill = activity?.findViewById<TextView>(R.id.ad_skill)
+        val tvAvailability = activity?.findViewById<TextView>(R.id.ad_availability)
+        val tvDescription = activity?.findViewById<TextView>(R.id.ad_description)
+        val tvLocation = activity?.findViewById<TextView>(R.id.ad_location)
+        val tvPrice = activity?.findViewById<TextView>(R.id.ad_price)
+        val tvDate = activity?.findViewById<TextView>(R.id.ad_date)
+
+        val re = Regex("[^0-9.]")
+        var price = tvPrice?.text.toString()
+        price = re.replace(price, "")
+        viewModel.updateAd(
+            tvAuthor?.text.toString(),
+            tvSkill?.text.toString(),
+            tvAvailability?.text.toString(),
+            tvDescription?.text.toString(),
+            price,
+            tvLocation?.text.toString(),
+            tvDate?.text.toString())
     }
 
 }

@@ -20,6 +20,14 @@
     <string name="edit_user_location">Your Location, e.g. Torino, Italy</string>
     <string name="edit_user_email">Your E-Mail, e.g. davetymes@polito.it</string>
     <string name="edit_user_webpage">Your Webpage, e.g. Github, LinkedIn, …</string>
+    <string name="edit_ad_skill">Service, e.g. Cooking</string>
+    <string name="edit_ad_author">Author</string>
+    <string name="edit_ad_description">Brief Description</string>
+    <string name="edit_ad_price">Service Reward (TYC)</string>
+    <string name="edit_ad_location">Location, e.g. Torino, Italy</string>
+    <string name="edit_ad_date">Date</string>
+
+
     <string name="edit_pencil_button">edit</string>
     <string name="edit_context_menu_select">Select Picture From Gallery</string>
     <string name="edit_context_menu_camera">Take Picture Using The Camera</string>

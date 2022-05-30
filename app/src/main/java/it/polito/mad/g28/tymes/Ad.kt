@@ -2,6 +2,7 @@ package it.polito.mad.g28.tymes
 
 data class Ad(
     val adID: String,
+    val author: String,
     val authorID: String,
     val skill: String,
     val availability: String,

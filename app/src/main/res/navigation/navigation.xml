@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation.xml"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/skillListFragment">
 
     <fragment
         android:id="@+id/showProfileActivity"
@@ -62,7 +62,7 @@
         tools:layout="@layout/fragment_clan_fragement" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="it.polito.mad.g28.tymes.settingsFragment"
+        android:name="it.polito.mad.g28.tymes.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
@@ -80,4 +80,16 @@
         android:name="it.polito.mad.g28.tymes.CompactAdFragment"
         android:label="fragment_item_list"
         tools:layout="@layout/fragment_item_list" />
+    <fragment
+        android:id="@+id/skillListFragment"
+        android:name="it.polito.mad.g28.tymes.SkillListFragment"
+        android:label="fragment_skill_list"
+        tools:layout="@layout/fragment_skill_list">
+        <action
+            android:id="@+id/action_skillListFragment_to_timeSlotEditFragment"
+            app:destination="@id/timeSlotEditFragment" />
+        <action
+            android:id="@+id/action_skillListFragment_to_compactAdFragment"
+            app:destination="@id/compactAdFragment" />
+    </fragment>
 </navigation>

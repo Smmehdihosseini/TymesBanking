@@ -56,16 +56,14 @@ class ShowProfileActivity : Fragment() {
                 // Handle any errors
             }
         }.start()
-        val user = Firebase.auth.currentUser
-        if (user != null){
-            // User is authenticated
-            viewModel.profileInfo.observe(viewLifecycleOwner){
-                tvFullName?.text = it["Full Name"]
-                tvBiography?.text = it["Biography"]
-                tvSkills?.text = it["Skills"]
-                tvLocation?.text = it["Location"]
-                tvEmail?.text = it["Email"]
-            }
+
+        viewModel.profileInfo.observe(viewLifecycleOwner){
+            tvFullName?.text = it["Full Name"]
+            tvBiography?.text = it["Biography"]
+            tvSkills?.text = it["Skills"]
+            tvLocation?.text = it["Location"]
+            tvEmail?.text = it["Email"]
+
         }
     }
 

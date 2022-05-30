@@ -8,6 +8,7 @@ class AdVM: ViewModel() {
 
     init {
         adInfo.value = HashMap()
+        adInfo.value?.put("Author ID", "")
         adInfo.value?.put("Author", "")
         adInfo.value?.put("Skill", "")
         adInfo.value?.put("Availability", "Available")

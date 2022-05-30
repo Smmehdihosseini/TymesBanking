@@ -9,12 +9,13 @@ import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
-import kotlin.collections.HashMap
-import kotlin.concurrent.thread
+import android.app.Activity
+import android.view.inputmethod.InputMethodManager
 
 
 class TimeSlotEditFragment : Fragment() {
@@ -33,14 +34,40 @@ class TimeSlotEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val etAuthor = activity?.findViewById<EditText>(R.id.edit_ad_author)
-        val etSkill = activity?.findViewById<EditText>(R.id.edit_ad_skill)
+        val etAuthor = activity?.findViewById<TextInputEditText>(R.id.edit_ad_author)
+        val etSkill = activity?.findViewById<TextInputEditText>(R.id.edit_ad_skill)
         val etAvailability = activity?.findViewById<TextView>(R.id.edit_ad_availability)
-        val etDescription = activity?.findViewById<EditText>(R.id.edit_ad_description)
-        val etLocation = activity?.findViewById<EditText>(R.id.edit_ad_location)
-        val etPrice = activity?.findViewById<EditText>(R.id.edit_ad_price)
-        val etDate = activity?.findViewById<EditText>(R.id.edit_ad_date)
+        val etDescription = activity?.findViewById<TextInputEditText>(R.id.edit_ad_description)
+        val etLocation = activity?.findViewById<TextInputEditText>(R.id.edit_ad_location)
+        val etPrice = activity?.findViewById<TextInputEditText>(R.id.edit_ad_price)
+        val etDate = activity?.findViewById<TextInputEditText>(R.id.edit_ad_date)
         val btnDatetime = activity?.findViewById<Button>(R.id.datepicker_button)
+
+        etAuthor?.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                etAuthor.hideKeyboard()
+            }
+        }
+        etSkill?.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                etSkill.hideKeyboard()
+            }
+        }
+        etDescription?.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                etDescription.hideKeyboard()
+            }
+        }
+        etLocation?.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                etLocation.hideKeyboard()
+            }
+        }
+        etPrice?.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                etPrice.hideKeyboard()
+            }
+        }
 
 
         viewModel.adInfo.observe(viewLifecycleOwner){
@@ -53,7 +80,7 @@ class TimeSlotEditFragment : Fragment() {
             etDate?.setText(it["Date"])
         }
 
-        btnDatetime?.setOnClickListener(View.OnClickListener {
+        btnDatetime?.setOnClickListener{
             val cldr: Calendar = Calendar.getInstance()
             val day: Int = cldr.get(Calendar.DAY_OF_MONTH)
             val month: Int = cldr.get(Calendar.MONTH)
@@ -73,7 +100,7 @@ class TimeSlotEditFragment : Fragment() {
 
             val timepicker = TimePickerDialog(
                 view.context,
-                {_, hourOfDay: Int, minute: Int -> etDate?.setText(etDate?.text.toString() + " " + hourOfDay.toString()+":"+minute.toString())},
+                {_, hourOfDay: Int, minute: Int -> etDate?.setText(etDate.text.toString() + " " + hourOfDay.toString()+":"+minute.toString())},
                 hourOfDay,
                 minute,
                 is24HourView
@@ -82,7 +109,7 @@ class TimeSlotEditFragment : Fragment() {
             etDate?.setText("")
             timepicker.show()
             datePicker.show()
-        })
+        }
 
 
     }
@@ -90,15 +117,17 @@ class TimeSlotEditFragment : Fragment() {
     override fun onPause() {
         super.onPause()
 
-        val etAuthor = activity?.findViewById<EditText>(R.id.edit_ad_author)?.text.toString()
-        val etSkill = activity?.findViewById<EditText>(R.id.edit_ad_skill)?.text.toString()
+        val etAuthor = activity?.findViewById<TextInputEditText>(R.id.edit_ad_author)?.text.toString()
+        val etSkill = activity?.findViewById<TextInputEditText>(R.id.edit_ad_skill)?.text.toString()
         val etAvailability = activity?.findViewById<TextView>(R.id.edit_ad_availability)?.text.toString()
-        val etDescription = activity?.findViewById<EditText>(R.id.edit_ad_description)?.text.toString()
-        val etLocation = activity?.findViewById<EditText>(R.id.edit_ad_location)?.text.toString()
-        val etPrice = activity?.findViewById<EditText>(R.id.edit_ad_price)?.text.toString()
-        val etDate = activity?.findViewById<EditText>(R.id.edit_ad_date)?.text.toString()
+        val etDescription = activity?.findViewById<TextInputEditText>(R.id.edit_ad_description)?.text.toString()
+        val etLocation = activity?.findViewById<TextInputEditText>(R.id.edit_ad_location)?.text.toString()
+        val etPrice = activity?.findViewById<TextInputEditText>(R.id.edit_ad_price)?.text.toString()
+        val etDate = activity?.findViewById<TextInputEditText>(R.id.edit_ad_date)?.text.toString()
 
-        viewModel.updateAd(etAuthor, etSkill, etAvailability, etDescription, etPrice, etLocation, etDate)
+
+
+        viewModel.updateAd(etAuthor, etSkill, etAvailability, etDescription, etPrice + " TYC", etLocation, etDate)
 
         val database = Firebase.firestore
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
@@ -116,20 +145,25 @@ class TimeSlotEditFragment : Fragment() {
             apply()
         }
         val authorID = Firebase.auth.currentUser!!.uid
+        val author = Firebase.auth.currentUser!!.displayName ?: "Anonymous"
 
-        val ad = Ad(adID, authorID, etSkill, etAvailability, etDescription, etLocation, etPrice, etDate)
+        val re = Regex("[^0-9.]")
+        var price = etPrice
+        price = re.replace(price, "")
+
+        val ad = Ad(adID, author, authorID, etSkill, etAvailability, etDescription, etLocation, price + " TYC", etDate)
         database.collection("skills").document(etSkill).set(SkillItem(etSkill))
-            .addOnSuccessListener {Log.d("lifecycle", "Successfully added $etSkill")}
-            .addOnFailureListener {Log.d("lifecycle", "Did not successfully add $etSkill")}
+//            .addOnSuccessListener {Log.d("lifecycle", "Successfully added $etSkill")}
+//            .addOnFailureListener {Log.d("lifecycle", "Did not successfully add $etSkill")}
         database.collection("skills").document(etSkill).collection(etSkill).document(adID).set(ad)
-            .addOnSuccessListener {Log.d("lifecycle", "Successfully edited ad with id: $adID")}
-            .addOnFailureListener {Log.d("lifecycle", "Did not edit the ad: $adID properly")}
+//            .addOnSuccessListener {Log.d("lifecycle", "Successfully edited ad with id: $adID")}
+//            .addOnFailureListener {Log.d("lifecycle", "Did not edit the ad: $adID properly")}
 
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menubar_save, menu)
+        inflater.inflate(R.menu.menubar, menu)
         return super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -146,6 +180,11 @@ class TimeSlotEditFragment : Fragment() {
         } else{
             super.onOptionsItemSelected(item)
         }
+    }
+
+    fun View.hideKeyboard() {
+        val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(windowToken, 0)
     }
 
 }
