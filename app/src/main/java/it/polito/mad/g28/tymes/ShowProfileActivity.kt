@@ -1,73 +1,80 @@
 package it.polito.mad.g28.tymes
 
+import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import android.widget.TextView
+import androidx.core.view.drawToBitmap
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import it.polito.mad.g28.tymes.databinding.ActivityMainBinding
+import it.polito.mad.g28.tymes.databinding.FragmentShowProfileActivityBinding
+import java.io.ByteArrayOutputStream
+import java.io.File
 
 class ShowProfileActivity : Fragment() {
 
     private val viewModel : ProfileVM by activityViewModels()
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_show_profile_activity, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.d("lifecycle", "onviewcreated")
 
         val tvFullName = activity?.findViewById<TextView>(R.id.user_fullname)
         val tvBiography = activity?.findViewById<TextView>(R.id.user_bio)
         val tvSkills = activity?.findViewById<TextView>(R.id.user_skills)
         val tvLocation = activity?.findViewById<TextView>(R.id.user_location)
         val tvEmail = activity?.findViewById<TextView>(R.id.user_email)
+        val userPicture = activity?.findViewById<ImageView>(R.id.user_picture)
 
-
-
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-        val authorID = sharedPref?.getString("Author ID", null)
-        val storageRef = Firebase.storage.reference.child("${authorID}/profilePic.jpg")
-
-        Thread {
-            Thread.sleep(2000)
-            val ONE_MEGABYTE: Long = 1024 * 1024
-            storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
-                // Data for "images/island.jpg" is returned, use this as needed
-                val userPicture = activity?.findViewById<ImageView>(R.id.user_picture)
-                userPicture?.setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
-                Log.d("lifecycle", "done with image")
-            }.addOnFailureListener {
-                // Handle any errors
-            }
-        }.start()
 
         viewModel.profileInfo.observe(viewLifecycleOwner){
+            Log.d("lifecycle", "observing full name: ${it["Full Name"]}")
             tvFullName?.text = it["Full Name"]
             tvBiography?.text = it["Biography"]
             tvSkills?.text = it["Skills"]
             tvLocation?.text = it["Location"]
             tvEmail?.text = it["Email"]
 
+            val progressDialog = ProgressDialog(requireContext())
+            progressDialog.setMessage("fetching image")
+            progressDialog.setCancelable(true)
+            progressDialog.show()
+            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+            val authorID = sharedPref?.getString("Author ID", null)
+            val storageRef = Firebase.storage.reference.child("${authorID}/profilePic.jpg")
+
+            val localFile = File.createTempFile("tempImage", "jpg")
+            storageRef.getFile(localFile).addOnSuccessListener {
+
+                if (progressDialog.isShowing) progressDialog.dismiss()
+                val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+                userPicture?.setImageBitmap(bitmap)
+            }
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         val user = Firebase.auth.currentUser
         if (sharedPref?.getString("Author ID", "notanid") == user?.uid){
@@ -75,6 +82,16 @@ class ShowProfileActivity : Fragment() {
         }
 
         return super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("lifecycle", "pause")
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        with(sharedPref!!.edit()){
+            putString("Author ID", Firebase.auth.currentUser?.uid)
+            apply()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

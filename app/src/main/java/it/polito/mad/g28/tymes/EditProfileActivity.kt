@@ -2,9 +2,12 @@ package it.polito.mad.g28.tymes
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
@@ -14,6 +17,7 @@ import android.widget.*
 import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
@@ -21,6 +25,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 
 class EditProfileActivity : Fragment() {
@@ -40,7 +45,6 @@ class EditProfileActivity : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("list", "onviewcreated")
         val etFullName = activity?.findViewById<TextInputEditText>(R.id.edit_user_fullname)
         val etBiography = activity?.findViewById<TextInputEditText>(R.id.edit_user_bio)
         val etSkills = activity?.findViewById<TextInputEditText>(R.id.edit_user_skills)
@@ -50,11 +54,28 @@ class EditProfileActivity : Fragment() {
         val chip1 = activity?.findViewById<Chip>(R.id.chip1)
         val chip2 = activity?.findViewById<Chip>(R.id.chip2)
         val chip3 = activity?.findViewById<Chip>(R.id.chip3)
+        val userPicture = activity?.findViewById<ImageView>(R.id.user_picture)
         val editPictureButton = activity?.findViewById<ImageButton>(R.id.edit_picture_button)
-
         var skillList : List<String>
         val availableList = mutableListOf<Int>()
 
+        val progressDialog = ProgressDialog(requireContext())
+        progressDialog.setMessage("fetching image")
+        progressDialog.setCancelable(true)
+        progressDialog.show()
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val authorID = sharedPref?.getString("Author ID", null)
+        Log.d("lifecycle", "author id $authorID")
+        val storageRef = Firebase.storage.reference.child("${authorID}/profilePic.jpg")
+
+        val localFile = File.createTempFile("tempImage", "jpg")
+        storageRef.getFile(localFile).addOnSuccessListener {
+
+            if (progressDialog.isShowing) progressDialog.dismiss()
+            val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+            userPicture?.setImageBitmap(bitmap)
+            Log.d("lifecycle", "success!!!!")
+        }
 
         editPictureButton?.setOnClickListener {
             Log.d("lifecycle", "adding button")
@@ -97,34 +118,31 @@ class EditProfileActivity : Fragment() {
             etLocation?.setText(it["Location"])
             etEmail?.setText(it["Email"])
             skillList = etSkills?.text.toString().split(" ")
-            Log.d("lifecycle", "etSkills ${etSkills?.text.toString()}")
-            Log.d("lifecycle", "element at 0: ${skillList.elementAt(0)}")
             if(skillList.isNotEmpty()) chip1?.text = skillList.elementAt(0).filter { !it.isWhitespace() }
             if(skillList.size>1)chip2?.text = skillList.elementAt(1).filter { !it.isWhitespace() }
             if(skillList.size>2)chip3?.text = skillList.elementAt(2).filter { !it.isWhitespace() }
             etSkills?.setText("")
-            if (chip1?.text!!.isNotEmpty()){
-                chip1.visibility = View.VISIBLE
-            } else{
+            if (chip1?.text!!.isEmpty()){
                 availableList.add(1)
+            } else{
+                chip1.visibility = View.VISIBLE
             }
-            if (chip2?.text!!.isNotEmpty()){
-                chip2.visibility = View.VISIBLE
-            }else{
+            if (chip2?.text!!.isEmpty()){
                 availableList.add(2)
-            }
-            if (chip3?.text!!.isNotEmpty()){
-                chip3.visibility = View.VISIBLE
             }else{
+                chip2.visibility = View.VISIBLE
+            }
+            if (chip3?.text!!.isEmpty()){
                 availableList.add(3)
+            }else{
+                chip3.visibility = View.VISIBLE
+            }
+
+            if (availableList.isEmpty()){
+                btn_add?.setEnabled(false)
             }
         }
 
-        if (availableList.isEmpty()){
-            btn_add?.setEnabled(false)
-        }
-
-        Log.d("lifecycle", "$availableList")
         btn_add?.setOnClickListener {
             val skillText = etSkills?.text.toString()
             if (skillText.isEmpty()){
@@ -180,7 +198,6 @@ class EditProfileActivity : Fragment() {
 
     }
 
-    @SuppressLint("WrongThread")
     override fun onPause() {
         // When back button is pressed or we leave fragment through menu, fragment is on pause
         super.onPause()
@@ -194,42 +211,21 @@ class EditProfileActivity : Fragment() {
         val chip3 = activity?.findViewById<Chip>(R.id.chip3)?.text.toString()
         val etSkills = "$chip1 $chip2 $chip3"
 
-        val userPicture = activity?.findViewById<ImageView>(R.id.user_picture)
-        val editBitmap: Bitmap = Bitmap.createBitmap(userPicture!!.drawToBitmap())
-        val editBitStream = ByteArrayOutputStream()
-        editBitmap.compress(Bitmap.CompressFormat.PNG,100, editBitStream)
-        val data = editBitStream.toByteArray()
-
-
         // Update viewModel when leaving the edit profile fragment
         viewModel.updateProfile(etFullName,etBiography,etSkills,etLocation,etEmail)
 
         val currentUser = Firebase.auth.currentUser
         if (currentUser != null){
-
             // Persist user data to database when onBackPressed
             val database = Firebase.firestore
             val uid = currentUser.uid
             val user = User(uid,etFullName, etBiography, etSkills, etLocation, etEmail)
-            val storageRef = Firebase.storage.reference.child("${currentUser.uid}/profilePic.jpg")
-
-
             val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
             with(sharedPref!!.edit()){
                 putString("Author ID", currentUser.uid)
-                putString("Picture", Base64.encodeToString(data, Base64.DEFAULT))
-                Log.d("lifecycle", "saved image to preferences")
                 apply()
             }
 
-            val uploadTask = storageRef.putBytes(data)
-            uploadTask.addOnFailureListener {
-                // Handle unsuccessful uploads
-            }.addOnSuccessListener {
-                // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-                Log.d("lifecycle", "successfully added image to Storage")
-
-            }
             database.collection("users").document(uid).set(user)
                 .addOnSuccessListener {Log.d("lifecycle", "Successfully edited profile of $etFullName")}
                 .addOnFailureListener {Log.d("lifecycle", "Did not edit profile of $etFullName properly")}
@@ -247,6 +243,22 @@ class EditProfileActivity : Fragment() {
             val userPicture = activity?.findViewById<ImageView>(R.id.user_picture)
 
             userPicture?.setImageURI(data?.data) // handle chosen image
+            val uid = Firebase.auth.currentUser?.uid
+            val storageRef = Firebase.storage.reference.child("${uid}/profilePic.jpg")
+
+            val editBitmap: Bitmap = Bitmap.createBitmap(userPicture!!.drawToBitmap())
+            val baos = ByteArrayOutputStream()
+            editBitmap.compress(Bitmap.CompressFormat.JPEG,100, baos)
+            val bytesData = baos.toByteArray()
+            val uploadTask = storageRef.putBytes(bytesData)
+
+            uploadTask.addOnFailureListener {
+                // Handle unsuccessful uploads
+            }.addOnSuccessListener {
+                // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+                Log.d("lifecycle", "successfully added image to Storage")
+
+            }
 
         }
     }
@@ -256,7 +268,6 @@ class EditProfileActivity : Fragment() {
         return super.onCreateOptionsMenu(menu, inflater)
     }
 
-    @SuppressLint("WrongThread")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         return if (item.itemId==R.id.edit_pencil_button) {
@@ -272,4 +283,35 @@ class EditProfileActivity : Fragment() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d("lifecycle", "Saving editprofile state")
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val authorID = sharedPref?.getString("Author ID", null)
+        val storageRef = Firebase.storage.reference.child("${authorID}/profilePic.jpg")
+        // If there's an upload in progress, save the reference so you can query it later
+        outState.putString("reference", storageRef.toString())
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        Log.d("lifecycle", "Restoring state")
+        // If there was an upload in progress, get its reference and create a new StorageReference
+        val stringRef = savedInstanceState?.getString("reference") ?: return
+        val storageRef = Firebase.storage.getReferenceFromUrl(stringRef)
+        // Find all UploadTasks under this StorageReference (in this example, there should be one)
+        val tasks = storageRef.activeUploadTasks
+
+        if (tasks.size > 0) {
+            // Get the task monitoring the upload
+            val task = tasks[0]
+            // Add new listeners to the task using an Activity scope
+            task.addOnSuccessListener {
+                // Success!
+                Log.d("lifecycle", "Successfully restored state and finished upload")
+                // ...
+            }
+        }
+    }
 }

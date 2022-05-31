@@ -11,6 +11,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -23,6 +24,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -60,20 +62,44 @@ class MainActivity : AppCompatActivity() {
 
             it.isChecked = true
             val currentUser = Firebase.auth.currentUser
-            val sharedPref = getPreferences(Context.MODE_PRIVATE)
-            with(sharedPref!!.edit()){
-                putString("Author ID", currentUser?.uid)
-                apply()
-            }
-            Log.d("lifecycle", "Applying Author ID in shared preferences: ${currentUser?.uid}")
 
 
             when(it.itemId){
 
-                R.id.my_profile_icon -> changeFrag(ShowProfileActivity(), it.title.toString())
+                R.id.my_profile_icon -> {
+
+                        MainScope().launch{
+                            delay(100)
+                            changeFrag(ShowProfileActivity(), it.title.toString())
+                        }
+                    val database = Firebase.firestore
+
+                    val sharedPref = getPreferences(Context.MODE_PRIVATE)
+                    with(sharedPref!!.edit()){
+                        putString("Author ID", currentUser?.uid)
+                        apply()
+                    }
+
+                    database.collection("users").document(currentUser?.uid.toString()).get()
+                        .addOnSuccessListener { document ->
+
+                            val map = document?.data
+                            Log.d("lifecycle", "navigation drawer fullname is ${map?.get("fullname").toString()}")
+                            profileVM.updateProfile(
+                                map?.get("fullname").toString(),
+                                map?.get("biography").toString(),
+                                map?.get("skills").toString(),
+                                map?.get("location").toString(),
+                                map?.get("email").toString(),)
+                        }
+                        .addOnFailureListener{
+                            Log.d("lifecycle", "Failed DB get")
+                        }
+
+
+
+                }
                 R.id.ic_skill -> changeFrag(SkillListFragment(), it.title.toString())
-                R.id.all_tslots_list_icon -> changeFrag(TimeSlotListFragment(), it.title.toString())
-                R.id.my_tslots_icon -> changeFrag(TimeSlotDetailsFragment(), it.title.toString())
                 R.id.tymes_settings_icon -> changeFrag(SettingsFragment(), it.title.toString())
 
             }

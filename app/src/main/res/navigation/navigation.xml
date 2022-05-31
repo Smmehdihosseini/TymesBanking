@@ -24,43 +24,6 @@
             app:destination="@id/showProfileActivity" />
     </fragment>
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="it.polito.mad.g28.tymes.Home"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_homeFragment_to_showProfileActivity"
-            app:destination="@id/showProfileActivity" />
-        <action
-            android:id="@+id/action_homeFragment_to_aboutFragment"
-            app:destination="@id/aboutFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_timeSlotDetailsFragment"
-            app:destination="@id/timeSlotDetailsFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_timeSlotEditFragment"
-            app:destination="@id/timeSlotEditFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_clanFragement"
-            app:destination="@id/clanFragement" />
-        <action
-            android:id="@+id/action_homeFragment_to_compactAdFragment"
-            app:destination="@id/compactAdFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/aboutFragment"
-        android:name="it.polito.mad.g28.tymes.aboutFragment"
-        android:label="fragment_about"
-        tools:layout="@layout/fragment_about" />
-    <fragment
-        android:id="@+id/clanFragement"
-        android:name="it.polito.mad.g28.tymes.clanFragement"
-        android:label="fragment_clan_fragement"
-        tools:layout="@layout/fragment_clan_fragement" />
-    <fragment
         android:id="@+id/settingsFragment"
         android:name="it.polito.mad.g28.tymes.SettingsFragment"
         android:label="fragment_settings"
@@ -69,27 +32,48 @@
         android:id="@+id/timeSlotDetailsFragment"
         android:name="it.polito.mad.g28.tymes.TimeSlotDetailsFragment"
         android:label="fragment_time_slot_details"
-        tools:layout="@layout/fragment_time_slot_details" />
+        tools:layout="@layout/fragment_time_slot_details" >
+        <action
+            android:id="@+id/action_timeSlotDetailsFragment_to_timeSlotEditFragment"
+            app:destination="@id/timeSlotEditFragment" />
+        <action
+            android:id="@+id/action_timeSlotDetailsFragment_to_showProfileActivity"
+            app:destination="@id/showProfileActivity" />
+    </fragment>
     <fragment
         android:id="@+id/timeSlotEditFragment"
         android:name="it.polito.mad.g28.tymes.TimeSlotEditFragment"
         android:label="fragment_time_slot_edit"
-        tools:layout="@layout/fragment_time_slot_edit" />
+        tools:layout="@layout/fragment_time_slot_edit" >
+        <action
+            android:id="@+id/action_timeSlotEditFragment_to_timeSlotDetailsFragment"
+            app:destination="@id/timeSlotDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/compactAdFragment"
         android:name="it.polito.mad.g28.tymes.CompactAdFragment"
         android:label="fragment_item_list"
-        tools:layout="@layout/fragment_item_list" />
+        tools:layout="@layout/fragment_item_list" >
+        <action
+            android:id="@+id/action_compactAdFragment_to_timeSlotDetailsFragment"
+            app:destination="@id/timeSlotDetailsFragment" />
+        <action
+            android:id="@+id/action_compactAdFragment_to_timeSlotEditFragment"
+            app:destination="@id/timeSlotEditFragment" />
+    </fragment>
     <fragment
         android:id="@+id/skillListFragment"
         android:name="it.polito.mad.g28.tymes.SkillListFragment"
         android:label="fragment_skill_list"
         tools:layout="@layout/fragment_skill_list">
         <action
-            android:id="@+id/action_skillListFragment_to_timeSlotEditFragment"
-            app:destination="@id/timeSlotEditFragment" />
-        <action
             android:id="@+id/action_skillListFragment_to_compactAdFragment"
             app:destination="@id/compactAdFragment" />
+        <action
+            android:id="@+id/action_skillListFragment_to_showProfileActivity"
+            app:destination="@id/showProfileActivity" />
+        <action
+            android:id="@+id/action_skillListFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
 </navigation>
