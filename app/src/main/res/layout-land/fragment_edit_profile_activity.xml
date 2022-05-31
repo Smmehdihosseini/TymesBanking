@@ -26,7 +26,7 @@
     <ImageView
         android:id="@+id/user_picture"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:layout_weight="0.2"
@@ -52,6 +52,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,110 +61,160 @@
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/edit_user_fullname"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_user_fullname_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="center_vertical"
+            android:layout_weight="0"
             android:hint="@string/edit_user_fullname"
-            android:autofillHints="personName"
-            android:inputType="textPersonName"
-            android:textColor="#272424"
-            tools:ignore="TextContrastCheck"
-            tools:layout_editor_absoluteX="16dp" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <EditText
-            android:id="@+id/edit_user_nickname"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_user_fullname"
+                android:autofillHints="personName"
+                android:inputType="textPersonName"
+                android:textColor="#272424"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_user_bio_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="center_vertical"
-            android:hint="@string/edit_user_nickname"
-            android:autofillHints="personName"
-            android:inputType="textPersonName"
-            android:textColor="#272424"
-            tools:ignore="TextContrastCheck"
-            tools:layout_editor_absoluteX="16dp" />
-
-        <EditText
-            android:id="@+id/edit_user_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="center_vertical"
-            android:hint="@string/edit_user_username"
-            android:autofillHints="username"
-            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890._"
-            android:inputType="textFilter"
-            android:textColor="#272424"
-            tools:ignore="TextContrastCheck"
-            tools:layout_editor_absoluteX="16dp" />
-
-        <EditText
-            android:id="@+id/edit_user_bio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="center_vertical"
+            android:layout_weight="0"
             android:hint="@string/edit_user_bio"
             android:autofillHints="notApplicable"
-            android:inputType="textMultiLine"
-            android:textColor="#272424"
-            tools:ignore="TextContrastCheck"
-            tools:layout_editor_absoluteX="16dp" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <EditText
-            android:id="@+id/edit_user_skills"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_user_bio"
+                android:autofillHints="notApplicable"
+                android:inputType="textMultiLine"
+                android:textColor="#272424"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:id="@+id/edit_user_skills_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/edit_user_skills"
+                android:importantForAutofill="no"
+                android:autofillHints="notApplicable"
+                app:layout_constraintEnd_toStartOf="@id/btn_add_skill"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_user_skills"
+                    android:autofillHints="notApplicable"
+                    android:inputType="text"
+                    android:textColor="#272424"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_add_skill"
+                android:layout_width="75dp"
+                android:layout_height="66dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:text="Add"
+                app:layout_constraintBottom_toBottomOf="@id/edit_user_skills_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/edit_user_skills_layout"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                app:singleLine="true"
+                app:layout_constraintTop_toBottomOf="@id/btn_add_skill">
+
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip1"
+                    style="@style/Widget.MaterialComponents.Chip.Entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:checkable="false"
+                    android:visibility="gone" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip2"
+                    style="@style/Widget.MaterialComponents.Chip.Entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="false"
+                    android:visibility="gone" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip3"
+                    style="@style/Widget.MaterialComponents.Chip.Entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="false"
+                    android:visibility="gone" />
+
+
+            </com.google.android.material.chip.ChipGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_user_location_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
-            android:gravity="center_vertical"
-            android:hint="@string/edit_user_skills"
-            android:autofillHints="notApplicable"
-            android:inputType="text"
-            android:textColor="#272424"
-            tools:ignore="TextContrastCheck"
-            tools:layout_editor_absoluteX="16dp" />
-
-        <EditText
-            android:id="@+id/edit_user_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="center_vertical"
             android:hint="@string/edit_user_location"
-            android:autofillHints="addressLocality"
-            android:inputType="text"
-            android:textColor="#272424"
-            tools:ignore="TextContrastCheck"
-            tools:layout_editor_absoluteX="16dp" />
+            android:importantForAutofill="no"
+            android:autofillHints="notApplicable"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <EditText
-            android:id="@+id/edit_user_email"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_user_location"
+                android:autofillHints="notApplicable"
+                android:inputType="text"
+                android:textColor="#272424"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_user_email_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="center_vertical"
+            android:layout_weight="0"
             android:hint="@string/edit_user_email"
+            android:importantForAutofill="no"
             android:autofillHints="notApplicable"
-            android:inputType="textEmailAddress"
-            android:textColor="#272424"
-            tools:ignore="TextContrastCheck"
-            tools:layout_editor_absoluteX="16dp" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <EditText
-            android:id="@+id/edit_user_webpage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:gravity="center_vertical"
-            android:hint="@string/edit_user_webpage"
-            android:autofillHints="notApplicable"
-            android:inputType="textWebEmailAddress"
-            android:textColor="#272424"
-            tools:ignore="TextContrastCheck"
-            tools:layout_editor_absoluteX="16dp" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_user_email"
+                android:autofillHints="notApplicable"
+                android:inputType="textEmailAddress"
+                android:textColor="#272424"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
     </LinearLayout>
 
