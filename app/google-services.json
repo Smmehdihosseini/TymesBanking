@@ -43,6 +43,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "912277110592-9it4mfee27q0ad9ba7885qk6vgrd438i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.polito.mad.g28.tymes",
+            "certificate_hash": "681a878a9dd805f992e23566db553c50ec7fd8f9"
+          }
+        },
+        {
           "client_id": "912277110592-3oo1mgepmkfjmr8qde7cjhe1coo8fvrf.apps.googleusercontent.com",
           "client_type": 3
         }
