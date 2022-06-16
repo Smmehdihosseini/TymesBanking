@@ -75,5 +75,29 @@
         <action
             android:id="@+id/action_skillListFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_skillListFragment_to_channelFragment"
+            app:destination="@id/channelFragment" />
+        <action
+            android:id="@+id/action_skillListFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_skillListFragment_to_scheduledFragment"
+            app:destination="@id/scheduledFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/channelFragment"
+        android:name="it.polito.mad.g28.tymes.ChannelFragment"
+        android:label="fragment_channel"
+        tools:layout="@layout/fragment_channel" />
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="it.polito.mad.g28.tymes.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" />
+    <fragment
+        android:id="@+id/scheduledFragment"
+        android:name="it.polito.mad.g28.tymes.ScheduledFragment"
+        android:label="fragment_scheduled"
+        tools:layout="@layout/fragment_scheduled" />
 </navigation>

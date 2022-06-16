@@ -155,9 +155,14 @@ class TimeSlotEditFragment : Fragment() {
         database.collection("skills").document(etSkill).set(SkillItem(etSkill))
 //            .addOnSuccessListener {Log.d("lifecycle", "Successfully added $etSkill")}
 //            .addOnFailureListener {Log.d("lifecycle", "Did not successfully add $etSkill")}
-        database.collection("skills").document(etSkill).collection(etSkill).document(adID).set(ad)
+        database.collection("ads").document(adID).set(ad)
 //            .addOnSuccessListener {Log.d("lifecycle", "Successfully edited ad with id: $adID")}
 //            .addOnFailureListener {Log.d("lifecycle", "Did not edit the ad: $adID properly")}
+        database.collection("users").document(authorID).collection("userAds").document(adID)
+            .set(
+                mapOf("status" to "Available",
+                    "askerID" to "none"
+            ))
 
 
     }

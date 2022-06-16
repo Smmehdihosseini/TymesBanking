@@ -12,6 +12,21 @@
                 android:title="My Profile"
                 android:icon="@drawable/ic_baseline_person_24"/>
 
+            <item
+                android:id="@+id/my_chat_icon"
+                android:title="My Chats"
+                android:icon="@drawable/ic_chats_dark"/>
+
+            <item
+                android:id="@+id/favorites_icon"
+                android:title="Favorites"
+                android:icon="@drawable/ic_chats_dark"/>
+
+            <item
+                android:id="@+id/scheduled_icon"
+                android:title="Scheduled"
+                android:icon="@drawable/ic_chats_dark"/>
+
         </menu>
     </item>
 

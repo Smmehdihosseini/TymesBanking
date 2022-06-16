@@ -34,5 +34,9 @@ class AdVM: ViewModel() {
         adInfo.value?.put("Date", Date)
     }
 
+    fun updateAvailability(Availability: String = "Unavailable"){
+        adInfo.value?.put("Availability", Availability)
+    }
+
 
 }

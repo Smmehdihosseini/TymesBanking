@@ -46,7 +46,7 @@ class TimeSlotListFragment : Fragment() {
         val rv = activity?.findViewById<RecyclerView>(R.id.rv)
         rv?.layoutManager = LinearLayoutManager(context)
 
-        database.collection("skills").document(skill!!).collection(skill)
+        database.collectionGroup("ads").whereEqualTo("skill", skill)
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     Log.w("lifecycle", "Listen failed.", e)
@@ -80,7 +80,7 @@ class TimeSlotListFragment : Fragment() {
             val currentUser = Firebase.auth.currentUser
             val name = currentUser?.displayName ?: ""
 
-            vm.updateAd(name, skill, "Available", "", "", "", "")
+            vm.updateAd(name, skill!!, "Available", "", "", "", "")
             with(sharedPref.edit()){
                 putString("Ad ID", null)
                 apply()
@@ -164,13 +164,14 @@ class TimeSlotListFragment : Fragment() {
     private fun onAdClick(ad: Ad, edit: Boolean) {
 
         val database = Firebase.firestore
-        val docRef = database.collection("skills").document(ad.skill).collection(ad.skill)
-            .document(ad.adID)
+        val docRef = database.collection("ads").document(ad.adID)
+        val availabilityRef = database.collection("users").document(ad.authorID).collection("userAds").document(ad.adID)
 
         runBlocking {
-            GlobalScope.launch{
+            GlobalScope.launch {
                 delay(50)
                 changeFrag(ad)
+
             }
             docRef.addSnapshotListener { document, e ->
                 if (e != null) {
@@ -188,6 +189,11 @@ class TimeSlotListFragment : Fragment() {
                         map?.get("location").toString(),
                         map?.get("date").toString())
 
+                    availabilityRef.addSnapshotListener { document, _ ->
+                        Log.d("lifecycle", "onAdClick: updating availability")
+                        vm.updateAvailability(document?.data?.get("status").toString())
+
+                    }
 
                 } else {
                     Log.d("lifecycle", "No such document")
