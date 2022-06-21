@@ -19,12 +19,16 @@ class SkillListFragment : Fragment() {
 
     var skillList = ArrayList<SkillItem>()
     var adapter = SkillRecyclerViewAdapter(ArrayList(skillList)) {skill: SkillItem -> onSkillClick(skill)  }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setHasOptionsMenu(true)
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_skill_list, container, false)
     }

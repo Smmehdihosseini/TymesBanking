@@ -40,6 +40,7 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d("lifecycle", "onViewCreated: user is $user")
         if (user != null){
             val rv = activity?.findViewById<RecyclerView>(R.id.rv)
             val adIDs = ArrayList<String>()
