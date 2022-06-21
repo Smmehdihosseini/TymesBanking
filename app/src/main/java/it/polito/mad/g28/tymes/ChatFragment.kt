@@ -1,6 +1,5 @@
 package it.polito.mad.g28.tymes
 
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,19 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
 import com.getstream.sdk.chat.viewmodel.MessageInputViewModel
 import com.getstream.sdk.chat.viewmodel.messages.MessageListViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firestore.v1.StructuredQuery
 import io.getstream.chat.android.client.ChatClient
-import io.getstream.chat.android.client.api.models.QuerySort
-import io.getstream.chat.android.client.models.Filters
-import io.getstream.chat.android.client.models.Member
 import io.getstream.chat.android.ui.message.input.viewmodel.bindView
 import io.getstream.chat.android.ui.message.list.header.viewmodel.MessageListHeaderViewModel
 import io.getstream.chat.android.ui.message.list.header.viewmodel.bindView
@@ -110,6 +103,8 @@ class ChatFragment : Fragment() {
                 }
                 .show()
 
+        }
+
         _binding?.btnAccept?.setOnClickListener {
             Log.d("lifecycle", "clicked accept")
             MaterialAlertDialogBuilder(requireContext())
@@ -139,9 +134,6 @@ class ChatFragment : Fragment() {
                     _binding?.tvRequestInfo?.visibility = View.GONE
                 }
                 .show()
-
-            }
-
 
         }
     }
