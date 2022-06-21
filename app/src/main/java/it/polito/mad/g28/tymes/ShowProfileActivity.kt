@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.view.*
+import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import android.widget.TextView
@@ -16,6 +17,7 @@ import androidx.core.view.drawToBitmap
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import it.polito.mad.g28.tymes.databinding.ActivityMainBinding
@@ -26,6 +28,8 @@ import java.io.File
 class ShowProfileActivity : Fragment() {
 
     private val viewModel : ProfileVM by activityViewModels()
+    private val database = Firebase.firestore
+    private val currentUser = Firebase.auth.currentUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +49,28 @@ class ShowProfileActivity : Fragment() {
         val tvLocation = activity?.findViewById<TextView>(R.id.user_location)
         val tvEmail = activity?.findViewById<TextView>(R.id.user_email)
         val userPicture = activity?.findViewById<ImageView>(R.id.user_picture)
+        val tvProviderRating = activity?.findViewById<TextView>(R.id.tv_provider_rate)
+        val tvWorkerRating = activity?.findViewById<TextView>(R.id.tv_worker_rate)
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val authorID = sharedPref?.getString("Author ID", null)
+
+        if (authorID != null){
+
+            database.collection("users").document(authorID).get()
+                .addOnSuccessListener {
+                    Log.d("lifecycle", "data in showprofile ${it.data!!["workerRating"].toString()}")
+                    if (it.data!!["workerRating"] == null){
+                        tvWorkerRating?.setText("Worker rating: Unrated")
+                    }else{
+                        tvWorkerRating?.setText("Worker rating: " + it.data!!["workerRating"].toString() + "/5")
+                    }
+                    if (it.data!!["providerRating"] == null){
+                        tvWorkerRating?.setText("Provider rating: Unrated")
+                    }else{
+                        tvProviderRating?.setText("Provider rating: " + it.data!!["providerRating"].toString() + "/5")
+                    }
+                }
+        }
 
 
         viewModel.profileInfo.observe(viewLifecycleOwner){
@@ -59,10 +85,8 @@ class ShowProfileActivity : Fragment() {
             progressDialog.setMessage("fetching image")
             progressDialog.setCancelable(true)
             progressDialog.show()
-            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-            val authorID = sharedPref?.getString("Author ID", null)
-            val storageRef = Firebase.storage.reference.child("${authorID}/profilePic.jpg")
 
+            val storageRef = Firebase.storage.reference.child("${authorID}/profilePic.jpg")
             val localFile = File.createTempFile("tempImage", "jpg")
             storageRef.getFile(localFile).addOnSuccessListener {
 
@@ -70,6 +94,16 @@ class ShowProfileActivity : Fragment() {
                 val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
                 userPicture?.setImageBitmap(bitmap)
             }
+        }
+
+        val btnComments = activity?.findViewById<Button>(R.id.btn_comments)
+        btnComments?.setOnClickListener {
+
+            val fragmentTransaction = parentFragmentManager.beginTransaction()
+            fragmentTransaction
+                .replace(R.id.fragmentContainerView, CommentFragment())
+                .addToBackStack(null)
+                .commit()
         }
     }
 

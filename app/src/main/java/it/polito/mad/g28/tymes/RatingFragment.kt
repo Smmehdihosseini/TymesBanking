@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RatingBar
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -27,6 +28,7 @@ class RatingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val comment = activity?.findViewById<TextInputEditText>(R.id.edit_rating)
         val ratingBar = activity?.findViewById<RatingBar>(R.id.ratingBar)
         val rating = ratingBar?.rating
         val btnSubmit = activity?.findViewById<Button>(R.id.btn_submit)
@@ -35,6 +37,7 @@ class RatingFragment : Fragment() {
             val authorID = sharedPref?.getString("Author ID", null)
             val askerID = sharedPref?.getString("askerID", null)
 
+            //
             if (authorID != null) {
                 database.collection("users").document(authorID).get().addOnSuccessListener {
                     var totalRatingProvider = it.data!!["totalRating"].toString().toFloat()
@@ -45,6 +48,11 @@ class RatingFragment : Fragment() {
                         nbRatingProvider += 1
                         database.collection("users").document(authorID).update("nbRating", nbRatingProvider)
                         database.collection("users").document(authorID).update("providerRating", totalRatingProvider/nbRatingProvider)
+
+                        if (comment?.text.toString().isNotEmpty()){
+                            val map = hashMapOf<String, String>("comment" to comment?.text.toString(), "authorID" to authorID)
+                            database.collection("users").document(authorID).collection("comments").add(map)
+                        }
                     }
                 }
             } else if (askerID != null){
@@ -56,10 +64,19 @@ class RatingFragment : Fragment() {
                         var nbRatingWorker = it.data!!["nbRatings"].toString().toInt()
                         nbRatingWorker += 1
                         database.collection("users").document(askerID).update("nbRating", nbRatingWorker)
-                        database.collection("users").document(askerID).update("providerRating", totalRatingWorker/nbRatingWorker)
+                        database.collection("users").document(askerID).update("workerRating", totalRatingWorker/nbRatingWorker)
+
+                        if (comment?.text.toString().isNotEmpty()){
+                            val map = hashMapOf<String, String>("comment" to comment?.text.toString(), "askerID" to askerID)
+                            database.collection("users").document(askerID).collection("comments").add(map)
+                        }
                     }
                 }
             }
+
+
+
+
         }
 
     }
