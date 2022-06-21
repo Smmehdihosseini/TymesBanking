@@ -7,7 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Button
-import android.widget.RatingBar
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -22,6 +23,7 @@ import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.User
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -61,6 +63,11 @@ class TimeSlotDetailsFragment : Fragment() {
         val tvPrice = activity?.findViewById<TextView>(R.id.ad_price)
         val tvDate = activity?.findViewById<TextView>(R.id.ad_date)
 
+        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+        val currentDate = sdf.format(Date())
+
+
+
 
         viewModel.adInfo.observe(viewLifecycleOwner){
             tvAuthor?.text = it["Author"]
@@ -70,7 +77,23 @@ class TimeSlotDetailsFragment : Fragment() {
             tvLocation?.text = it["Location"]
             tvPrice?.text = it["Price"]
             tvDate?.text = it["Date"]
+
+            Log.d("lifecycle", "onViewCreated: tvDate ${tvDate?.text.toString()} , currentDate: $currentDate")
+            val cmp = currentDate.compareTo(tvDate?.text.toString())
+            if(cmp > 0) {
+                Log.d("lifecycle", "onViewCreated: currentDate is after tvDate, ad status is completed")
+                database.collection("ads").document(adID!!).update("availability", "Completed")
+//            .addOnSuccessListener {Log.d("lifecycle", "Successfully edited ad with id: $adID")}
+//            .addOnFailureListener {Log.d("lifecycle", "Did not edit the ad: $adID properly")}
+                database.collection("users").document(authorID!!).collection("userAds").document(adID)
+                    .update("status","Completed")
+                    .addOnSuccessListener {
+                        Log.d("lifecycle", "Successfully set status to completed for adID: $adID")
+                        tvAvailability?.text = "Completed"}
+            }
         }
+
+
 
         tvAuthor?.setOnClickListener{
 
@@ -121,8 +144,6 @@ class TimeSlotDetailsFragment : Fragment() {
                                 .addToBackStack(null)
                                 .commit()
                         }
-
-
                 }
             }
 
