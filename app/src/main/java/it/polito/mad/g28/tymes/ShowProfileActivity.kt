@@ -54,9 +54,10 @@ class ShowProfileActivity : Fragment() {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         val authorID = sharedPref?.getString("Author ID", null)
 
-        if (authorID != null){
+        Log.d("lifecycle", "onViewCreated: currentuser ${currentUser?.uid}")
+        if (currentUser != null){
 
-            database.collection("users").document(authorID).get()
+            database.collection("users").document(currentUser.uid).get()
                 .addOnSuccessListener {
                     Log.d("lifecycle", "data in showprofile ${it.data!!["workerRating"].toString()}")
                     if (it.data!!["workerRating"] == null){
@@ -81,18 +82,21 @@ class ShowProfileActivity : Fragment() {
             tvLocation?.text = it["Location"]
             tvEmail?.text = it["Email"]
 
-            val progressDialog = ProgressDialog(requireContext())
-            progressDialog.setMessage("fetching image")
-            progressDialog.setCancelable(true)
-            progressDialog.show()
+            if (currentUser != null) {
 
-            val storageRef = Firebase.storage.reference.child("${authorID}/profilePic.jpg")
-            val localFile = File.createTempFile("tempImage", "jpg")
-            storageRef.getFile(localFile).addOnSuccessListener {
+                val progressDialog = ProgressDialog(requireContext())
+                progressDialog.setMessage("fetching image")
+                progressDialog.setCancelable(true)
+                progressDialog.show()
 
-                if (progressDialog.isShowing) progressDialog.dismiss()
-                val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
-                userPicture?.setImageBitmap(bitmap)
+                val storageRef = Firebase.storage.reference.child("${authorID}/profilePic.jpg")
+                val localFile = File.createTempFile("tempImage", "jpg")
+                storageRef.getFile(localFile).addOnSuccessListener {
+
+                    if (progressDialog.isShowing) progressDialog.dismiss()
+                    val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+                    userPicture?.setImageBitmap(bitmap)
+                }
             }
         }
 

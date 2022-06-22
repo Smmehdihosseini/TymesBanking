@@ -14,7 +14,6 @@ import android.widget.TextView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import it.polito.mad.g28.tymes.placeholder.PlaceholderContent
 
 class CommentFragment : Fragment() {
 

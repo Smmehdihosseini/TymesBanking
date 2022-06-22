@@ -17,6 +17,15 @@
                 android:title="My Chats"
                 android:icon="@drawable/ic_chats_dark"/>
 
+        </menu>
+    </item>
+
+    <item android:title="Ads">
+        <menu>
+            <item
+                android:id="@+id/ic_skill"
+                android:title="Skills Pool"
+                android:icon="@drawable/ic_baseline_ads_list"/>
             <item
                 android:id="@+id/favorites_icon"
                 android:title="Favorites"
@@ -26,27 +35,6 @@
                 android:id="@+id/scheduled_icon"
                 android:title="Scheduled"
                 android:icon="@drawable/ic_chats_dark"/>
-
-        </menu>
-    </item>
-
-    <item android:title="Services">
-        <menu>
-            <group android:checkableBehavior="single">
-            <item
-                android:id="@+id/ic_skill"
-                android:title="Skills Pool"
-                android:icon="@drawable/ic_baseline_ads_list"/>
-            <item
-                android:id="@+id/all_tslots_list_icon"
-                android:title="Ads Pool"
-                android:icon="@drawable/ic_baseline_ads_list"/>
-
-            <item
-                android:id="@+id/my_tslots_icon"
-                android:title="My Ads"
-                android:icon="@drawable/ic_baseline_my_ads"/>
-            </group>
         </menu>
     </item>
 

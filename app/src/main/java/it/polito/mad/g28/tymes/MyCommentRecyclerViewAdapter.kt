@@ -2,11 +2,8 @@ package it.polito.mad.g28.tymes
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
-import it.polito.mad.g28.tymes.placeholder.PlaceholderContent.PlaceholderItem
 import it.polito.mad.g28.tymes.databinding.CommentItemBinding
 
 class MyCommentRecyclerViewAdapter(

@@ -156,23 +156,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun auth() {
-            oneTapClient = Identity.getSignInClient(this)
-            signInRequest = BeginSignInRequest.builder()
-                .setPasswordRequestOptions(
-                    BeginSignInRequest.PasswordRequestOptions.builder()
-                        .setSupported(true)
-                        .build())
-                .setGoogleIdTokenRequestOptions(
-                    BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                        .setSupported(true)
-                        // Your server's client ID, not your Android client ID.
-                        .setServerClientId("912277110592-3oo1mgepmkfjmr8qde7cjhe1coo8fvrf.apps.googleusercontent.com")
-                        // Only show accounts previously used to sign in.
-                        .setFilterByAuthorizedAccounts(false)
-                        .build())
-                // Automatically sign in when exactly one credential is retrieved.
-                .setAutoSelectEnabled(true)
-                .build()
+        oneTapClient = Identity.getSignInClient(this)
+        signInRequest = BeginSignInRequest.builder()
+            .setPasswordRequestOptions(
+                BeginSignInRequest.PasswordRequestOptions.builder()
+                    .setSupported(true)
+                    .build())
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    // Your server's client ID, not your Android client ID.
+                    .setServerClientId("912277110592-3oo1mgepmkfjmr8qde7cjhe1coo8fvrf.apps.googleusercontent.com")
+                    // Only show accounts previously used to sign in.
+                    .setFilterByAuthorizedAccounts(false)
+                    .build())
+            // Automatically sign in when exactly one credential is retrieved.
+            .setAutoSelectEnabled(true)
+            .build()
 
 
             oneTapClient!!.beginSignIn(signInRequest!!)
