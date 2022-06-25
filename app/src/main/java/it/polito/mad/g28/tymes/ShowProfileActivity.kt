@@ -85,12 +85,12 @@ class ShowProfileActivity : Fragment() {
             if (currentUser != null) {
 
                 val progressDialog = ProgressDialog(requireContext())
-                progressDialog.setMessage("fetching image")
-                progressDialog.setCancelable(true)
-                progressDialog.show()
+                //progressDialog.setMessage("Fetching Image")
+                //progressDialog.setCancelable(true)
+                //progressDialog.show()
 
                 val storageRef = Firebase.storage.reference.child("${authorID}/profilePic.jpg")
-                val localFile = File.createTempFile("tempImage", "jpg")
+                val localFile = File.createTempFile("tempImage", ".jpg")
                 storageRef.getFile(localFile).addOnSuccessListener {
 
                     if (progressDialog.isShowing) progressDialog.dismiss()

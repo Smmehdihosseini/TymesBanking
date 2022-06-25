@@ -60,9 +60,9 @@ class EditProfileActivity : Fragment() {
         val availableList = mutableListOf<Int>()
 
         val progressDialog = ProgressDialog(requireContext())
-        progressDialog.setMessage("fetching image")
+        /*progressDialog.setMessage("Get Profile Picture ... ")
         progressDialog.setCancelable(true)
-        progressDialog.show()
+        progressDialog.show()*/
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         val authorID = sharedPref?.getString("Author ID", null)
         Log.d("lifecycle", "author id $authorID")
@@ -71,7 +71,8 @@ class EditProfileActivity : Fragment() {
         val localFile = File.createTempFile("tempImage", "jpg")
         storageRef.getFile(localFile).addOnSuccessListener {
 
-            if (progressDialog.isShowing) progressDialog.dismiss()
+            if (progressDialog.isShowing)
+                progressDialog.dismiss()
             val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
             userPicture?.setImageBitmap(bitmap)
             Log.d("lifecycle", "success!!!!")

@@ -35,6 +35,7 @@
         app:itemShapeFillColor="@color/grey_navdraw"
         app:itemIconTint="@color/dark_red"
         app:menu="@menu/navigation_menu"
+        app:headerLayout="@layout/navigation_header_layout"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"/>
 
