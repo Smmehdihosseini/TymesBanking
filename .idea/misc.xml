@@ -19,11 +19,33 @@
         <entry key="..\:/Lab3/app/src/main/res/layout/fragment_time_slot_list.xml" value="0.2578125" />
         <entry key="..\:/Lab3/app/src/main/res/layout/navigation_header_layout.xml" value="0.264" />
         <entry key="..\:/Lab3/app/src/main/res/menu/navigation_menu.xml" value="0.536" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/layout-land/fragment_show_profile_activity.xml" value="0.1" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/layout-land/fragment_time_slot_details.xml" value="0.21825396825396826" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/layout/fragment_about.xml" value="0.264" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/layout/fragment_channel.xml" value="0.2056159420289855" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/layout/fragment_chat.xml" value="0.2056159420289855" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/layout/fragment_compact_ad.xml" value="0.4" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/layout/fragment_edit_profile_activity.xml" value="0.2056159420289855" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/layout/fragment_home.xml" value="0.264" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/layout/fragment_rating.xml" value="0.264" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/layout/fragment_show_profile_activity.xml" value="0.2056159420289855" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/layout/fragment_time_slot_details.xml" value="0.1" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/layout/fragment_time_slot_edit.xml" value="0.2056159420289855" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/menu/menubar.xml" value="0.2578125" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/menu/navigation_menu.xml" value="0.2578125" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/menu/search_menu.xml" value="0.2578125" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/menu/sort_menu.xml" value="0.2578125" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/menu/worker_menu.xml" value="0.2578125" />
+        <entry key="..\:/MAD/Tymes/App/app/src/main/res/menu/worker_unavailable_menu.xml" value="0.2578125" />
         <entry key="..\:/Tymes/App/app/src/main/res/drawable-anydpi/ic_fav.xml" value="0.1255" />
         <entry key="..\:/Tymes/App/app/src/main/res/drawable/border_image.xml" value="0.1905" />
+        <entry key="..\:/Tymes/App/app/src/main/res/drawable/datepicker_button.xml" value="0.1925" />
         <entry key="..\:/Tymes/App/app/src/main/res/drawable/ic_tymes_profile_pic.xml" value="0.1255" />
+        <entry key="..\:/Tymes/App/app/src/main/res/drawable/nav_view_item_background.xml" value="0.1925" />
+        <entry key="..\:/Tymes/App/app/src/main/res/drawable/nav_view_item_textcolor.xml" value="0.1925" />
         <entry key="..\:/Tymes/App/app/src/main/res/layout-land/fragment_edit_profile_activity.xml" value="0.264" />
         <entry key="..\:/Tymes/App/app/src/main/res/layout-land/fragment_show_profile_activity.xml" value="0.264" />
+        <entry key="..\:/Tymes/App/app/src/main/res/layout-land/fragment_time_slot_details.xml" value="0.21825396825396826" />
         <entry key="..\:/Tymes/App/app/src/main/res/layout-land/fragment_time_slot_edit.xml" value="0.18915343915343916" />
         <entry key="..\:/Tymes/App/app/src/main/res/layout-night/fragment_time_slot_edit.xml" value="0.11458333333333333" />
         <entry key="..\:/Tymes/App/app/src/main/res/layout/activity_main.xml" value="0.2578125" />
@@ -33,16 +55,31 @@
         <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_channel.xml" value="0.2578125" />
         <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_chat.xml" value="0.2578125" />
         <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_clan_fragement.xml" value="0.2578125" />
-        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_compact_ad.xml" value="0.536" />
-        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_edit_profile_activity.xml" value="0.264" />
+        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_compact_ad.xml" value="0.4441717791411043" />
+        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_edit_profile_activity.xml" value="0.48104956268221577" />
+        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_favorites.xml" value="0.2578125" />
         <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_home.xml" value="0.2578125" />
-        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_rating.xml" value="0.2578125" />
+        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_item_list.xml" value="0.264" />
+        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_rating.xml" value="0.264" />
         <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_scheduled.xml" value="0.2578125" />
         <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_settings.xml" value="0.2578125" />
-        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_show_profile_activity.xml" value="0.4" />
+        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_show_profile_activity.xml" value="0.264" />
+        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_skill_list.xml" value="0.264" />
         <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_time_slot_details.xml" value="0.2578125" />
-        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_time_slot_edit.xml" value="0.2578125" />
+        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_time_slot_edit.xml" value="0.264" />
+        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_time_slot_list.xml" value="0.48104956268221577" />
+        <entry key="..\:/Tymes/App/app/src/main/res/layout/fragment_users_list.xml" value="0.2578125" />
         <entry key="..\:/Tymes/App/app/src/main/res/layout/navigation_header_layout.xml" value="0.2578125" />
+        <entry key="..\:/Tymes/App/app/src/main/res/layout/skill_item.xml" value="0.4" />
+        <entry key="..\:/Tymes/App/app/src/main/res/layout/user_item.xml" value="0.4" />
+        <entry key="..\:/Tymes/App/app/src/main/res/menu/chat_users_menu.xml" value="0.2578125" />
+        <entry key="..\:/Tymes/App/app/src/main/res/menu/menubar.xml" value="0.2234375" />
+        <entry key="..\:/Tymes/App/app/src/main/res/menu/menubar_save.xml" value="0.2234375" />
+        <entry key="..\:/Tymes/App/app/src/main/res/menu/navigation_menu.xml" value="0.4" />
+        <entry key="..\:/Tymes/App/app/src/main/res/menu/search_menu.xml" value="0.2578125" />
+        <entry key="..\:/Tymes/App/app/src/main/res/menu/sort_menu.xml" value="0.2578125" />
+        <entry key="..\:/Tymes/App/app/src/main/res/menu/worker_menu.xml" value="0.2578125" />
+        <entry key="..\:/Tymes/App/app/src/main/res/menu/worker_unavailable_menu.xml" value="0.2578125" />
         <entry key="..\:/TymesFragment-master/TymesFragment-master/app/src/main/res/layout/fragment_compact_ad.xml" value="0.1" />
         <entry key="..\:/TymesFragment-master/TymesFragment-master/app/src/main/res/layout/fragment_item_list.xml" value="0.16" />
         <entry key="..\:/TymesFragment-master/TymesFragment-master/app/src/main/res/layout/fragment_time_slot_edit.xml" value="0.264" />

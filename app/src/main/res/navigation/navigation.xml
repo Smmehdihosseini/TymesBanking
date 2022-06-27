@@ -84,6 +84,12 @@
         <action
             android:id="@+id/action_skillListFragment_to_scheduledFragment"
             app:destination="@id/scheduledFragment" />
+        <action
+            android:id="@+id/action_skillListFragment_to_home2"
+            app:destination="@id/home2" />
+        <action
+            android:id="@+id/action_skillListFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
     </fragment>
     <fragment
         android:id="@+id/channelFragment"
@@ -100,4 +106,14 @@
         android:name="it.polito.mad.g28.tymes.ScheduledFragment"
         android:label="fragment_scheduled"
         tools:layout="@layout/fragment_scheduled" />
+    <fragment
+        android:id="@+id/home2"
+        android:name="it.polito.mad.g28.tymes.Home"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="it.polito.mad.g28.tymes.aboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
 </navigation>

@@ -125,6 +125,11 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.tymes_settings_icon -> changeFrag(SettingsFragment(), it.title.toString())
 
+                R.id.my_home -> changeFrag(Home(), it.title.toString())
+
+                R.id.tymes_about_icon -> changeFrag(aboutFragment(), it.title.toString())
+
+
             }
             true
         }

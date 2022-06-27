@@ -9,11 +9,19 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#ACACAC</color>
     <color name="light_grey">#EFEFEF</color>
-    <color name="grey_navdraw">#D1D1D1</color>
+    <color name="grey_navdraw">#ECECEC</color>
     <color name="grey_appbar">#1E1E1E</color>
-    <color name="dark_red">#B10C00</color>
-    <color name="dark_orange">#FF5722</color>\
+    <color name="dark_orange">#FF5722</color>
     <color name="green">#4CAF50</color>
     <color name="primary">#FF000000</color>
+    <color name="golden">#FFD700</color>
+    <color name="dark_golden">#F3B600</color>
+    <color name="torq_blue">#02A399</color>
+    <color name="dark_blue">#3F51B5</color>
+    <color name="dark_red">#A50B00</color>
+
+
+
+
 
 </resources>

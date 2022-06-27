@@ -6,6 +6,7 @@
         android:id="@+id/edit_pencil_button"
         android:icon="@drawable/ic_baseline_edit_24"
         android:title="@string/edit_pencil_button"
+        android:iconTint="@color/grey"
         app:showAsAction="always" />
 
 </menu>

@@ -1,61 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey_appbar"
     tools:context=".RatingFragment">
 
-<TextView
-    android:id="@+id/tv_give_rating"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Give a rating to your peer!"
-    android:layout_marginTop="40dp"
-    android:textStyle="bold"
-    android:textColor="@color/black"
-    android:textSize="30sp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent"/>
-
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:numStars="5"
-        android:rating="3.5"
-        android:layout_marginTop="30dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_give_rating"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edit_rating_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginHorizontal="40dp"
-        android:hint="Add feedback to your rating..."
-        app:layout_constraintTop_toBottomOf="@id/ratingBar">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_rating"
+        <TextView
+            android:id="@+id/tv_give_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RATE YOUR PEER!"
+            android:layout_marginTop="200dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:shadowColor="@color/white"
+            android:shadowDx="0.0"
+            android:shadowDy="0.0"
+            android:shadowRadius="8"
+            android:textSize="22sp"
+            android:letterSpacing="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="2.5"
+            android:layout_marginTop="50dp"
+            android:contentDescription="Rating"
+            android:theme="@style/RatingBar"
+            app:layout_constraintTop_toBottomOf="@id/tv_give_rating"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_rating_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black" />
+            android:layout_marginTop="40dp"
+            android:layout_marginHorizontal="40dp"
+            android:hint="Your Feedback to the Rating"
+            app:boxBackgroundColor="@color/white"
+            android:textColorHint="@color/grey_appbar"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:layout_constraintTop_toBottomOf="@id/ratingBar">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:inputType="textImeMultiLine"
+                android:textColor="@color/grey_appbar"
+                android:textColorHint="@color/grey_appbar" />
 
 
-    </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btn_submit"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:layout_marginTop="40dp"
-        app:layout_constraintTop_toBottomOf="@id/edit_rating_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="110dp"
+            android:layout_marginStart="110dp"
+            android:textColor="@color/grey_appbar"
+            android:textStyle="bold"
+            android:backgroundTint="@color/dark_golden"
+            android:textSize="12sp"
+            android:letterSpacing="0.2"
+            app:layout_constraintTop_toBottomOf="@id/edit_rating_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

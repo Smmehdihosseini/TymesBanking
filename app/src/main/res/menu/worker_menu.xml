@@ -5,12 +5,14 @@
         android:id="@+id/ic_fav"
         android:icon="@drawable/ic_fav"
         android:title="Add to Favorites"
+        android:iconTint="@color/grey"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/ic_chats"
         android:icon="@drawable/ic_chats_dark"
         android:title="Send Message"
+        android:iconTint="@color/grey"
         app:showAsAction="ifRoom" />
 
 </menu>

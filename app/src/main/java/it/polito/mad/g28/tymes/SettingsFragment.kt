@@ -59,7 +59,7 @@ class SettingsFragment : Fragment() {
                 if (Firebase.auth.currentUser == null) {
                     Toast.makeText(
                         context,
-                        "Successfully disconnected from your Google Account",
+                        "Successfully Disconnected From Your Google Account!",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -154,7 +154,7 @@ class SettingsFragment : Fragment() {
                                         createUser(user)
                                         Toast.makeText(
                                             context,
-                                            "Successfully Connected from your Google Account",
+                                            "Successfully Connected With Your Google Account",
                                             Toast.LENGTH_SHORT
                                         ).show()
 

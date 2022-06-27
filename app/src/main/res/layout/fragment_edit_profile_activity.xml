@@ -30,7 +30,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/ic_menu_camera"
-            app:tint="#FFFFFF" />
+            app:tint="#FFFFFF"/>
 
         <ImageView
             android:id="@+id/user_picture"
@@ -87,8 +87,8 @@
                     android:layout_height="wrap_content"
                     android:autofillHints="personName"
                     android:inputType="textPersonName"
-                    android:maxLines="1"
-                    android:textColor="#272424" />
+                    android:textColor="@color/grey_appbar"
+                    android:maxLines="1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,8 +114,9 @@
                     android:layout_height="wrap_content"
                     android:autofillHints="notApplicable"
                     android:inputType="textMultiLine"
-                    android:maxLines="1"
-                    android:textColor="#272424" />
+                    android:textColor="@color/grey_appbar"
+                    android:maxLines="1"/>
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -146,8 +147,8 @@
                         android:layout_height="wrap_content"
                         android:autofillHints="notApplicable"
                         android:inputType="text"
-                        android:maxLines="1"
-                        android:textColor="#272424" />
+                        android:textColor="@color/grey_appbar"
+                        android:maxLines="1"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -161,6 +162,7 @@
                     android:text="ADD"
                     android:textColor="@color/white"
                     android:textStyle="bold"
+                    android:letterSpacing="0.2"
                     app:layout_constraintBottom_toBottomOf="@id/edit_user_skills_layout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/edit_user_skills_layout"
@@ -225,8 +227,8 @@
                     android:layout_height="wrap_content"
                     android:autofillHints="notApplicable"
                     android:inputType="text"
-                    android:maxLines="1"
-                    android:textColor="#272424" />
+                    android:textColor="@color/grey_appbar"
+                    android:maxLines="1"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -248,8 +250,8 @@
                     android:layout_height="wrap_content"
                     android:autofillHints="notApplicable"
                     android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:textColor="#272424" />
+                    android:textColor="@color/grey_appbar"
+                    android:maxLines="1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

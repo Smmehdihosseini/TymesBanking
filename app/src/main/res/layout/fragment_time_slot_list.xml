@@ -20,8 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_margin="50dp"
-        android:contentDescription="add"
+        android:layout_margin="28dp"
+        app:shapeAppearanceOverlay="@style/fab_for_compact_ad"
+        android:backgroundTint="@color/grey"
         android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

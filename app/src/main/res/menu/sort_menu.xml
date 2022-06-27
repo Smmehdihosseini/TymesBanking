@@ -5,6 +5,7 @@
     <item
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_sort_dark"
+        android:iconTint="@color/grey"
         android:title="Search"
         app:showAsAction="always"/>
 

@@ -91,7 +91,8 @@
                     android:id="@+id/edit_user_fullname"
                     android:autofillHints="personName"
                     android:inputType="textPersonName"
-                    android:textColor="#272424"
+                    android:textColor="@color/grey_appbar"
+                    android:maxLines="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -115,7 +116,8 @@
                     android:id="@+id/edit_user_bio"
                     android:autofillHints="notApplicable"
                     android:inputType="textMultiLine"
-                    android:textColor="#272424"
+                    android:textColor="@color/grey_appbar"
+                    android:maxLines="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -147,7 +149,8 @@
                         android:id="@+id/edit_user_skills"
                         android:autofillHints="notApplicable"
                         android:inputType="text"
-                        android:textColor="#272424"
+                        android:textColor="@color/grey_appbar"
+                        android:maxLines="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -160,6 +163,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginEnd="26dp"
                     android:text="ADD"
+                    android:letterSpacing="0.2"
                     android:textColor="@color/white"
                     android:backgroundTint="@color/grey_appbar"
                     app:layout_constraintBottom_toBottomOf="@id/edit_user_skills_layout"
@@ -174,6 +178,7 @@
                     android:layout_weight="0.01"
                     android:layout_marginTop="10dp"
                     app:singleLine="true"
+                    android:textColor="@color/grey_appbar"
                     app:layout_constraintTop_toBottomOf="@id/btn_add_skill">
 
 
@@ -224,7 +229,8 @@
                     android:id="@+id/edit_user_location"
                     android:autofillHints="notApplicable"
                     android:inputType="text"
-                    android:textColor="#272424"
+                    android:textColor="@color/grey_appbar"
+                    android:maxLines="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -247,7 +253,8 @@
                     android:id="@+id/edit_user_email"
                     android:autofillHints="notApplicable"
                     android:inputType="textEmailAddress"
-                    android:textColor="#272424"
+                    android:textColor="@color/grey_appbar"
+                    android:maxLines="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 

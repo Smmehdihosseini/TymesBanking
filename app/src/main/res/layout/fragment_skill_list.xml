@@ -8,7 +8,8 @@
     android:focusableInTouchMode="true"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".SkillListFragment">
+    tools:context=".SkillListFragment"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/no_item_const"
@@ -18,7 +19,7 @@
         android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:text="No available skill"
+        android:text="No Available Skill"
         app:layout_constraintBottom_toTopOf="@id/recycler_view"
         app:layout_constraintEnd_toEndOf="@+id/recycler_view"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,11 +29,19 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="4dp"
+        android:padding="12dp"
         android:scrollbars="vertical"
+        app:cardUseCompatPadding="false"
+        android:layoutDirection="locale"
+        app:layoutManager="LinearLayoutManager"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="0dp"
+        app:layout_wrapBehaviorInParent="vertical_only"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/no_item_const" />
+        app:layout_constraintTop_toBottomOf="@+id/no_item_const"
+        tools:listitem="@layout/skill_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

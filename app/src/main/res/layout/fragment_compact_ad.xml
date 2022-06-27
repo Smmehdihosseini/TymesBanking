@@ -10,7 +10,7 @@
     android:layout_marginEnd="4dp"
     app:cardBackgroundColor="@color/grey_appbar"
     app:cardElevation="4dp"
-    app:cardMaxElevation="4dp"
+    app:cardMaxElevation="2dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true"
     app:layout_constraintBottom_toBottomOf="parent"
@@ -31,6 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Location"
+            android:fontFamily="@font/stream_roboto_regular"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:maxLines="1"
@@ -45,12 +46,13 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-            android:id="@+id/rvitem_title_const"
+            android:id="@+id/rvitem_date_const"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginStart="3dp"
-            android:text="TITLE:"
+            android:text="Date:"
+            android:fontFamily="@font/stream_roboto_regular"
             android:textColor="@color/light_grey"
             android:textStyle="bold"
             android:textSize="18sp"
@@ -59,81 +61,53 @@
             android:shadowDy="0.0"
             android:shadowRadius="10"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/rvitem_title"
+            app:layout_constraintEnd_toStartOf="@id/rvitem_date"
             app:layout_constraintTop_toBottomOf="@id/rvitem_location" />
-
-        <TextView
-            android:id="@+id/rvitem_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="14dp"
-            android:text="Title"
-            android:textColor="@color/white"
-            android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintStart_toEndOf="@id/rvitem_title_const"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvitem_location"/>
-
-        <TextView
-            android:id="@+id/rvitem_date_const"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:shadowColor="@color/white"
-            android:shadowDx="0.0"
-            android:shadowDy="0.0"
-            android:shadowRadius="10"
-            android:text="DATE:"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/rvitem_name_const"
-            app:layout_constraintEnd_toStartOf="@id/rvitem_title"
-            app:layout_constraintHorizontal_bias="0.076"
-            app:layout_constraintTop_toBottomOf="@id/rvitem_title_const"
-            app:layout_constraintVertical_bias="0.0" />
-
 
         <TextView
             android:id="@+id/rvitem_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="26dp"
             android:text="Date"
+            android:fontFamily="@font/stream_roboto_regular"
+            android:textColor="@color/white"
             android:maxLines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/rvitem_date_const"
-            app:layout_constraintTop_toBottomOf="@id/rvitem_title" />
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rvitem_location"/>
 
         <TextView
             android:id="@+id/rvitem_name_const"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="0dp"
             android:shadowColor="@color/white"
             android:shadowDx="0.0"
             android:shadowDy="0.0"
             android:shadowRadius="10"
-            android:text="BY:"
+            android:text="By:"
+            android:fontFamily="@font/stream_roboto_regular"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvitem_date_const" />
+            app:layout_constraintBottom_toBottomOf="@id/rvitem_price_const"
+            app:layout_constraintEnd_toStartOf="@id/rvitem_date"
+            app:layout_constraintHorizontal_bias="0.076"
+            app:layout_constraintTop_toBottomOf="@id/rvitem_date_const"
+            app:layout_constraintVertical_bias="0.0" />
 
 
         <TextView
             android:id="@+id/rvitem_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="38dp"
+            android:layout_marginStart="43dp"
             android:text="Name"
+            android:fontFamily="@font/stream_roboto_regular"
             android:maxLines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/white"
@@ -148,14 +122,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
             android:shadowColor="@color/white"
-            android:shadowDx="0"
+            android:shadowDx="0.0"
             android:shadowDy="0.0"
             android:shadowRadius="10"
-            android:text="PRICE:"
+            android:text="Bid:"
+            android:fontFamily="@font/stream_roboto_regular"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rvitem_name_const" />
 
@@ -164,14 +138,17 @@
             android:id="@+id/rvitem_price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
+            android:layout_marginStart="38dp"
             android:text="Price"
+            android:fontFamily="@font/stream_roboto_regular"
             android:maxLines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/rvitem_price_const"
             app:layout_constraintTop_toBottomOf="@id/rvitem_name" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

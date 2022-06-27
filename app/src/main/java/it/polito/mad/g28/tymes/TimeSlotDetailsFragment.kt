@@ -182,7 +182,7 @@ class TimeSlotDetailsFragment : Fragment() {
             inflater.inflate(R.menu.menubar, menu)
         } else if (sharedPref?.getString("Author ID", "notanid") != "notanid" && availability == "Available"){
             inflater.inflate(R.menu.worker_menu, menu)
-        }else if (sharedPref?.getString("Author ID", "notanid") != "notanid" && availability != "Available"){
+        } else if (sharedPref?.getString("Author ID", "notanid") != "notanid" && availability != "Available"){
             inflater.inflate(R.menu.worker_unavailable_menu, menu)
         }
         return super.onCreateOptionsMenu(menu, inflater)
@@ -228,14 +228,14 @@ class TimeSlotDetailsFragment : Fragment() {
                             database.collection("users")
                                 .document(Firebase.auth.currentUser?.uid.toString())
                                 .collection("favorites").document(adID).delete()
-                                .addOnSuccessListener { Toast.makeText(context, "Successfully removed ad from favorites", Toast.LENGTH_SHORT).show()}
+                                .addOnSuccessListener { Toast.makeText(context, "Successfully Removed AD from Favorites", Toast.LENGTH_SHORT).show()}
                         } else {
                             // If the document is in the DB, remove it
                             val map = hashMapOf("adID" to adID)
                             database.collection("users")
                                 .document(Firebase.auth.currentUser?.uid.toString())
                                 .collection("favorites").document(adID).set(map)
-                                .addOnSuccessListener { Toast.makeText(context, "Successfully added ad to favorites", Toast.LENGTH_SHORT).show()}
+                                .addOnSuccessListener { Toast.makeText(context, "Successfully Added AD to Favorites", Toast.LENGTH_SHORT).show()}
                         }
                     }
                 true
@@ -245,14 +245,14 @@ class TimeSlotDetailsFragment : Fragment() {
 
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle("Send Request")
-                    .setMessage("Are you sure you want to send a request for this Ad?")
+                    .setMessage("Are you sure that you want to send a request for this AD?")
                     .setNegativeButton("CANCEL") { dialog, which ->
                         // Respond to negative button press
                     }
                     .setPositiveButton("SEND") { dialog, which ->
                         // Respond to positive button press
                         val progressDialog = ProgressDialog(requireContext())
-                        progressDialog.setMessage("Setting up the Chat")
+                        progressDialog.setMessage("Setting Up the Chat")
                         progressDialog.setCancelable(true)
                         progressDialog.show()
                         val authorID = sharedPref?.getString("Author ID", "")
@@ -344,6 +344,7 @@ class TimeSlotDetailsFragment : Fragment() {
                 adRef.update("availability", "Requested")
                 viewModel.updateAvailability("Requested")
                 tvAvailability?.setText("Requested")
+                tvAvailability?.setTextColor(getResources().getColor(R.color.dark_orange))
                 Log.d("lifecycle", "createNewChanneltvAvailability: ${tvAvailability?.text.toString()}")
 
                 val targetFragment = ChatFragment()

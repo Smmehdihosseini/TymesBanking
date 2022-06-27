@@ -6,16 +6,17 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.datepicker.MaterialDatePicker.Builder.datePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.sql.Time
 import java.util.*
-import android.app.Activity
-import android.view.inputmethod.InputMethodManager
 
 
 class TimeSlotEditFragment : Fragment() {
@@ -91,7 +92,6 @@ class TimeSlotEditFragment : Fragment() {
             // date picker dialog
             val datePicker = DatePickerDialog(
                 view.context,
-
                 { _, year, monthOfYear, dayOfMonth -> etDate?.setText(dayOfMonth.toString() + "/" + (monthOfYear + 1) + "/" + year) },
                 year,
                 month,
@@ -106,6 +106,7 @@ class TimeSlotEditFragment : Fragment() {
                 is24HourView
             )
             //Reset datetime
+
             etDate?.setText("")
             timepicker.show()
             datePicker.show()

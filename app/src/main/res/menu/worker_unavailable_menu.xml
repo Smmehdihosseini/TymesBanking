@@ -5,6 +5,7 @@
         android:id="@+id/ic_fav"
         android:icon="@drawable/ic_fav"
         android:title="Add to Favorites"
+        android:iconTint="@color/grey"
         app:showAsAction="ifRoom" />
 
 

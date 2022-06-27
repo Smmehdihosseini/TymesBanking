@@ -31,12 +31,14 @@
         android:id="@+id/navigationView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        app:itemShapeFillColor="@color/grey_navdraw"
-        app:itemIconTint="@color/dark_red"
+        android:background="@color/grey_appbar"
+        app:itemTextColor="@color/grey"
+        app:itemTextAppearance="@anim/fade_in"
+        app:itemIconTint="@color/grey"
+        android:maxWidth="270dp"
         app:menu="@menu/navigation_menu"
-        app:headerLayout="@layout/navigation_header_layout"
         android:layout_gravity="start"
+        android:theme="@style/NavigationView"
         android:fitsSystemWindows="true"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
