@@ -9,7 +9,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -19,15 +18,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 
 class TimeSlotListFragment : Fragment() {
 
     private val vm : AdVM by activityViewModels()
-    var ads = ArrayList<Ad>()
-    var adapter = MyAdRecyclerViewAdapter(ads) { advert, edit -> onAdClick(advert, true) }
-    val itemsOrder = hashMapOf<String, Boolean>("Date" to false, "Price" to false, "Location" to false)
+    private var ads = ArrayList<Ad>()
+    var adapter = MyAdRecyclerViewAdapter(ads) { advert, _ -> onAdClick(advert, true) }
+    private val itemsOrder = hashMapOf("Date" to false, "Price" to false, "Location" to false)
     private val currentUser = Firebase.auth.currentUser
 
     override fun onCreateView(

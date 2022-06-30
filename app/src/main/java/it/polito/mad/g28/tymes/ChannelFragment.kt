@@ -8,9 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.Filters
@@ -33,7 +31,7 @@ class ChannelFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentChannelBinding.inflate(inflater, container, false)
 
         setupUser()
@@ -51,8 +49,6 @@ class ChannelFragment : Fragment() {
                 "cid" to channel.cid,
                 "askerID" to askerID
             )
-
-
 
             val targetFragment = ChatFragment()
             targetFragment.setArguments(bundle)
@@ -72,7 +68,6 @@ class ChannelFragment : Fragment() {
         }
          return binding.root
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -117,6 +112,4 @@ class ChannelFragment : Fragment() {
         listHeaderViewModel.bindView(binding.channelListHeaderView, viewLifecycleOwner)
         listViewModel.bindView(binding.channelsView, viewLifecycleOwner)
     }
-
-
 }

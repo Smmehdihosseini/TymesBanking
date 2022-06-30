@@ -24,9 +24,9 @@ class FavoritesFragment : Fragment() {
     private val database = Firebase.firestore
     private val vm : AdVM by activityViewModels()
     private val user = Firebase.auth.currentUser
-    var ads = ArrayList<Ad>()
-    var adapter = MyAdRecyclerViewAdapter(ads) { advert, edit -> onAdClick(advert, true) }
-    val itemsOrder = hashMapOf<String, Boolean>("Date" to false, "Price" to false, "Location" to false)
+    private var ads = ArrayList<Ad>()
+    var adapter = MyAdRecyclerViewAdapter(ads) { advert, _ -> onAdClick(advert, true) }
+    private val itemsOrder = hashMapOf("Date" to false, "Price" to false, "Location" to false)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +40,6 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("lifecycle", "onViewCreated: user is $user")
         if (user != null){
             val rv = activity?.findViewById<RecyclerView>(R.id.rv)
             val adIDs = ArrayList<String>()
@@ -130,7 +129,7 @@ class FavoritesFragment : Fragment() {
         }
 
     }
-    fun changeFrag(ad: Ad){
+    private fun changeFrag(ad: Ad){
         val fragmentTransaction = parentFragmentManager.beginTransaction()
 
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)

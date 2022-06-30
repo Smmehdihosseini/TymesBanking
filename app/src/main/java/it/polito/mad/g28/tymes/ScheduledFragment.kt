@@ -45,7 +45,7 @@ class ScheduledFragment : Fragment() {
             val adIDs = ArrayList<String>()
             rv?.layoutManager = LinearLayoutManager(context)
 
-            database.collection("users").document(user!!.uid).collection("userAds")
+            database.collection("users").document(user.uid).collection("userAds")
                 .whereEqualTo("status", "Unavailable")
                 .addSnapshotListener{ value, e ->
                     if (e != null) {
@@ -79,11 +79,7 @@ class ScheduledFragment : Fragment() {
                                         map?.get("date").toString()
                                     )
                                     ads.add(ad)
-
-
                                 }
-                                Log.d("lifecycle", "onViewCreated: first ads $ads")
-
                             }
                     }
 
@@ -93,7 +89,6 @@ class ScheduledFragment : Fragment() {
                             for (document in it.documents) {
                                 if (document.data!!["askerID"] == user.uid) {
                                     adIDs.add(document.id)
-                                    Log.d("lifecycle", "second: ${document.id}")
                                 }
                             }
                             if(adIDs.isNotEmpty()) {
@@ -115,38 +110,26 @@ class ScheduledFragment : Fragment() {
                                             )
                                             ads.add(ad)
 
-
                                         }
-                                        Log.d("lifecycle", "onViewCreated: first ads $ads")
                                         adapter = MyAdRecyclerViewAdapter(ads) { ad, edit -> onAdClick(ad, edit) }
                                         rv?.adapter = adapter
                                         Log.d("lifecycle", "Shown ads in timeslotlist: $ads")
                                     }
-
-
-
                             }
                         }
                 }
-
-
         }
     }
-
 
     private fun onAdClick(ad: Ad, edit: Boolean) {
 
         val database = Firebase.firestore
         val docRef = database.collection("ads").document(ad.adID)
         val availabilityRef = database.collection("users").document(ad.authorID).collection("userAds").document(ad.adID)
-
-
-
         runBlocking {
             GlobalScope.launch {
                 delay(50)
                 changeFrag(ad)
-
             }
             docRef.addSnapshotListener { document, e ->
                 if (e != null) {
@@ -167,9 +150,7 @@ class ScheduledFragment : Fragment() {
                     availabilityRef.addSnapshotListener { document, _ ->
                         Log.d("lifecycle", "onAdClick: updating availability")
                         vm.updateAvailability(document?.data?.get("status").toString())
-
                     }
-
                 } else {
                     Log.d("lifecycle", "No such document")
                 }
@@ -255,7 +236,4 @@ class ScheduledFragment : Fragment() {
         }
         adapter.notifyDataSetChanged()
     }
-
-
-
 }

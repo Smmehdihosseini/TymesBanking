@@ -4,7 +4,6 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 
 class MyAdRecyclerViewAdapter(
@@ -17,8 +16,6 @@ class MyAdRecyclerViewAdapter(
         val date: TextView = v.findViewById(R.id.rvitem_date)
         val location: TextView = v.findViewById(R.id.rvitem_location)
         val by: TextView = v.findViewById(R.id.rvitem_name)
-
-//        val btn : Button = v.findViewById(R.id.edit_ad_button)
 
         override fun toString(): String {
             return "$price, $date, $location, $by"
@@ -36,9 +33,6 @@ class MyAdRecyclerViewAdapter(
         holder.location.text = item.location
         holder.date.text = item.date
         holder.by.text = item.author
-//        holder.btn.setOnClickListener {
-//            onAdClick(item, true)
-//        }
         holder.itemView.setOnClickListener{
             onAdClick.invoke(item, false)
         }

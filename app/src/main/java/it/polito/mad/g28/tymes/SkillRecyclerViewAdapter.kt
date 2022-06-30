@@ -28,14 +28,12 @@ class SkillRecyclerViewAdapter (private val skillList: ArrayList<SkillItem>, pri
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = skillList[position]
         holder.skill.text = item.skill
-
         holder.itemView.setOnClickListener{
             onSkillClick.invoke(item)
         }
     }
 
     override fun getItemCount(): Int = skillList.size
-
 
     override fun getFilter(): Filter {
         return exampleFilter
@@ -64,9 +62,6 @@ class SkillRecyclerViewAdapter (private val skillList: ArrayList<SkillItem>, pri
             skillList.clear()
             skillList.addAll(results.values as List<SkillItem>)
             notifyDataSetChanged()
-
         }
     }
-
-
 }

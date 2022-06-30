@@ -10,8 +10,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -19,7 +17,7 @@ import com.google.firebase.ktx.Firebase
 class SkillListFragment : Fragment() {
 
 
-    var skillList = ArrayList<SkillItem>()
+    private var skillList = ArrayList<SkillItem>()
     var adapter = SkillRecyclerViewAdapter(ArrayList(skillList)) {skill: SkillItem -> onSkillClick(skill)  }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,17 +80,8 @@ class SkillListFragment : Fragment() {
 
                 return false
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.getFilter()?.filter(newText)
-
-                // TODO: Show a message if no skill matches the search
-//                if (adapter.itemCount == 0){
-//                    activity?.findViewById<TextView>(R.id.no_item_const)?.visibility = View.VISIBLE
-//                } else{
-//                    // Show the recycler view
-//
-//                }
+                adapter.getFilter().filter(newText)
                 return false
             }
         })

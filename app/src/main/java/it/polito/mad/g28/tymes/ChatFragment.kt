@@ -13,7 +13,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.ui.message.input.viewmodel.bindView
 import io.getstream.chat.android.ui.message.list.header.viewmodel.MessageListHeaderViewModel
 import io.getstream.chat.android.ui.message.list.header.viewmodel.bindView
@@ -26,22 +25,16 @@ class ChatFragment : Fragment() {
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
 
-    private val client = ChatClient.instance()
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentChatBinding.inflate(inflater, container, false)
-
         setupMessages()
-
         binding.messagesHeaderView.setBackButtonClickListener {
             requireActivity().onBackPressed()
         }
-
         return binding.root
     }
 
@@ -67,7 +60,6 @@ class ChatFragment : Fragment() {
                         _binding?.tvRequestInfo?.visibility = View.VISIBLE
                     }
                 }
-
             }
             .addOnFailureListener { exception ->
                 Log.w("lifecycle", "Error getting documents: ", exception)
@@ -75,23 +67,21 @@ class ChatFragment : Fragment() {
 
 
 
-
         _binding?.btnReject?.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Reject Request")
                 .setMessage("Are you sure you want to reject this request?")
-                .setNegativeButton("CANCEL") { dialog, which ->
+                .setNegativeButton("CANCEL") { _, _ ->
                     // Respond to negative button press
                 }
-                .setPositiveButton("REJECT") { dialog, which ->
+                .setPositiveButton("REJECT") { _, _ ->
                     // Respond to positive button press
-                    database.collection("users").document(currentUser!!.uid).collection("userAds")
+                    database.collection("users").document(currentUser.uid).collection("userAds")
                         .whereEqualTo("askerID", arguments?.getString("askerID"))
                         .get()
                         .addOnSuccessListener { documents ->
                             for (document in documents) {
-                                document.data["status"] == "Available"
-                                database.collection("users").document(currentUser!!.uid)
+                                database.collection("users").document(currentUser.uid)
                                     .collection("userAds").document(document.id)
                                     .update("status", "Available")
                                 Log.d("lifecycle", "${document.id} => ${document.data} is now available")
@@ -111,13 +101,13 @@ class ChatFragment : Fragment() {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Accept Request")
                 .setMessage("Are you sure you want to accept this request?")
-                .setNegativeButton("CANCEL") { dialog, which ->
+                .setNegativeButton("CANCEL") { _, _ ->
                     // Respond to negative button press
                 }
-                .setPositiveButton("ACCEPT") { dialog, which ->
+                .setPositiveButton("ACCEPT") { _, _ ->
                     // Respond to positive button press
 
-                    database.collection("users").document(currentUser!!.uid)
+                    database.collection("users").document(currentUser.uid)
                         .collection("userAds")
                         .whereEqualTo("askerID", arguments?.getString("askerID"))
                         .get()
@@ -125,11 +115,11 @@ class ChatFragment : Fragment() {
                             for (document in documents) {
                                 document.data["status"] = "Unavailable"
                                 Log.d("lifecycle", "${document.id} => ${document.data} is now unavailable")
-                                database.collection("users").document(currentUser!!.uid)
+                                database.collection("users").document(currentUser.uid)
                                     .collection("userAds").document(document.id)
                                     .update("status", "Unavailable")
                                 val docID = document.id
-//                                Log.d("lifecycle", "onViewCreated: docid $docID")
+//                                Log.d("lifecycle", "onViewCreated: docId $docID")
                                 database.collection("ads").document(docID).get().addOnSuccessListener {
                                     val price = it.data!!["price"].toString().split(" ")[0].toInt()
 //                                    Log.d("lifecycle", "onViewCreated: price $price")
@@ -158,7 +148,6 @@ class ChatFragment : Fragment() {
 
         }
     }
-
 
 
     private fun setupMessages() {

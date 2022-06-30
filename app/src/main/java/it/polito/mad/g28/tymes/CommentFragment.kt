@@ -4,23 +4,20 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import org.w3c.dom.Text
 
 class CommentFragment : Fragment() {
 
     private var columnCount = 1
     private val database = Firebase.firestore
-    var commentList = ArrayList<Comment>()
+    private var commentList = ArrayList<Comment>()
     var adapter = MyCommentRecyclerViewAdapter(commentList)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +57,7 @@ class CommentFragment : Fragment() {
                     tvNoComments?.visibility = View.GONE
                 }
 
-                for (comment in comments!!) {
+                for (comment in comments) {
                     if (comment != null){
                         Log.d("lifecycle", "comment data: ${comment.data}")
                         database.collection("users").document(comment.data.get("ID").toString()).get().addOnSuccessListener {
@@ -76,34 +73,11 @@ class CommentFragment : Fragment() {
                         }
                     }
                 }
-
-//                database.collection("users").document(authorID).get().addOnSuccessListener {
-//                    Log.d("lifecycle", "onViewCreated: adapter")
-//                    adapter = MyCommentRecyclerViewAdapter(ArrayList(commentList))
-//                    val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-//
-//                    rv?.layoutManager = layoutManager
-//                    rv?.adapter = adapter
-//                }
-
-
-
             }
-
     }
 
     companion object {
-
         // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            CommentFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
     }
 }

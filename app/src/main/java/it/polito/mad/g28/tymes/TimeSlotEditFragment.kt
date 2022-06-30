@@ -10,12 +10,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.datepicker.MaterialDatePicker.Builder.datePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.sql.Time
 import java.util.*
 
 
@@ -154,11 +152,11 @@ class TimeSlotEditFragment : Fragment() {
 
         val ad = Ad(adID, author, authorID, etSkill, etAvailability, etDescription, etLocation, price + " TYC", etDate)
         database.collection("skills").document(etSkill).set(SkillItem(etSkill))
-//            .addOnSuccessListener {Log.d("lifecycle", "Successfully added $etSkill")}
-//            .addOnFailureListener {Log.d("lifecycle", "Did not successfully add $etSkill")}
+            .addOnSuccessListener {Log.d("lifecycle", "Successfully added $etSkill")}
+            .addOnFailureListener {Log.d("lifecycle", "Did not successfully add $etSkill")}
         database.collection("ads").document(adID).set(ad)
-//            .addOnSuccessListener {Log.d("lifecycle", "Successfully edited ad with id: $adID")}
-//            .addOnFailureListener {Log.d("lifecycle", "Did not edit the ad: $adID properly")}
+            .addOnSuccessListener {Log.d("lifecycle", "Successfully edited ad with id: $adID")}
+            .addOnFailureListener {Log.d("lifecycle", "Did not edit the ad: $adID properly")}
         database.collection("users").document(authorID).collection("userAds").document(adID)
             .set(
                 mapOf("status" to "Available",

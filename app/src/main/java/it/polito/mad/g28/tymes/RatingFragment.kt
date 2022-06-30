@@ -44,9 +44,9 @@ class RatingFragment : Fragment() {
             val adID = sharedPref?.getString("AdID", null)
             val authorID = sharedPref?.getString("Author ID", null)
             val askerID = sharedPref?.getString("askerID", null)
-            Log.d("lifecycle", "onViewCreated: adID $adID")
-            Log.d("lifecycle", "onViewCreated: askerID $askerID")
-            Log.d("lifecycle", "onViewCreated: authorID $authorID")
+//            Log.d("lifecycle", "onViewCreated: adID $adID")
+//            Log.d("lifecycle", "onViewCreated: askerID $askerID")
+//            Log.d("lifecycle", "onViewCreated: authorID $authorID")
 
             if (currentUser?.uid == authorID && authorID != null) {
                 Log.d("lifecycle", "inelseif")
@@ -68,7 +68,7 @@ class RatingFragment : Fragment() {
 
                         if (comment?.text.toString().isNotEmpty()){
                             val map = hashMapOf<String, String>("comment" to comment?.text.toString(), "ID" to authorID)
-                            database.collection("users").document(askerID!!).collection("comments").add(map).addOnSuccessListener {
+                            database.collection("users").document(askerID).collection("comments").add(map).addOnSuccessListener {
                                 Log.d("lifecycle", "comment is not empty and is sent")
                             }
                         }
@@ -89,7 +89,7 @@ class RatingFragment : Fragment() {
 
                         if (comment?.text.toString().isNotEmpty()){
                             val map = hashMapOf<String, String>("comment" to comment?.text.toString(), "ID" to askerID)
-                            database.collection("users").document(authorID!!).collection("comments").add(map)
+                            database.collection("users").document(authorID).collection("comments").add(map)
                         }
                     }
                 }

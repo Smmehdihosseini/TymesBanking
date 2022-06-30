@@ -3,8 +3,6 @@ package it.polito.mad.g28.tymes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import io.getstream.chat.android.client.ChatClient
@@ -57,7 +55,6 @@ class UsersAdapter (private val usersList: ArrayList<User>, private val onUserCl
                 onUserClick.invoke(selectedUser, result.data().cid)
                 Log.d("lifecycle", "createNewChannel: with cid  ")
                 Log.d("lifecycle", "createNewChannel: selecteduserid: ${selectedUser.id}  ")
-                //navigateToChatFragment(holder, result.data().cid)
             } else {
                 Log.e("lifecycle", result.error().message.toString())
             }

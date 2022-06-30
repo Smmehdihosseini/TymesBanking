@@ -4,15 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.api.models.QueryUsersRequest
 import io.getstream.chat.android.client.models.Filters
@@ -32,9 +28,6 @@ class UsersListFragment : Fragment() {
     ): View? {
         setHasOptionsMenu(true)
         // Inflate the layout for this fragment
-
-
-
 
         return inflater.inflate(R.layout.fragment_users_list, container, false)
     }
@@ -68,19 +61,11 @@ class UsersListFragment : Fragment() {
                 else {
                     searchUser(newText)
                 }
-
-                // TODO: Show a message if no skill matches the search
-//                if (adapter.itemCount == 0){
-//                    activity?.findViewById<TextView>(R.id.no_item_const)?.visibility = View.VISIBLE
-//                } else{
-//                    // Show the recycler view
-//
-//                }
                 return true
             }
 
         })
-        searchView?.setOnCloseListener {
+        searchView.setOnCloseListener {
             queryAllUsers()
             false
         }
@@ -133,12 +118,6 @@ class UsersListFragment : Fragment() {
 
 
     private fun onUserClick(user: User, cid: String) {
-
-        //val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)?: return
-        //with(sharedPref.edit()){
-            //putString("users", user.skill)
-            //    apply()
-        //}
 
         val bundle = bundleOf("cid" to cid)
         val targetFragment = ChatFragment()

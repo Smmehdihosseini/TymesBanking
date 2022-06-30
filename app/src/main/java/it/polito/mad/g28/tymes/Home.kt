@@ -9,18 +9,12 @@ import android.widget.TextView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import org.w3c.dom.Text
 
 
 class Home : Fragment() {
 
     private val database = Firebase.firestore
     private val currentUser = Firebase.auth.currentUser
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

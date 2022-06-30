@@ -1,28 +1,20 @@
 package it.polito.mad.g28.tymes
 
-import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import android.widget.TextView
-import androidx.core.view.drawToBitmap
 import androidx.fragment.app.activityViewModels
-import com.bumptech.glide.Glide
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import it.polito.mad.g28.tymes.databinding.ActivityMainBinding
-import it.polito.mad.g28.tymes.databinding.FragmentShowProfileActivityBinding
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.math.RoundingMode
 
@@ -42,7 +34,6 @@ class ShowProfileActivity : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("lifecycle", "onviewcreated")
 
         val tvFullName = activity?.findViewById<TextView>(R.id.user_fullname)
         val tvBiography = activity?.findViewById<TextView>(R.id.user_bio)

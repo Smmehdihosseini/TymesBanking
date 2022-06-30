@@ -1,28 +1,22 @@
 package it.polito.mad.g28.tymes
 
-import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Button
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.User
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -100,12 +94,12 @@ class TimeSlotDetailsFragment : Fragment() {
                             ratingBtn?.visibility = View.VISIBLE
                             ratingBtn?.setOnClickListener {
                                 database.collection("users").document(authorID!!).collection("userAds")
-                                    .document(adID!!)
+                                    .document(adID)
                                     .get()
                                     .addOnSuccessListener {
 
                                         Log.d("lifecycle", "rating -> askerID: ${it.get("askerID")}")
-                                        with(sharedPref!!.edit()) {
+                                        with(sharedPref.edit()) {
                                             putString("askerID", it.get("askerID").toString())
                                             putString("AdID", adID)
                                             apply()
@@ -123,18 +117,18 @@ class TimeSlotDetailsFragment : Fragment() {
                             Log.d("lifecycle", "current user is not author")
                             database.collection("users").document(authorID)
                                 .collection("userAds").document(adID)
-                                .addSnapshotListener { value, e ->
+                                .addSnapshotListener { value, _ ->
                                     Log.d("lifecycle", "rating -> askerID: ${value?.get("askerID")}")
                                     if (value!!["askerID"] == currentUser?.uid) {
                                         val ratingBtn = activity?.findViewById<Button>(R.id.btn_rating)
-                                        Log.d("lifecycle", "and asker id is ${value!!["askerID"].toString()}")
+                                        Log.d("lifecycle", "and asker id is ${value["askerID"].toString()}")
 
                                         ratingBtn?.visibility = View.VISIBLE
                                         ratingBtn?.setOnClickListener {
 
-                                            with(sharedPref!!.edit()) {
+                                            with(sharedPref.edit()) {
                                                 putString("Author ID", authorID)
-                                                putString("askerID", value!!["askerID"].toString())
+                                                putString("askerID", value["askerID"].toString())
                                                 putString("AdID", adID)
                                                 apply()
                                             }
@@ -186,7 +180,7 @@ class TimeSlotDetailsFragment : Fragment() {
         Log.d("lifecycle", "onCreateOptionsMenu: availability: $availability")
         if (user == null){
             inflater.inflate(R.menu.notauth_menubar, menu)
-        } else if (sharedPref?.getString("Author ID", "notanid") == user?.uid){
+        } else if (sharedPref?.getString("Author ID", "notanid") == user.uid){
             inflater.inflate(R.menu.menubar, menu)
         } else if (sharedPref?.getString("Author ID", "notanid") != "notanid" && availability == "Available"){
             inflater.inflate(R.menu.worker_menu, menu)
@@ -254,16 +248,16 @@ class TimeSlotDetailsFragment : Fragment() {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle("Send Request")
                     .setMessage("Are you sure that you want to send a request for this AD?")
-                    .setNegativeButton("CANCEL") { dialog, which ->
+                    .setNegativeButton("CANCEL") { _, _ ->
                         // Respond to negative button press
                     }
-                    .setPositiveButton("SEND") { dialog, which ->
+                    .setPositiveButton("SEND") { _, _ ->
                         // Respond to positive button press
                         val progressDialog = ProgressDialog(requireContext())
                         progressDialog.setMessage("Setting Up the Chat")
                         progressDialog.setCancelable(true)
                         progressDialog.show()
-                        val authorID = sharedPref?.getString("Author ID", "")
+                        val authorID = sharedPref.getString("Author ID", "")
                         Log.d("lifecycle", "selected user $authorID , current user ${currentUser!!.uid}")
                         setupChannel(authorID!!, progressDialog)
                     }

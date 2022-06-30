@@ -1,15 +1,12 @@
 package it.polito.mad.g28.tymes
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -17,7 +14,6 @@ import android.widget.*
 import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
@@ -60,9 +56,6 @@ class EditProfileActivity : Fragment() {
         val availableList = mutableListOf<Int>()
 
         val progressDialog = ProgressDialog(requireContext())
-        /*progressDialog.setMessage("Get Profile Picture ... ")
-        progressDialog.setCancelable(true)
-        progressDialog.show()*/
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         val authorID = sharedPref?.getString("Author ID", null)
         Log.d("lifecycle", "author id $authorID")
@@ -75,7 +68,6 @@ class EditProfileActivity : Fragment() {
                 progressDialog.dismiss()
             val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
             userPicture?.setImageBitmap(bitmap)
-            Log.d("lifecycle", "success!!!!")
         }
 
         editPictureButton?.setOnClickListener {
@@ -207,8 +199,6 @@ class EditProfileActivity : Fragment() {
         val etBiography = activity?.findViewById<TextInputEditText>(R.id.edit_user_bio)?.text.toString()
         val etLocation = activity?.findViewById<TextInputEditText>(R.id.edit_user_location)?.text.toString()
         val etEmail = activity?.findViewById<TextInputEditText>(R.id.edit_user_email)?.text.toString()
-        val tvProviderRating = activity?.findViewById<TextView>(R.id.tv_provider_rate)?.text.toString()
-        val tvWorkerRating = activity?.findViewById<TextView>(R.id.tv_worker_rate)?.text.toString()
         val chip1 = activity?.findViewById<Chip>(R.id.chip1)?.text.toString()
         val chip2 = activity?.findViewById<Chip>(R.id.chip2)?.text.toString()
         val chip3 = activity?.findViewById<Chip>(R.id.chip3)?.text.toString()
@@ -241,7 +231,7 @@ class EditProfileActivity : Fragment() {
         }
     }
 
-    fun View.hideKeyboard() {
+    private fun View.hideKeyboard() {
         val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(windowToken, 0)
     }

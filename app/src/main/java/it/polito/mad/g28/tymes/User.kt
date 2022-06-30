@@ -1,6 +1,5 @@
 package it.polito.mad.g28.tymes
 
-import android.os.Bundle
 import io.getstream.chat.android.client.models.User
 
 data class User(val uid: String,
