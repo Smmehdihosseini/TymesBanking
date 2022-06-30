@@ -44,7 +44,6 @@
             android:layout_marginBottom="8dp"
             android:layout_weight="0.2"
             android:scaleType="fitXY"
-            android:background="@drawable/border_image"
             android:contentDescription="@string/user_picture"
             tools:ignore="TextContrastCheck"
             tools:srcCompat="@drawable/ic_tymes_profile_pic"

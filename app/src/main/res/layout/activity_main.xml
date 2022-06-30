@@ -32,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@color/grey_appbar"
+        app:subheaderColor="@color/grey"
         app:itemTextColor="@color/grey"
         app:itemTextAppearance="@anim/fade_in"
         app:itemIconTint="@color/grey"

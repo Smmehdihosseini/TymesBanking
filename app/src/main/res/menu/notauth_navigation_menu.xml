@@ -24,8 +24,8 @@
         <menu>
             <item
                 android:id="@+id/tymes_settings_icon"
-                android:title="Settings"
-                android:icon="@drawable/ic_baseline_settings_24"/>
+                android:title="Account Settings"
+                android:icon="@drawable/ic_baseline_person_24"/>
 
             <item
                 android:id="@+id/tymes_about_icon"

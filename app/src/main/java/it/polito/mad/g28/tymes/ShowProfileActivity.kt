@@ -54,9 +54,13 @@ class ShowProfileActivity : Fragment() {
                     if (it.data!!["totalWorkerRating"] == "0"){
                         tvWorkerRating?.setText("Worker rating: None")
                     }else{
-                        val number = it.data!!["workerRating"].toString().toFloat()
-                        val rounded = number.toBigDecimal().setScale(1, RoundingMode.UP).toDouble()
-                        tvWorkerRating?.setText("Worker rating: " + rounded.toString() + "/5")
+                        val number: Float? = it.data!!["workerRating"].toString().toFloat()
+                        if (number==null){
+                            tvWorkerRating?.setText("Worker rating: " + number.toString() + "/5")
+                        }  else {
+                            val rounded = number.toBigDecimal().setScale(1, RoundingMode.UP).toDouble()
+                            tvWorkerRating?.setText("Worker rating: " + rounded.toString() + "/5")
+                        }
                     }
 
                     Log.d("lifecycle", "totprovrat ${it.data!!["totalProviderRating"]}")
