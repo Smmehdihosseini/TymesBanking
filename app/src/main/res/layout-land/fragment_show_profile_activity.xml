@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
+        android:textSize="12sp"
         android:text="Provider Rating: 5/5"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -44,6 +45,26 @@
         android:letterSpacing="0.1"
         app:layout_constraintBottom_toTopOf="@id/user_picture"
         app:layout_constraintTop_toBottomOf="@id/tv_credits"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline"/>
+
+    <TextView
+
+        android:id="@+id/tv_worker_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="12sp"
+        android:text="Worker Rating: 5/5"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:shadowColor="@color/grey_appbar"
+        android:shadowDx="0.0"
+        android:shadowDy="0.0"
+        android:shadowRadius="10"
+        android:textAllCaps="true"
+        android:letterSpacing="0.1"
+        app:layout_constraintTop_toBottomOf="@id/tv_provider_rate"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline"/>
 
@@ -62,7 +83,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_provider_rate"
+        app:layout_constraintTop_toBottomOf="@id/tv_worker_rate"
         tools:ignore="ImageContrastCheck"
         tools:srcCompat="@drawable/ic_tymes_profile_pic" />
 

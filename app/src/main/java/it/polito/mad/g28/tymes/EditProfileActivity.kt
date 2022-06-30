@@ -207,6 +207,8 @@ class EditProfileActivity : Fragment() {
         val etBiography = activity?.findViewById<TextInputEditText>(R.id.edit_user_bio)?.text.toString()
         val etLocation = activity?.findViewById<TextInputEditText>(R.id.edit_user_location)?.text.toString()
         val etEmail = activity?.findViewById<TextInputEditText>(R.id.edit_user_email)?.text.toString()
+        val tvProviderRating = activity?.findViewById<TextView>(R.id.tv_provider_rate)?.text.toString()
+        val tvWorkerRating = activity?.findViewById<TextView>(R.id.tv_worker_rate)?.text.toString()
         val chip1 = activity?.findViewById<Chip>(R.id.chip1)?.text.toString()
         val chip2 = activity?.findViewById<Chip>(R.id.chip2)?.text.toString()
         val chip3 = activity?.findViewById<Chip>(R.id.chip3)?.text.toString()
@@ -220,14 +222,20 @@ class EditProfileActivity : Fragment() {
             // Persist user data to database when onBackPressed
             val database = Firebase.firestore
             val uid = currentUser.uid
-            val user = User(uid,etFullName, etBiography, etSkills, etLocation, etEmail)
             val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
             with(sharedPref!!.edit()){
                 putString("Author ID", currentUser.uid)
                 apply()
             }
 
-            database.collection("users").document(uid).set(user)
+            database.collection("users").document(uid)
+                .update(mapOf(
+                    "fullname" to etFullName,
+                    "email" to etEmail,
+                    "biography" to etBiography,
+                    "skills" to etSkills,
+                    "location" to etLocation,
+                ))
                 .addOnSuccessListener {Log.d("lifecycle", "Successfully edited profile of $etFullName")}
                 .addOnFailureListener {Log.d("lifecycle", "Did not edit profile of $etFullName properly")}
         }

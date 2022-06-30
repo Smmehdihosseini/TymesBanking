@@ -58,7 +58,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Provider Rating: 5/5"
+        android:textSize="12sp"
+        android:text="Provider Rating: None"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:shadowColor="@color/grey_appbar"
@@ -70,18 +71,26 @@
         app:layout_constraintBottom_toTopOf="@id/linearLayout"
         app:layout_constraintTop_toBottomOf="@id/tv_credits"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toStartOf="@id/tv_worker_rate"/>
 
     <TextView
 
         android:id="@+id/tv_worker_rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:layout_marginTop="8dp"
+        android:textSize="12sp"
+        android:text="Worker Rating: 5/5"
+        android:textColor="@color/black"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/linearLayout"
-        app:layout_constraintTop_toBottomOf="@id/tv_provider_rate"
-        app:layout_constraintStart_toStartOf="parent"
+        android:shadowColor="@color/grey_appbar"
+        android:shadowDx="0.0"
+        android:shadowDy="0.0"
+        android:shadowRadius="10"
+        android:textAllCaps="true"
+        android:letterSpacing="0.1"
+        app:layout_constraintTop_toBottomOf="@id/tv_credits"
+        app:layout_constraintStart_toEndOf="@id/tv_provider_rate"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <LinearLayout

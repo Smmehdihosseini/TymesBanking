@@ -63,7 +63,7 @@ class TimeSlotDetailsFragment : Fragment() {
         val tvPrice = activity?.findViewById<TextView>(R.id.ad_price)
         val tvDate = activity?.findViewById<TextView>(R.id.ad_date)
 
-        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+        val sdf = SimpleDateFormat("yyyy/M/dd HH:mm:ss")
         val currentDate = sdf.format(Date())
 
 
@@ -78,7 +78,6 @@ class TimeSlotDetailsFragment : Fragment() {
             tvPrice?.text = it["Price"]
             tvDate?.text = it["Date"]
 
-            Log.d("lifecycle", "onViewCreated: tvDate ${tvDate?.text.toString()} , currentDate: $currentDate")
             val cmp = currentDate.compareTo(tvDate?.text.toString())
             if(cmp > 0) {
                 Log.d("lifecycle", "onViewCreated: currentDate is after tvDate, ad status is completed")
@@ -91,21 +90,70 @@ class TimeSlotDetailsFragment : Fragment() {
                         Log.d("lifecycle", "Successfully set status to completed for adID: $adID")
                         tvAvailability?.text = "Completed"}
             }
+
+            database.collection("ads").document(adID!!).get().addOnSuccessListener {
+                val isRated = it.data!!["isRated"]
+                if (isRated != true){
+                    if (tvAvailability?.text.toString() == "Completed") {
+                        if (currentUser?.uid == authorID) {
+                            val ratingBtn = activity?.findViewById<Button>(R.id.btn_rating)
+                            ratingBtn?.visibility = View.VISIBLE
+                            ratingBtn?.setOnClickListener {
+                                database.collection("users").document(authorID!!).collection("userAds")
+                                    .document(adID!!)
+                                    .get()
+                                    .addOnSuccessListener {
+
+                                        Log.d("lifecycle", "rating -> askerID: ${it.get("askerID")}")
+                                        with(sharedPref!!.edit()) {
+                                            putString("askerID", it.get("askerID").toString())
+                                            putString("AdID", adID)
+                                            apply()
+                                        }
+                                        val fragmentTransaction = parentFragmentManager.beginTransaction()
+                                        fragmentTransaction
+                                            .replace(R.id.fragmentContainerView, RatingFragment())
+                                            .addToBackStack(null)
+                                            .commit()
+                                    }
+                            }
+                        }
+
+                        else if (authorID != null && adID != null) {
+                            Log.d("lifecycle", "current user is not author")
+                            database.collection("users").document(authorID)
+                                .collection("userAds").document(adID)
+                                .addSnapshotListener { value, e ->
+                                    Log.d("lifecycle", "rating -> askerID: ${value?.get("askerID")}")
+                                    if (value!!["askerID"] == currentUser?.uid) {
+                                        val ratingBtn = activity?.findViewById<Button>(R.id.btn_rating)
+                                        Log.d("lifecycle", "and asker id is ${value!!["askerID"].toString()}")
+
+                                        ratingBtn?.visibility = View.VISIBLE
+                                        ratingBtn?.setOnClickListener {
+
+                                            with(sharedPref!!.edit()) {
+                                                putString("Author ID", authorID)
+                                                putString("askerID", value!!["askerID"].toString())
+                                                putString("AdID", adID)
+                                                apply()
+                                            }
+                                            val fragmentTransaction = parentFragmentManager.beginTransaction()
+                                            fragmentTransaction
+                                                .replace(R.id.fragmentContainerView, RatingFragment())
+                                                .addToBackStack(null)
+                                                .commit()
+                                        }
+                                    }
+                                }
+                        }
+                }
+            }
         }
 
 
 
         tvAuthor?.setOnClickListener{
-
-            viewLifecycleOwner.lifecycleScope.launch{
-                delay(500)
-//                (activity as MainActivity).changeFrag(ShowProfileActivity(), "Profile")
-                val fragmentTransaction = parentFragmentManager.beginTransaction()
-                fragmentTransaction
-                    .replace(R.id.fragmentContainerView, ShowProfileActivity())
-                    .addToBackStack(null)
-                    .commit()
-            }
             Log.d("lifecycle", "passing author id: $authorID")
             database.collection("users").document(authorID.toString()).get()
                 .addOnSuccessListener { document ->
@@ -118,59 +166,17 @@ class TimeSlotDetailsFragment : Fragment() {
                         map?.get("skills").toString(),
                         map?.get("location").toString(),
                         map?.get("email").toString(),
+
                     )
+                    val fragmentTransaction = parentFragmentManager.beginTransaction()
+                    fragmentTransaction
+                        .replace(R.id.fragmentContainerView, ShowProfileActivity())
+                        .addToBackStack(null)
+                        .commit()
                 }
         }
 
-        if (tvAvailability?.text.toString() == "Completed") {
-
-            if (currentUser?.uid == authorID) {
-                val ratingBtn = activity?.findViewById<Button>(R.id.btn_rating)
-                ratingBtn?.visibility = View.VISIBLE
-                ratingBtn?.setOnClickListener {
-                    database.collection("users").document(authorID!!).collection("userAds")
-                        .document(adID!!)
-                        .get()
-                        .addOnSuccessListener {
-
-                            Log.d("lifecycle", "rating -> askerID: ${it.get("askerID")}")
-                            with(sharedPref!!.edit()) {
-                                putString("askerID", it.get("askerID").toString())
-                                apply()
-                            }
-                            val fragmentTransaction = parentFragmentManager.beginTransaction()
-                            fragmentTransaction
-                                .replace(R.id.fragmentContainerView, RatingFragment())
-                                .addToBackStack(null)
-                                .commit()
-                        }
-                }
-            }
-
-            if (authorID != null && adID != null) {
-                database.collection("users").document(authorID)
-                    .collection("userAds").document(adID)
-                    .addSnapshotListener { value, e ->
-                        Log.d("lifecycle", "rating -> askerID: ${value?.get("askerID")}")
-                        if (value!!["askerID"] == currentUser?.uid) {
-                            val ratingBtn = activity?.findViewById<Button>(R.id.btn_rating)
-                            ratingBtn?.visibility = View.VISIBLE
-                            ratingBtn?.setOnClickListener {
-
-                                with(sharedPref!!.edit()) {
-                                    putString("Author ID", authorID)
-                                    apply()
-                                }
-                                val fragmentTransaction = parentFragmentManager.beginTransaction()
-                                fragmentTransaction
-                                    .replace(R.id.fragmentContainerView, RatingFragment())
-                                    .addToBackStack(null)
-                                    .commit()
-                            }
-                        }
-                    }
-            }
-        }
+    }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -178,7 +184,9 @@ class TimeSlotDetailsFragment : Fragment() {
         val user = Firebase.auth.currentUser
         val availability = activity?.findViewById<TextView>(R.id.ad_availability)?.text.toString()
         Log.d("lifecycle", "onCreateOptionsMenu: availability: $availability")
-        if (sharedPref?.getString("Author ID", "notanid") == user?.uid){
+        if (user == null){
+            inflater.inflate(R.menu.notauth_menubar, menu)
+        } else if (sharedPref?.getString("Author ID", "notanid") == user?.uid){
             inflater.inflate(R.menu.menubar, menu)
         } else if (sharedPref?.getString("Author ID", "notanid") != "notanid" && availability == "Available"){
             inflater.inflate(R.menu.worker_menu, menu)
@@ -256,6 +264,7 @@ class TimeSlotDetailsFragment : Fragment() {
                         progressDialog.setCancelable(true)
                         progressDialog.show()
                         val authorID = sharedPref?.getString("Author ID", "")
+                        Log.d("lifecycle", "selected user $authorID , current user ${currentUser!!.uid}")
                         setupChannel(authorID!!, progressDialog)
                     }
                     .show()

@@ -67,6 +67,7 @@ class ChatFragment : Fragment() {
                         _binding?.tvRequestInfo?.visibility = View.VISIBLE
                     }
                 }
+
             }
             .addOnFailureListener { exception ->
                 Log.w("lifecycle", "Error getting documents: ", exception)
@@ -127,6 +128,26 @@ class ChatFragment : Fragment() {
                                 database.collection("users").document(currentUser!!.uid)
                                     .collection("userAds").document(document.id)
                                     .update("status", "Unavailable")
+                                val docID = document.id
+//                                Log.d("lifecycle", "onViewCreated: docid $docID")
+                                database.collection("ads").document(docID).get().addOnSuccessListener {
+                                    val price = it.data!!["price"].toString().split(" ")[0].toInt()
+//                                    Log.d("lifecycle", "onViewCreated: price $price")
+                                    database.collection("users").document(currentUser.uid).get().addOnSuccessListener {
+//                                        Log.d("lifecycle", "current user credits ${it.data!!["credits"].toString().toInt()}")
+                                        val creditsProvider = it.data!!["credits"].toString().toInt() + price
+                                        database.collection("users").document(currentUser.uid).update("credits", creditsProvider).addOnSuccessListener {
+//                                            Log.d("lifecycle", "new credits is $creditsProvider")
+                                            database.collection("users").document(arguments?.getString("askerID").toString()).get().addOnSuccessListener {
+//                                                Log.d("lifecycle", "asker credits ${it.data!!["credits"].toString().toInt()}")
+                                                val creditsAsker = it.data!!["credits"].toString().toInt() - price
+                                                database.collection("users").document(arguments?.getString("askerID")!!).update("credits", creditsAsker).addOnSuccessListener {
+//                                                    Log.d("lifecycle", "newCredits asker $creditsAsker")
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     _binding?.btnAccept?.visibility = View.GONE

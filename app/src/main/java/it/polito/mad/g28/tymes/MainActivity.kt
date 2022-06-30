@@ -11,9 +11,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -56,32 +53,50 @@ class MainActivity : AppCompatActivity() {
         if (auth.currentUser == null ) {
             Log.d("lifecycle", "auth")
             auth()
+            setupNavMenu()
+        } else{
+            setupNavMenu()
         }
 
+    }
+
+    private fun setupNavMenu(){
         drawerLayout = findViewById(R.id.drawerlayout)
         val navView: NavigationView = findViewById(R.id.navigationView)
-
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close)
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val currentUser = Firebase.auth.currentUser
+        if (currentUser == null){
+            navView.menu.findItem(R.id.my_profile_icon).setVisible(false)
+            navView.menu.findItem(R.id.my_chat_icon).setVisible(false)
+            navView.menu.findItem(R.id.favorites_icon).setVisible(false)
+            navView.menu.findItem(R.id.scheduled_icon).setVisible(false)
+            navView.menu.findItem(R.id.my_home).setVisible(false)
+        } else{
+            navView.menu.findItem(R.id.my_profile_icon).setVisible(true)
+            navView.menu.findItem(R.id.my_chat_icon).setVisible(true)
+            navView.menu.findItem(R.id.favorites_icon).setVisible(true)
+            navView.menu.findItem(R.id.scheduled_icon).setVisible(true)
+            navView.menu.findItem(R.id.my_home).setVisible(true)
+        }
 
         navView.setNavigationItemSelectedListener {
 
             it.isChecked = true
-            val currentUser = Firebase.auth.currentUser
 
 
             when(it.itemId){
 
                 R.id.my_profile_icon -> {
 
-                        MainScope().launch{
-                            delay(100)
-                            changeFrag(ShowProfileActivity(), it.title.toString())
-                        }
+                    MainScope().launch{
+                        delay(100)
+                        changeFrag(ShowProfileActivity(), it.title.toString())
+                    }
                     val database = Firebase.firestore
 
                     val sharedPref = getPreferences(Context.MODE_PRIVATE)
@@ -133,8 +148,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
-
     }
 
     private fun setupChatClient() {
@@ -233,10 +246,14 @@ class MainActivity : AppCompatActivity() {
             val uid = currentUser.uid
             val name = currentUser.displayName
             val email = currentUser.email
-            val user = User(uid,name, "", "", "", email)
+
             // When the user authenticates, update DB
             profileVM.updateProfile(name.toString(), "", "", "", email.toString())
-            database.collection("users").document(uid).set(user)
+            database.collection("users").document(uid)
+                .update(mapOf(
+                    "fullname" to name,
+                    "email" to email,
+                ))
                 .addOnSuccessListener {Log.d("lifecycle", "successfully created user with uid: $uid")}
         }
     }
@@ -251,8 +268,6 @@ class MainActivity : AppCompatActivity() {
             .commit()
         drawerLayout.closeDrawers()
         setTitle(title)
-
-
     }
 
         override fun onBackPressed() {
@@ -293,6 +308,7 @@ class MainActivity : AppCompatActivity() {
                                             Log.d("lifecycle", "signInWithCredential:success")
                                             val user = auth.currentUser
                                             createUser(user)
+                                            setupNavMenu()
 
                                         } else {
                                             // If sign in fails, display a message to the user.
@@ -301,7 +317,6 @@ class MainActivity : AppCompatActivity() {
                                                 "signInWithCredential:failure",
                                                 task.exception
                                             )
-//                                        createUser(null)
                                         }
                                     }
 

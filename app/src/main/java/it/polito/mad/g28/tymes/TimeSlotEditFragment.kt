@@ -92,7 +92,7 @@ class TimeSlotEditFragment : Fragment() {
             // date picker dialog
             val datePicker = DatePickerDialog(
                 view.context,
-                { _, year, monthOfYear, dayOfMonth -> etDate?.setText(dayOfMonth.toString() + "/" + (monthOfYear + 1) + "/" + year) },
+                { _, year, monthOfYear, dayOfMonth -> etDate?.setText(year.toString() + "/" + (monthOfYear + 1) + "/" + dayOfMonth.toString())},
                 year,
                 month,
                 day

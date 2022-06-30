@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -27,6 +28,7 @@ class TimeSlotListFragment : Fragment() {
     var ads = ArrayList<Ad>()
     var adapter = MyAdRecyclerViewAdapter(ads) { advert, edit -> onAdClick(advert, true) }
     val itemsOrder = hashMapOf<String, Boolean>("Date" to false, "Price" to false, "Location" to false)
+    private val currentUser = Firebase.auth.currentUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,21 +78,27 @@ class TimeSlotListFragment : Fragment() {
             }
 
         val fab: View? = activity?.findViewById(R.id.fab)
-        fab?.setOnClickListener {
-            val currentUser = Firebase.auth.currentUser
-            val name = currentUser?.displayName ?: ""
+        if (currentUser == null){
+            fab?.visibility = View.GONE
+        }else{
+            fab?.visibility = View.VISIBLE
+            fab?.setOnClickListener {
+                val currentUser = Firebase.auth.currentUser
+                val name = currentUser?.displayName ?: ""
 
-            vm.updateAd(name, skill!!, "Available", "", "", "", "")
-            with(sharedPref.edit()){
-                putString("Ad ID", null)
-                apply()
+                vm.updateAd(name, skill!!, "Available", "", "", "", "")
+                with(sharedPref.edit()){
+                    putString("Ad ID", null)
+                    apply()
+                }
+                val fragmentTransaction = parentFragmentManager.beginTransaction()
+                fragmentTransaction
+                    .replace(R.id.fragmentContainerView, TimeSlotEditFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
-            val fragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction
-                .replace(R.id.fragmentContainerView, TimeSlotEditFragment())
-                .addToBackStack(null)
-                .commit()
         }
+
 
     }
 

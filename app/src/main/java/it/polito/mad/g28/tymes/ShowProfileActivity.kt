@@ -24,6 +24,7 @@ import it.polito.mad.g28.tymes.databinding.ActivityMainBinding
 import it.polito.mad.g28.tymes.databinding.FragmentShowProfileActivityBinding
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.math.RoundingMode
 
 class ShowProfileActivity : Fragment() {
 
@@ -53,23 +54,33 @@ class ShowProfileActivity : Fragment() {
         val tvWorkerRating = activity?.findViewById<TextView>(R.id.tv_worker_rate)
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         val authorID = sharedPref?.getString("Author ID", null)
+        val tvCredits = activity?.findViewById<TextView>(R.id.tv_credits)
 
-        Log.d("lifecycle", "onViewCreated: currentuser ${currentUser?.uid}")
-        if (currentUser != null){
-
-            database.collection("users").document(currentUser.uid).get()
+        if (authorID != null){
+            database.collection("users").document(authorID).get()
                 .addOnSuccessListener {
-                    Log.d("lifecycle", "data in showprofile ${it.data!!["workerRating"].toString()}")
-                    if (it.data!!["workerRating"] == null){
-                        tvWorkerRating?.setText("Worker rating: Unrated")
+                    Log.d("lifecycle", "data in showprofile ${it.data!!}")
+                    if (it.data!!["totalWorkerRating"] == "0"){
+                        tvWorkerRating?.setText("Worker rating: None")
                     }else{
-                        tvWorkerRating?.setText("Worker rating: " + it.data!!["workerRating"].toString() + "/5")
+                        val number = it.data!!["workerRating"].toString().toFloat()
+                        val rounded = number.toBigDecimal().setScale(1, RoundingMode.UP).toDouble()
+                        tvWorkerRating?.setText("Worker rating: " + rounded.toString() + "/5")
                     }
-                    if (it.data!!["providerRating"] == null){
-                        tvWorkerRating?.setText("Provider rating: Unrated")
+
+                    Log.d("lifecycle", "totprovrat ${it.data!!["totalProviderRating"]}")
+                    if (it.data!!["totalProviderRating"] == "0"){
+                        tvWorkerRating?.setText("Provider rating: None")
                     }else{
-                        tvProviderRating?.setText("Provider rating: " + it.data!!["providerRating"].toString() + "/5")
+                        val number = it.data!!["providerRating"].toString().toFloat()
+                        val rounded = number.toBigDecimal().setScale(1, RoundingMode.UP).toDouble()
+                        tvProviderRating?.setText("Provider rating: " + rounded.toString() + "/5")
                     }
+
+                    database.collection("users").document(authorID).get().addOnSuccessListener {
+                        tvCredits?.setText("Credits: " + it.data!!["credits"] + "TYC")
+                    }
+
                 }
         }
 
@@ -85,9 +96,6 @@ class ShowProfileActivity : Fragment() {
             if (currentUser != null) {
 
                 val progressDialog = ProgressDialog(requireContext())
-                //progressDialog.setMessage("Fetching Image")
-                //progressDialog.setCancelable(true)
-                //progressDialog.show()
 
                 val storageRef = Firebase.storage.reference.child("${authorID}/profilePic.jpg")
                 val localFile = File.createTempFile("tempImage", ".jpg")
@@ -126,8 +134,10 @@ class ShowProfileActivity : Fragment() {
         super.onPause()
         Log.d("lifecycle", "pause")
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val authorID = sharedPref?.getString("Author ID", null)
         with(sharedPref!!.edit()){
             putString("Author ID", Firebase.auth.currentUser?.uid)
+            putString("Comment ID", authorID)
             apply()
         }
     }

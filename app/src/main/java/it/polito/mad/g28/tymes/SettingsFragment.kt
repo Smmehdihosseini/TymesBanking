@@ -1,5 +1,6 @@
 package it.polito.mad.g28.tymes
 
+import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.os.Bundle
@@ -9,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -18,16 +21,22 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class SettingsFragment : Fragment() {
 
+    private lateinit var toggle : ActionBarDrawerToggle
+    private lateinit var drawerLayout: DrawerLayout
     private var oneTapClient: SignInClient? = null
     private var signInRequest: BeginSignInRequest? = null
     private val REQ_ONE_TAP: Int = 1338
@@ -62,6 +71,7 @@ class SettingsFragment : Fragment() {
                         "Successfully Disconnected From Your Google Account!",
                         Toast.LENGTH_SHORT
                     ).show()
+                    setupNavMenu()
                 }
             }
         } else {
@@ -119,10 +129,13 @@ class SettingsFragment : Fragment() {
             val uid = currentUser.uid
             val name = currentUser.displayName
             val email = currentUser.email
-            val user = User(uid, name, "", "", "", email)
             // When the user authenticates, update DB
             profileVM.updateProfile(name.toString(), "", "", "", email.toString())
-            database.collection("users").document(uid).set(user)
+            database.collection("users").document(uid)
+                .update(mapOf(
+                    "fullname" to name,
+                    "email" to email,
+                ))
                 .addOnSuccessListener {
                     Log.d(
                         "lifecycle",
@@ -150,6 +163,10 @@ class SettingsFragment : Fragment() {
                                     if (task.isSuccessful) {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d("lifecycle", "signInWithCredential:success")
+
+
+                                        setupNavMenu()
+
                                         val user = auth.currentUser
                                         createUser(user)
                                         Toast.makeText(
@@ -203,5 +220,108 @@ class SettingsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setupNavMenu(){
+        drawerLayout = requireActivity().findViewById(R.id.drawerlayout)
+        val navView: NavigationView = requireActivity().findViewById(R.id.navigationView)
+        toggle = ActionBarDrawerToggle(activity, drawerLayout, R.string.nav_open, R.string.nav_close)
+
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        val currentUser = Firebase.auth.currentUser
+        if (currentUser == null){
+            navView.menu.findItem(R.id.my_profile_icon).setVisible(false)
+            navView.menu.findItem(R.id.my_chat_icon).setVisible(false)
+            navView.menu.findItem(R.id.favorites_icon).setVisible(false)
+            navView.menu.findItem(R.id.scheduled_icon).setVisible(false)
+            navView.menu.findItem(R.id.my_home).setVisible(false)
+        } else{
+            navView.menu.findItem(R.id.my_profile_icon).setVisible(true)
+            navView.menu.findItem(R.id.my_chat_icon).setVisible(true)
+            navView.menu.findItem(R.id.favorites_icon).setVisible(true)
+            navView.menu.findItem(R.id.scheduled_icon).setVisible(true)
+            navView.menu.findItem(R.id.my_home).setVisible(true)
+        }
+
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        navView.setNavigationItemSelectedListener {
+
+            it.isChecked = true
+            val currentUser = Firebase.auth.currentUser
+
+
+            when(it.itemId){
+
+                R.id.my_profile_icon -> {
+
+                    MainScope().launch{
+                        delay(100)
+                        changeFrag(ShowProfileActivity(), it.title.toString())
+                    }
+                    val database = Firebase.firestore
+
+                    val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+                    with(sharedPref!!.edit()){
+                        putString("Author ID", currentUser?.uid)
+                        apply()
+                    }
+
+                    database.collection("users").document(currentUser?.uid.toString()).get()
+                        .addOnSuccessListener { document ->
+
+                            val map = document?.data
+                            Log.d("lifecycle", "navigation drawer fullname is ${map?.get("fullname").toString()}")
+                            profileVM.updateProfile(
+                                map?.get("fullname").toString(),
+                                map?.get("biography").toString(),
+                                map?.get("skills").toString(),
+                                map?.get("location").toString(),
+                                map?.get("email").toString(),)
+                        }
+                        .addOnFailureListener{
+                            Log.d("lifecycle", "Failed DB get")
+                        }
+
+
+
+                }
+                R.id.my_chat_icon -> {
+                    changeFrag(ChannelFragment(), it.title.toString())
+                }
+
+                R.id.favorites_icon -> {
+                    changeFrag(FavoritesFragment(), it.title.toString())
+                }
+
+                R.id.scheduled_icon -> {
+                    changeFrag(ScheduledFragment(), it.title.toString())
+                }
+
+                R.id.ic_skill -> changeFrag(SkillListFragment(), it.title.toString())
+
+                R.id.tymes_settings_icon -> changeFrag(SettingsFragment(), it.title.toString())
+
+                R.id.my_home -> changeFrag(Home(), it.title.toString())
+
+                R.id.tymes_about_icon -> changeFrag(aboutFragment(), it.title.toString())
+
+
+            }
+            true
+        }
+    }
+
+    fun changeFrag(fragment: Fragment, title: String) {
+        val fragmentManager = parentFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction
+            .replace(R.id.fragmentContainerView, fragment)
+            .addToBackStack(null)
+            .commit()
+        drawerLayout.closeDrawers()
+        activity?.setTitle(title)
     }
 }

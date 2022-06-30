@@ -6,9 +6,10 @@
 
     <TextView
         android:id="@+id/tv_author"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
+        android:textStyle="bold"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView

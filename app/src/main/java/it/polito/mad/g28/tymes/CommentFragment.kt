@@ -14,6 +14,7 @@ import android.widget.TextView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import org.w3c.dom.Text
 
 class CommentFragment : Fragment() {
 
@@ -41,7 +42,8 @@ class CommentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-        val authorID = sharedPref?.getString("Author ID", null)
+        val authorID = sharedPref?.getString("Comment ID", null)
+        Log.d("lifecycle", "Comments of $authorID")
         val rv = activity?.findViewById<RecyclerView>(R.id.rv_list_comments)
         database.collection("users").document(authorID!!).collection("comments")
             .addSnapshotListener { comments, e->
@@ -51,19 +53,41 @@ class CommentFragment : Fragment() {
                 }
                 commentList.clear()
 
-                for (comment in comments!!) {
-                    commentList.add(Comment(comment.data.get("name").toString(), comment.data.get("comment").toString()))
+                val tvNoComments = activity?.findViewById<TextView>(R.id.tv_no_comments)
+                if (comments?.documents!!.isEmpty()){
+                    tvNoComments?.visibility = View.VISIBLE
+                } else{
+                    tvNoComments?.visibility = View.GONE
                 }
 
-                adapter = MyCommentRecyclerViewAdapter(ArrayList(commentList))
-                val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                for (comment in comments!!) {
+                    if (comment != null){
+                        Log.d("lifecycle", "comment data: ${comment.data}")
+                        database.collection("users").document(comment.data.get("ID").toString()).get().addOnSuccessListener {
+                            Log.d("lifecycle", "data in comments: ${it.data}")
+                            val name = it.data!!["fullname"].toString() + ": "
+                            commentList.add(Comment(name, comment.data.get("comment").toString()))
+                            Log.d("lifecycle", "onViewCreated: loopadded")
+                            adapter = MyCommentRecyclerViewAdapter(ArrayList(commentList))
+                            val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-                rv?.layoutManager = layoutManager
-                rv?.adapter = adapter
+                            rv?.layoutManager = layoutManager
+                            rv?.adapter = adapter
+                        }
+                    }
+                }
 
-//                if (commentList.isEmpty()){
-//                    activity?.findViewById<TextView>(R.id.no_item_const)?.visibility = View.VISIBLE
+//                database.collection("users").document(authorID).get().addOnSuccessListener {
+//                    Log.d("lifecycle", "onViewCreated: adapter")
+//                    adapter = MyCommentRecyclerViewAdapter(ArrayList(commentList))
+//                    val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//
+//                    rv?.layoutManager = layoutManager
+//                    rv?.adapter = adapter
 //                }
+
+
+
             }
 
     }
