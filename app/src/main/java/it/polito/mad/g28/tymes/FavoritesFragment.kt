@@ -200,7 +200,7 @@ class FavoritesFragment : Fragment() {
 
     fun sortByDate(currentlyAscending: Boolean){
 
-        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        val sdf = SimpleDateFormat("yyyy/MM/dd")
         if (currentlyAscending) {
             ads.sortWith(compareByDescending { sdf.parse(it.date)})
         } else{
